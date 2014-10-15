@@ -81,7 +81,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 
 % sheet number
-\def\sheet#1{\def\@sheet{#1}}
+\def\sheet#1#2{\def\@sheet{#1}\title{#2}} % \sheet{Number}{Title}
 
 % (sub)exercise counter
 \newcounter{excount}
