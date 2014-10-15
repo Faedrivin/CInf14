@@ -4,27 +4,44 @@
 
 \author{Rasmus Diederichsen, Sebastian H\"offner}
 
+
+\RequirePackage{microtype, textcomp, multicol, colortbl, booktabs, listings, 
+  tikz, IEEEtrantools, array, amsmath, amssymb, graphicx, subcaption, lmodern,
+  tabularx}
+  
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 
 \RequirePackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
 
-\RequirePackage{tabularx}
-
 \RequirePackage{listings}
 \lstset{
-  xleftmargin=.2\textwidth, xrightmargin=.2\textwidth
+   xleftmargin  = .2\textwidth, 
+   xrightmargin = .2\textwidth,
+   basicstyle   = \footnotesize\ttfamily,
+   language     = Python,
+   breaklines   = true,
+   commentstyle = \color{blue},
+   keywordstyle = \color{purple}\textbf,
+   numberstyle  = \tiny\color{gray},
+   numbers      = left,
+   stringstyle  = \color{olive},
 }
 
 \def\sheet#1{\def\@sheet{#1}}
 
-
-\RequirePackage{hyperref}
+\RequirePackage[
+   hyperfootnotes    = true,
+   colorlinks,
+   bookmarksnumbered = true,
+   linkcolor         = lightgray,
+   plainpages        = false,
+   citecolor         = lightgray]{hyperref}
 \AtBeginDocument{
   \hypersetup{
-    pdftitle    = {\@title},
+    pdftitle    = {Informatik C -- \"Ubung \@sheet -- \@title},
     pdfauthor   = {\@author},
-    pdfsubject  = {Informatik C \"Ubung},
+    pdfsubject  = {\@title},
     pdfcreator  = {LaTeX},
   }
 }
@@ -34,19 +51,17 @@
     \textbf{\Large Informatik C} \\
     Grundlagen der Technischen Informatik \\
     \@author \\
-    \textbf{Tutor:} Markus Rothl\"ubbers
+    \textbf{Tutor:} Markus Rothl\"ubbers\\[\baselineskip]
     
     \textbf{ \LARGE{\"Ubung \@sheet} \large{-- \@title} }
   \end{center}
 }
 
-% exercise counter
+% (sub)exercise counter
 \newcounter{excount}
-
-% subexercise counter
 \newcounter{subexcount}[excount]
 
-\newcommand{\ex}[3][]{
+\newcommand{\ex}[3][]{ % \ex[Number]{Title}{Points}
   \ifx&#1&
     \stepcounter{excount}
   \else
@@ -61,7 +76,7 @@
   \par
 }
 
-\newcommand{\subex}[1][]{
+\newcommand{\subex}[1][]{ % \subex[Number]
   \ifx&#1&
     \stepcounter{subexcount}
   \else
