@@ -1,7 +1,8 @@
 % CInf Template class
 \ProvidesClass{CInf_practice}
-
 \LoadClass[11pt,a4paper,oneside]{article}
+
+\author{Rasmus Diederichsen, Sebastian H\"offner}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
@@ -17,11 +18,22 @@
 
 \def\sheet#1{\def\@sheet{#1}}
 
+
+\RequirePackage{hyperref}
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle    = {\@title},
+    pdfauthor   = {\@author},
+    pdfsubject  = {Informatik C \"Ubung},
+    pdfcreator  = {LaTeX},
+  }
+}
+
 \newcommand{\cinftitle}{ % \cinftitle
   \begin{center}
-    \textbf{\Large Informatik C}\\
-    Grundlagen der Technischen Informatik\\
-    Rasmus Diederichsen, Sebastian H\"offner\\
+    \textbf{\Large Informatik C} \\
+    Grundlagen der Technischen Informatik \\
+    \@author \\
     \textbf{Tutor:} Markus Rothl\"ubbers
     
     \textbf{ \LARGE{\"Ubung \@sheet} \large{-- \@title} }
