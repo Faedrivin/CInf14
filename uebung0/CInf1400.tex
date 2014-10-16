@@ -9,7 +9,6 @@
 
 
 \ex{Binär-, Oktal- und Hexadezimalzahlen}{25}
-
 \begin{center}
    \begin{tabular}{HChChChC}
       \rowstyle{\normalfont} 
@@ -24,7 +23,6 @@
 
 
 \ex{Binäre Addition \& Subtraktion}{10}
-
 \begin{multicols}{2}
   \subex
   \begin{center}
@@ -52,7 +50,6 @@
 
 
 \ex{Binäre Multiplikation}{15}
-
 \begin{center}
   \begin{tabular}{R}
     1100101\\
@@ -69,7 +66,6 @@
 
 
 \ex{Binäre Division mit Zweierkomplement}{20}
-
 \begin{center}
   \begin{tabular}{RR}
      & 01101\\
@@ -89,7 +85,6 @@
 \end{center}
 
 \ex{BCD-Addition}{20}
-
 BCD steht für binary-coded decimal. Hierbei werden alle Ziffern durch ihre 4-
 bit Binärdarstellung repräsentiert, d.h. \texttt{0} wird zu \texttt{0000}, 
 \texttt{3} zu \texttt{0011}, etc.
@@ -123,8 +118,8 @@ in BCD, also 4-bit Werte aufgeteilt.
 
 \texttt{100111001000} wird zu \texttt{1001 1100 1000}. Jeder dieser Werte wird 
 auf $>$\texttt{1001} getestet, von rechts beginnend. Ist er größer, so wird 
-\texttt{0110} hinzugerechnet (\texttt{6}), da nur 10 von 16 Bit-
-Kombinationen zugelassen sind, und durch die Addition von 6 ein Überlaufbit 
+\texttt{0110} hinzugerechnet (\texttt{6}), da nur 10 von 16 Bit-Kombinationen
+zugelassen sind, und durch die Addition von 6 ein Überlaufbit 
 erzeugt wird.
 
 \begin{center}
@@ -150,7 +145,6 @@ Zuletzt werden die Zahlen dekodiert:
 
 
 \ex{ASCII-Code}{10}
-
 \begin{center}
   \begin{tabular}{B|CCCCC}
     Binär   & 1000111 & 1000101 & 1010011 & 1000011 & 1001000 \\ 
@@ -170,7 +164,7 @@ Zuletzt werden die Zahlen dekodiert:
 
 
 \addex{Codeumwandlung}
-Um von BCD in ASCII umzuwandeln muss lediglich jeder BCD Ziffer auf acht Bit
+Um von BCD in ASCII umzuwandeln, muss lediglich jede BCD-Ziffer auf acht Bit
 erweitert und zur entstehenden Binärzahl der ASCII Code für 0 ($48_{10}$, also
 $00110000_2$) hinzuaddiert werden.
 

@@ -18,7 +18,7 @@
 % layout etc.
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[top=2cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
 \RequirePackage{lmodern, listings}
 
 % math
@@ -139,6 +139,8 @@
   \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Aufgabe \@sheet.\arabic{excount} & \bf #2 & \bf(#3 P)
   \end{tabularx}
+
+  \vspace{\baselineskip}
   \par
 }
 
@@ -155,6 +157,8 @@
   \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Zusatzaufgabe \@sheet.\arabic{excount} & \bf #2 & \bf (freiwillig)
   \end{tabularx}
+
+  \vspace{\baselineskip}
   \par
 }
 
