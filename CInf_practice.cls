@@ -18,14 +18,14 @@
 % layout etc.
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\RequirePackage[top=2cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
 \RequirePackage{lmodern, listings}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
 
 % tables
-\RequirePackage{tabularx, multicol, colortbl}
+\RequirePackage{tabularx, multicol, colortbl, booktabs}
 
 % graphics, diagrams
 \RequirePackage{graphicx, tikz}
@@ -42,7 +42,7 @@
   ]{hyperref}
 
 % not used yet
-% subcaption, microtype, textcomp, booktabs, 
+% subcaption, microtype, textcomp 
  
 %%%%%%%%%%%%%%%%%%%%%%%
 % Configuration
@@ -92,6 +92,9 @@
 \newcolumntype{C}{>{\ttfamily}c}
 \newcolumntype{R}{>{\ttfamily}r}
 
+% bold left
+\newcolumntype{B}{>{\bf}l}
+
 % helper for headers/individual rows
 \newcolumntype{H}{>{\global\let\currentrowstyle\relax}}
 \newcolumntype{h}{>{\currentrowstyle}}
@@ -113,13 +116,17 @@
     \textbf{\Large Informatik C} \\
     Grundlagen der Technischen Informatik \\
     \@author \\
-    \textbf{Tutor:} Markus Rothl\"ubbers\\[\baselineskip]
+    \textbf{Tutor:} Markus Rothl\"ubbers\\[.5\baselineskip]
     
     \textbf{ \LARGE{\"Ubung \@sheet} \large{-- \@title} }
+    
+    \smallskip
+    
+    \hrule
   \end{center}
 }
 
-% Prints an exercise headline
+% Prints an exercise's headline
 \newcommand{\ex}[3][]{ % \ex[Number]{Title}{Points}
   \ifx&#1&
     \stepcounter{excount}
@@ -130,12 +137,28 @@
     \par\bigskip
   \fi
   \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
-    \textbf{Aufgabe \@sheet.\arabic{excount}} & \textbf{#2} & \textbf{(#3 P)}
+    \bf Aufgabe \@sheet.\arabic{excount} & \bf #2 & \bf(#3 P)
   \end{tabularx}
   \par
 }
 
-% Prints a subexercise number
+% prints an additional exercise's headline
+\newcommand{\addex}[2][]{ % \addex[Number]{Title}
+  \ifx&#1&
+    \stepcounter{excount}
+  \else
+    \setcounter{excount}{#1}
+  \fi
+  \ifnum \value{excount}>1
+    \par\bigskip
+  \fi
+  \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
+    \bf Zusatzaufgabe \@sheet.\arabic{excount} & \bf #2 & \bf (freiwillig)
+  \end{tabularx}
+  \par
+}
+
+% Prints a subexercise's number
 \newcommand{\subex}[1][]{ % \subex[Number]
   \ifx&#1&
     \stepcounter{subexcount}
@@ -143,5 +166,5 @@
     \setcounter{subexcount}{#1}
   \fi
   \par\smallskip
-  {\setlength{\parindent}{1.5cm}\textbf{\alph{subexcount})}\ }
+  {\setlength{\parindent}{1.5cm} \bf \alph{subexcount})\ }
 }
