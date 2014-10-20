@@ -116,7 +116,7 @@
     \textbf{\Large Informatik C} \\
     Grundlagen der Technischen Informatik \\
     \@author \\
-    \textbf{Tutor:} Markus Rothl\"ubbers\\[.5\baselineskip]
+    \textbf{Tutor:} Konstantin Obermann\\[.5\baselineskip]
     
     \textbf{ \LARGE{\"Ubung \@sheet} \large{-- \@title} }
     
