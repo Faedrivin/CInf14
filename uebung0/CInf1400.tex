@@ -63,27 +63,29 @@
   \end{tabular}
 \end{center}
 
+
+
 \ex{Binäre Division mit Zweier-Komplement}{20}
-
-Das hier ist nocht Bullshit.
-
 \begin{center}
   \begin{tabular}{RR}
-     & 01101\\
+     & \temph 01101\\
      \cline{2-2}101010 & \multicolumn{1}{|R}{1000100010} \\
-    & -101010\hphantom{0000}\\
-    & +010110\hphantom{0000}\\\hline
-    & 11010\hphantom{0000}\\
-    & 110100\hphantom{000}\\
-    & -101010\hphantom{000}\\
-    & +010110\hphantom{000}\\\hline
-    & $\not$1001010\hphantom{000}\\
-    & 10101\hphantom{00}\\
-    & 101010\\
-    & -101010\\\hline
-    & 0
+    & +010110\hphantom{0000}\\ \hline
+    & \textcolor{red}{0}111000\hphantom{0000}\\ \hline
+    &             1000100\hphantom{000}\\
+    & +010110\hphantom{000}\\ \hline
+    & \textcolor{red}{1}0110100\hphantom{00}\\
+    & +010110\hphantom{00}\\ \hline
+    &   \textcolor{red}{1}0010101\hphantom{0}\\
+    & +010110\hphantom{0}\\ \hline
+    & \textcolor{red}{0}101011\hphantom{0}\\ \hline
+    & 00101010 \\
+    & +010110\\ \hline
+    & \textcolor{red}{1}000000
    \end{tabular}
 \end{center}
+
+
 
 \ex{BCD-Addition}{20}
 BCD steht für binary-coded decimal. Hierbei werden alle Ziffern durch ihre 4-
