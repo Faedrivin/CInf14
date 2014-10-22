@@ -19,7 +19,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
-\RequirePackage{lmodern, listings}
+\RequirePackage{lmodern, listings, tabularx, multirow}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
@@ -163,12 +163,13 @@
 }
 
 % Prints a subexercise's number
-\newcommand{\subex}[1][]{ % \subex[Number]
+\newcommand{\subex}[2][]{ % \subex[Number]{Title}
   \ifx&#1&
     \stepcounter{subexcount}
   \else
     \setcounter{subexcount}{#1}
   \fi
   \par\smallskip
-  {\setlength{\parindent}{1.5cm} \bf \alph{subexcount})\ }
+  {\setlength{\parindent}{1cm} \bf \alph{subexcount}) #2}
+  \vspace{\baselineskip}
 }
