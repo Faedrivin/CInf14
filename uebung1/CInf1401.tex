@@ -1,4 +1,5 @@
 \documentclass{CInf_practice}
+\usepackage{enumitem}
 
 \sheet{1}{Beispiel-CPU H6809}
 
@@ -19,20 +20,80 @@
 \ex{Taschenrechner}{8+16+8=32}
 
 \subex{Programmablauf}
+   \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[font=\small,minimum
+   size=3ex,left=8pt,below=8pt,shape=circle, draw,inner sep=1pt] (char) {#1};}}
+
+
+Das Programm läuft folgendermaßen ab:
+\begin{enumerate}[label=\protect\circled{\arabic*},leftmargin=5em]
+   \item A mit INP initialisieren
+   \item Gültigkeit von INP prüfen
+      \begin{enumerate}
+         \item A += 1
+         \item A \&= 1111 1100. Dies ergibt genau dann nicht 0, wenn eins oder
+            mehr der vorderen 6 Bits und/oder beide der hinteren Bits gesetzt
+            sind. In allen Fällen ist die Eingabe ungültig und es wird ein
+            Fehlerziel angesprungen.
+      \end{enumerate}
+   \item Erneut INP in A laden
+   \item Prüfen, ob INP 00 hinten hat, falls ja, zu Ziel ADD springen
+   \item Erneut INP in A laden
+   \item Prüfen, ob INP 01 hinten hat, falls ja, zu Ziel SUBT springen
+   \item Tritt keiner der Fälle auf, ist die Operation AND
+   \item Für AND Z1 in A laden, mit Z2 verunden, Ergebnis in ERG schreiben
+   \item Für ADD Z1 in A laden, Z2 adieren, Ergebnis in ERG schreiben
+   \item Für SUBT Z2 in A laden, Zweierkomplement auf A anwenden, Z1 addieren,
+      Ergebnis in ERG schreiben
+   \item Beim Fehlerziel 0 in ERG schreiben
+   \item Nach jeder Operation wird die Adresse 0100 angesprungen.
+\end{enumerate}
 
 \subex{Asemblerprogramm}
 
-\begin{tabularx}{\textwidth}{|>{\ttfamily}l|>{\ttfamily}c|>{\ttfamily}c|>{\ttfamily}c|>{\ttfamily}l|>{\ttfamily}r|X|} % TODO: Solve with newcolumntype
+\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
    \hline
-   \rmfamily\multirow{2}{*}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr)
-(hex)} & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} &
-   \rmfamily\multirow{2}{*}{Operand} &
+   \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
+      & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
    \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
                               & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
-   woot & waat & weet & hoo & ha & he & thi s is a comment
-   
-\end{tabularx}
+   0500 & ?? & Z1 & & & & First operand\\\hline
+   0501 & ?? & Z2 & & & & Second operand \\\hline
+   0502 & ?? & ERG & & & & Result\\\hline
+   0503 & ?? & INP & & & & Operation\\\hline
+   \vdots & & & & & & \\\hline
+   0600 & B6 & 0503 & INIT: & LDA & \#INP & Load operation\\\hline
+   0603 & 8B & 01 & & ADDA & 01 &\\\hline
+0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
+   0607 & 26 & 18\footnote{\texttt{0x061F - 0x0607}} & SWITCH: & BNE & \#FAIL & Jump to exit if result nonzero (== false) \\\hline
+   0609 & B8 & 0503 & & LDA & \#INP & Reload operation \\\hline
+   060C & 81 & 00 & CHK\_ADD: & CMPA & 00 & Check if operation is ADD \\\hline
+   060E & 27 & F2\footnote{\texttt{0x0700 - 0x060E}} & & BEQ & ADD & Jump to ADD if yes \\\hline
+   0610 & 81 & 01 & CHK\_SUBT: & CMPA & 01 & Check if operation is SUBT \\\hline
+   0612 & 27 & FE\footnote{\texttt{0x0700 - 0x0612}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
+   0614 & B6 & 0500 & AND: & LDA & \#Z1 & If PC is here, operation is AND \\\hline
+   0616 & B4 & 0501 & & ANDA & \#Z2 & AND with Z2 \\\hline
+   0619 & B7 & 0502 & & STA & \#ERG & write result \\\hline
+   061C & 7E & 0100 & EXIT: & JMP & 0100 & Done \\\hline
+   061F & B6 & 0000 & FAIL: & LDA & 0 & Load register A with 0 \\\hline
+   0622 & B7 & 0502 & & STA & \#ERG & Write result \\\hline
+   0625 & 7E & 0100 & & JMP & 0100 & Done \\\hline
 
+   \vdots & & & & & & \\\hline
+% \end{tabularx}
+
+% \begin{tabularx}{\textwidth}{|L||L|L|L||L|L|X|} 
+   0700 & B6 & 0500 & ADD: & LDA & \#Z1 & Load first operand \\\hline
+   0703 & BB & 0501 & & ADDA & \#Z1 & Add contents of second operand \\\hline
+   0706 & B7 & 0502 & & STA & \#EGR & Write result \\\hline
+   0709 & 7E & 0100 & & JMP & 0100 & Done \\\hline
+   070C & B6 & 0501 & SUBT: & LDA & \#Z2 & Load second operand \\\hline
+   070F & 40 & & & NEGA & & -Z2\ldots \\\hline
+   0710 & BB & 0500 & & ADDA & \#Z1 & \ldots +Z2 \\\hline
+   0713 & B7 & 0502 & & STA & \#ERG & Write result \\\hline
+   0716 & 7E & 0100 & & JMP & 0100 & Done \\\hline
+
+
+\end{tabularx}
 
 \ex{Codeumwandlung}{8+16+8=32}
 

@@ -19,7 +19,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
-\RequirePackage{lmodern, listings, tabularx, multirow}
+\RequirePackage{lmodern, listings, multirow, tabularx}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
@@ -136,7 +136,7 @@
   \ifnum \value{excount}>1
     \par\bigskip
   \fi
-  \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
+  \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Aufgabe \@sheet.\arabic{excount} & \bf #2 & \bf(#3 P)
   \end{tabularx}
 
