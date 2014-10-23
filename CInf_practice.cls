@@ -41,6 +41,8 @@
   citecolor          = lightgray
   ]{hyperref}
 
+\RequirePackage{enumitem}
+
 % not used yet
 % subcaption, microtype, textcomp 
  
@@ -173,3 +175,17 @@
   {\setlength{\parindent}{1cm} \bf \alph{subexcount})\ifx&#2&{ }#2\fi}
   \vspace{\baselineskip}
 }
+
+% environment for a table with assembler code
+\newenvironment{assemblertable}{%
+  \noindent\tabularx{\textwidth}{|L||L|L|L||L|R|X|} 
+    \hline
+    \rmfamily\multirow{2}{1cm}{Adr (hex)} 
+        & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
+        & \rmfamily\multirow{2}{*}{Label} 
+        & \rmfamily\multirow{2}{*}{Opcode} 
+        & \rmfamily\multirow{2}{*}{Operand} 
+        & \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
+    & \footnotesize\rmfamily Opc. 
+        & \rmfamily\footnotesize Oper. & & & & \\ \hline\hline
+}{\endtabularx}
