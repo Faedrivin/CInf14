@@ -1,5 +1,4 @@
 \documentclass{CInf_practice}
-\usepackage{enumitem}
 
 \sheet{1}{Beispiel-CPU H6809}
 
@@ -11,39 +10,32 @@
 
 \ex{Arithmetik auf Variablen}{12}
 
-\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
-   \hline
-   \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
-      & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
-   \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
-                              & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
-%add & opc& oper & label & op   & oper  & comment
-0500 &    &      &       &      &      & Z1                                  \\
-0501 &    &      &       &      &      & Z2                                  \\
-0502 &    &      &       &      &      & ERG                                 \\
-0503 &    &      &       &      &      & INP                                 \\
-0504 &    &      &       &      &      & Z                                   \\
-0505 &    &      &       & .ORG & 0506 & init program at 0506                \\
-\hline
-%\multicol{7}{some initialization, see ex. 3. We assume ADD at 0510 etc.}     \\ 
-\hline
-0510 & 4F &      & ADD:  & CLRA &      & clear A to perform ADD              \\
-0511 & B6 & 0500 &       & LDA  & 0500 & load Z1 to A                        \\
-0514 & BB & 0501 &       & ADDA & 0501 & add Z2 to A                         \\
-0517 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
-051A & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\
-051D & 4F &      & SUB:  & CLRA &      & clear A to perform SUB              \\
-051E & B6 & 0501 &       & LDA  & 0501 & load Z2 to A                        \\
-0521 & 40 &      &       & NEGA &      & two's complement of A               \\
-0522 & BB & 0500 &       & ADDA & 0500 & add Z1 to A                         \\
-0525 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
-0528 & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\
-052A & 4F &      & AND:  & CLRA &      & clear A to perform AND              \\
-052B & B6 & 0500 &       & LDA  & 0500 & load Z1 to A                        \\
-052E & B4 & 0501 &       & ANDA & 0501 & and Z2 with A                       \\
-0531 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
-0534 & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\\hline
-\end{tabularx}
+\begin{assemblertable}
+%  add & oc & oper & label & op    & oper   & comment
+       &    &      &       & .ORG  & \$0500 & data space                      \\
+  0500 &    &      & Z1    & .BYTE & 1      & variable Z1                     \\
+  0501 &    &      & Z2    & .BYTE & 1      & variable Z2                     \\
+  0502 &    &      & ERG   & .BYTE & 1      & variable ERG                    \\
+  \hline\hline
+       &    &      &       & .ORG  & \$0510 & routine space                   \\
+  0510 & 4F &      & ADD:  & CLRA  &        & clear A to perform ADD          \\
+  0511 & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\
+  0514 & BB & 0501 &       & ADDA  & Z2     & add Z2 to A                     \\
+  0517 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
+  051A & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
+  051D & 4F &      & SUB:  & CLRA  &        & clear A to perform SUB          \\
+  051E & B6 & 0501 &       & LDA   & Z2     & load Z2 to A                    \\
+  0521 & 40 &      &       & NEGA  &        & two's complement of A           \\
+  0522 & BB & 0500 &       & ADDA  & Z1     & add Z1 to A                     \\
+  0525 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
+  0528 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
+  052A & 4F &      & AND:  & CLRA  &        & clear A to perform AND          \\
+  052B & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\
+  052E & B4 & 0501 &       & ANDA  & Z2     & and Z2 with A                   \\
+  0531 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
+  0534 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
+  \hline
+\end{assemblertable}
 
 
 \ex{For-Schleife}{8+16=24}
@@ -83,12 +75,7 @@ Das Programm läuft folgendermaßen ab:
 
 \subex{Asemblerprogramm}
 
-\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
-   \hline
-   \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
-      & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
-   \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
-                              & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
+\begin{assemblertable}
    0500 & ?? & Z1 & & & & First operand\\\hline
    0501 & ?? & Z2 & & & & Second operand \\\hline
    0502 & ?? & ERG & & & & Result\\\hline
@@ -124,13 +111,23 @@ Das Programm läuft folgendermaßen ab:
    0710 & BB & 0500 & & ADDA & \#Z1 & \ldots +Z2 \\\hline
    0713 & B7 & 0502 & & STA & \#ERG & Write result \\\hline
    0716 & 7E & 1000 & & JMP & 1000 & Done \\\hline
-
-
-\end{tabularx}
+\end{assemblertable}
 
 \ex{Codeumwandlung}{8+16+8=32}
 
+\subex{}
 
+
+\begin{assemblertable}
+%  add & oc & oper & label & op    & oper   & comment
+       &    &      &       & .ORG  & \$0500 & data space                      \\
+  0504 &    &      & Z     & .BYTE & n      & variable Z                      \\
+  \hline\hline
+       &    &      &       & .ORG  & \$8000 & program code                    \\
+  8000 &    &      &       & CLRA  &        & clear A                         \\
+       &    &      &       &       &        &                                 \\
+  \hline
+\end{assemblertable}
 
 \addex{Multiplikation von Variablen}
 
