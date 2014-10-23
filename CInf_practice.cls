@@ -169,7 +169,7 @@
   \else
     \setcounter{subexcount}{#1}
   \fi
-  \par\smallskip
-  {\setlength{\parindent}{1cm} \bf \alph{subexcount}) #2}
+  \par%\smallskip
+  {\setlength{\parindent}{1cm} \bf \alph{subexcount})\ifx&#2&{ }#2\fi}
   \vspace{\baselineskip}
 }
