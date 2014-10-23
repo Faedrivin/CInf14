@@ -154,7 +154,7 @@
   \ifnum \value{excount}>1
     \par\bigskip
   \fi
-  \begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
+  \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Zusatzaufgabe \@sheet.\arabic{excount} & \bf #2 & \bf (freiwillig)
   \end{tabularx}
 
