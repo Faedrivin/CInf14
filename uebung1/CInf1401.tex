@@ -11,6 +11,39 @@
 
 \ex{Arithmetik auf Variablen}{12}
 
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
+   \hline
+   \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
+      & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
+   \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
+                              & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
+%add & opc& oper & label & op   & oper  & comment
+0500 &    &      &       &      &      & Z1                                  \\
+0501 &    &      &       &      &      & Z2                                  \\
+0502 &    &      &       &      &      & ERG                                 \\
+0503 &    &      &       &      &      & INP                                 \\
+0504 &    &      &       &      &      & Z                                   \\
+0505 &    &      &       & .ORG & 0506 & init program at 0506                \\
+\hline
+%\multicol{7}{some initialization, see ex. 3. We assume ADD at 0510 etc.}     \\ 
+\hline
+0510 &    &      & ADD:  & CLRA &      & clear A to perform ADD              \\
+0511 &    &      &       & LDA  & 0500 & load Z1 to A                        \\
+0514 &    &      &       & ADDA & 0501 & add Z2 to A                         \\
+0517 &    &      &       & STA  & 0502 & store A to ERG                      \\
+051A &    &      &       & JMP  & 1000 & jump out of subroutine              \\
+051D &    &      & SUB:  & CLRA &      & clear A to perform SUB              \\
+051E &    &      &       & LDA  & 0501 & load Z2 to A                        \\
+0521 &    &      &       & NEGA &      & two's complement of A               \\
+0522 &    &      &       & ADDA & 0500 & add Z1 to A                         \\
+0525 &    &      &       & STA  & 0502 & store A to ERG                      \\
+0528 &    &      &       & JMP  & 1000 & jump out of subroutine              \\
+052A &    &      & AND:  & CLRA &      & clear A to perform AND              \\
+052B &    &      &       & LDA  & 0500 & load Z1 to A                        \\
+052E &    &      &       & ANDA & 0501 & and Z2 with A                       \\
+0531 &    &      &       & STA  & 0502 & store A to ERG                      \\
+0534 &    &      &       & JMP  & 1000 & jump out of subroutine              \\\hline
+\end{tabularx}
 
 
 \ex{For-Schleife}{8+16=24}
@@ -50,7 +83,7 @@ Das Programm läuft folgendermaßen ab:
 
 \subex{Asemblerprogramm}
 
-\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
    \hline
    \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
       & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
