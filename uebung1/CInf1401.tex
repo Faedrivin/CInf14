@@ -6,111 +6,146 @@
 
 \cinftitle
 
-
-
 \ex{Arithmetik auf Variablen}{12}
 
 \begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
-       &    &      &       & .ORG  & \$0500 & data space                      \\
-  0500 &    &      & Z1    & .BYTE & 1      & variable Z1                     \\
-  0501 &    &      & Z2    & .BYTE & 1      & variable Z2                     \\
-  0502 &    &      & ERG   & .BYTE & 1      & variable ERG                    \\
-  \hline\hline
-       &    &      &       & .ORG  & \$0510 & routine space                   \\
-  0510 & 4F &      & ADD:  & CLRA  &        & clear A to perform ADD          \\
-  0511 & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\
-  0514 & BB & 0501 &       & ADDA  & Z2     & add Z2 to A                     \\
-  0517 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
-  051A & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
-  051D & 4F &      & SUB:  & CLRA  &        & clear A to perform SUB          \\
-  051E & B6 & 0501 &       & LDA   & Z2     & load Z2 to A                    \\
-  0521 & 40 &      &       & NEGA  &        & two's complement of A           \\
-  0522 & BB & 0500 &       & ADDA  & Z1     & add Z1 to A                     \\
-  0525 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
-  0528 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
-  052A & 4F &      & AND:  & CLRA  &        & clear A to perform AND          \\
-  052B & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\
-  052E & B4 & 0501 &       & ANDA  & Z2     & and Z2 with A                   \\
-  0531 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\
-  0534 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\
-  \hline
+       &    &      &       & .ORG  & \$0500 & data space                      \\\hline
+  0500 &    &      & Z1    & .BYTE & 1      & variable Z1                     \\\hline
+  0501 &    &      & Z2    & .BYTE & 1      & variable Z2                     \\\hline
+  0502 &    &      & ERG   & .BYTE & 1      & variable ERG                    \\\hline\hline
+       &    &      &       & .ORG  & \$0510 & routine space                   \\\hline
+  0510 & 4F &      & ADD:  & CLRA  &        & clear A to perform ADD          \\\hline
+  0511 & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\\hline
+  0514 & BB & 0501 &       & ADDA  & Z2     & add Z2 to A                     \\\hline
+  0517 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\\hline
+  051A & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\\hline
+  051D & 4F &      & SUB:  & CLRA  &        & clear A to perform SUB          \\\hline
+  051E & B6 & 0501 &       & LDA   & Z2     & load Z2 to A                    \\\hline
+  0521 & 40 &      &       & NEGA  &        & two's complement of A           \\\hline
+  0522 & BB & 0500 &       & ADDA  & Z1     & add Z1 to A                     \\\hline
+  0525 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\\hline
+  0528 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\\hline
+  052A & 4F &      & AND:  & CLRA  &        & clear A to perform AND          \\\hline
+  052B & B6 & 0500 &       & LDA   & Z1     & load Z1 to A                    \\\hline
+  052E & B4 & 0501 &       & ANDA  & Z2     & and Z2 with A                   \\\hline
+  0531 & B7 & 0502 &       & STA   & ERG    & store A to ERG                  \\\hline
+  0534 & 7E & 1000 &       & JMP   & \$1000 & jump out of subroutine          \\\hline
 \end{assemblertable}
 
 
 \ex{For-Schleife}{8+16=24}
 
+\begin{assemblertable}
+   0700 & ?? & & LOOP\_SIZE & .Byte & 1 &    \\\hline
+   0701 & ?? & & LIMIT & .Byte & 1 & Used in X, could make it 2 Bytes\\\hline
+   0702 & ?? & & ZERO & .Byte & 2 & To clear X register\\\hline
+   0704 & ?? & & MINUS\_1 & .Byte & 1 & \\\hline
+   0705 & ?? & & COUNTER & .Byte & 1 & \\\hline
+   \vdots & & & & & & \\\hline
+   0800 & 86 & CE & INIT: & LDA & \#41 &Initialise loop size  \\\hline
+   0802 & B7 & 0700 & & STA & LOOP\_SIZE & \\\hline
+   0805 & 86 & 32 & & LDA & \#50 & Initialise Z limit \\\hline
+   0807 & B7 & 0701 & & STA & LIMIT & \\\hline
+   080A & 86 & FF & & LDA & \#0 & Initialise byte for use with X register\\\hline
+   080C & B7 & 0702 & & STA & ZERO & \\\hline
+   080F & 86 & 00 & & LDA & \#-1 & Initialise byte for use with X register\\\hline
+   0811 & B7 & 0703 & & STA & MINUS\_1 & \\\hline
+   0814 & 86 & 01 & & LDA & \#1 & Initialise or reload loop counter \\ \hline
+   0816 & B7 & 0705 & & STA & COUNTER & \\\hline
+   0817 & BE & 0703 & & LDX & ZERO & Zero out X\\\hline
+   0818 & B6 & 0704 & LOOP: & LDA & COUNTER & Start loop \\\hline
+   081B & 8B & 01 & & ADDA & \#1 & Increment counter \\\hline
+   081D & B1 & 0700 & & CMPA & LOOP\_SIZE & Check if done \\\hline
+   0820 & 27 & & & BEQ & EXIT & If zero, we're done\\\hline
+   0822 & B6 & 0504 & CHK\_Z: & LDA & Z & Load Z in A \\\hline
+   0824 & BE & 0701 & & LDX & LIMIT & Load limit in LIMIT into X. Assume low nibble is set \\\hline
+   0826 & 81 & 00 &  DECR: & CMPA & \#0 & Check if Z is zero\\\hline
+   0828 & 27 & & & BEQ & BRANCH2 & If yes, can't be > 50, go to else branch\\\hline
+   082A & 8C & 0702 & & CMPX & ZERO & Compare X with 0. Assume low nibble is
+   compared, high nibble is 0 anyway\\\hline
+   082C & 27 & & & BEQ & BRANCH1 & If X is 0 instead of Z, then Z is larger.\\\hline
+   082E & 8B & FF & & ADDA & \#-1 & Decrement Z in A\\\hline
+   0830 & 31 & 0704 & & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
+   0833 & 7E & 0826 & & JMP & DECR & Continue decrement loop\\\hline
+   0836 & B6 & 0701 & BRANCH1: & LDA & LIMIT & Load 50 into A\\\hline
+   0839 & 40 & & & NEGA & & Make -50\\\hline
+   083A & BB & 0504 & & ADDA & Z & Add -50 to Z \\\hline
+   083D & B7 & 0504 & & STA & Z & Write back into Z \\\hline
+   0840 & 7E & 0818 & & JMP & LOOP & Go to next iteration \\\hline
+   0841 & B6 & 0701 & BRANCH2: & LDA & LIMIT & Load Z into A\\\hline
+   0834 & BB & 0504 & & ADDA & Z & Add 50 to Z \\\hline
+   0837 & BB & 0504 & & ADDA & Z & Add 50 to Z \\\hline
+   083A & B7 & 0504 & & STA & Z & Write back into Z \\\hline
+   084D & 7E & 0818 & & JMP & LOOP & Go to next iteration \\\hline
+   0850 & 7E & 0100 & EXIT: & JMP & \$1000 & Back to OS\\\hline
+\end{assemblertable}
 
 
 \ex{Taschenrechner}{8+16+8=32}
 
-\subex{Programmablauf}
-   \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[font=\small,minimum
-   size=3ex,left=8pt,below=8pt,shape=circle, draw,inner sep=1pt] (char) {#1};}}
+% \subex{Programmablauf}
+%    \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[font=\small,minimum
+%    size=3ex,left=8pt,below=8pt,shape=circle, draw,inner sep=1pt] (char) {#1};}}
 
 
-Das Programm läuft folgendermaßen ab:
-\begin{enumerate}[label=\protect\circled{\arabic*},leftmargin=5em]
-   \item A mit INP initialisieren
-   \item Gültigkeit von INP prüfen
-      \begin{enumerate}
-         \item A += 1
-         \item A \&= 1111 1100. Dies ergibt genau dann nicht 0, wenn eins oder
-            mehr der vorderen 6 Bits und/oder beide der hinteren Bits gesetzt
-            sind. In allen Fällen ist die Eingabe ungültig und es wird ein
-            Fehlerziel angesprungen.
-      \end{enumerate}
-   \item Erneut INP in A laden
-   \item Prüfen, ob INP 00 hinten hat, falls ja, zu Ziel ADD springen
-   \item Erneut INP in A laden
-   \item Prüfen, ob INP 01 hinten hat, falls ja, zu Ziel SUBT springen
-   \item Tritt keiner der Fälle auf, ist die Operation AND
-   \item Für AND Z1 in A laden, mit Z2 verunden, Ergebnis in ERG schreiben
-   \item Für ADD Z1 in A laden, Z2 adieren, Ergebnis in ERG schreiben
-   \item Für SUBT Z2 in A laden, Zweierkomplement auf A anwenden, Z1 addieren,
-      Ergebnis in ERG schreiben
-   \item Beim Fehlerziel 0 in ERG schreiben
-   \item Nach jeder Operation wird die Adresse 1000 angesprungen.
-\end{enumerate}
-
-\subex{Asemblerprogramm}
+% Das Programm läuft folgendermaßen ab:
+% \begin{enumerate}[label=\protect\circled{\arabic*},leftmargin=5em]
+%    \item A mit INP initialisieren
+%    \item Gültigkeit von INP prüfen
+%       \begin{enumerate}
+%          \item A += 1
+%          \item A \&= 1111 1100. Dies ergibt genau dann nicht 0, wenn eins oder
+%             mehr der vorderen 6 Bits und/oder beide der hinteren Bits gesetzt
+%             sind. In allen Fällen ist die Eingabe ungültig und es wird ein
+%             Fehlerziel angesprungen.
+%       \end{enumerate}
+%    \item Erneut INP in A laden
+%    \item Prüfen, ob INP 00 hinten hat, falls ja, zu Ziel ADD springen
+%    \item Erneut INP in A laden
+%    \item Prüfen, ob INP 01 hinten hat, falls ja, zu Ziel SUBT springen
+%    \item Tritt keiner der Fälle auf, ist die Operation AND
+%    \item Für AND Z1 in A laden, mit Z2 verunden, Ergebnis in ERG schreiben
+%    \item Für ADD Z1 in A laden, Z2 adieren, Ergebnis in ERG schreiben
+%    \item Für SUBT Z2 in A laden, Zweierkomplement auf A anwenden, Z1 addieren,
+%       Ergebnis in ERG schreiben
+%    \item Beim Fehlerziel 0 in ERG schreiben
+%    \item Nach jeder Operation wird die Adresse 1000 angesprungen.
+% \end{enumerate}
 
 \begin{assemblertable}
-   0500 & ?? & Z1 & & & & First operand\\\hline
-   0501 & ?? & Z2 & & & & Second operand \\\hline
-   0502 & ?? & ERG & & & & Result\\\hline
-   0503 & ?? & INP & & & & Operation\\\hline
+   0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
+   0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
+   0502 & ?? & & ERG: & .Byte & 1 & Result\\\hline
+   0503 & ?? & & INP: & .Byte & 1 & Operation\\\hline
    \vdots & & & & & & \\\hline
-   0600 & B6 & 0503 & INIT: & LDA & \#INP & Load operation\\\hline
+   0600 & B6 & 0503 & INIT: & LDA & INP & Load operation\\\hline
    0603 & 8B & 01 & & ADDA & 01 &\\\hline
-0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
-   0607 & 26 & 18\footnote{\texttt{0x061F - 0x0607}} & SWITCH: & BNE & \#FAIL & Jump to exit if result nonzero (== false) \\\hline
-   0609 & B8 & 0503 & & LDA & \#INP & Reload operation \\\hline
+   0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
+   0607 & 26 & 18\footnote{\texttt{0x061F - 0x0607}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
+   0609 & B8 & 0503 & & LDA & INP & Reload operation \\\hline
    060C & 81 & 00 & CHK\_ADD: & CMPA & 00 & Check if operation is ADD \\\hline
    060E & 27 & F2\footnote{\texttt{0x0700 - 0x060E}} & & BEQ & ADD & Jump to ADD if yes \\\hline
    0610 & 81 & 01 & CHK\_SUBT: & CMPA & 01 & Check if operation is SUBT \\\hline
    0612 & 27 & FE\footnote{\texttt{0x0700 - 0x0612}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
-   0614 & B6 & 0500 & AND: & LDA & \#Z1 & If PC is here, operation is AND \\\hline
-   0616 & B4 & 0501 & & ANDA & \#Z2 & AND with Z2 \\\hline
-   0619 & B7 & 0502 & & STA & \#ERG & write result \\\hline
-   061C & 7E & 1000 & EXIT: & JMP & 1000 & Done \\\hline
+   0614 & B6 & 0500 & AND: & LDA & Z1 & If PC is here, operation is AND \\\hline
+   0616 & B4 & 0501 & & ANDA & Z2 & AND with Z2 \\\hline
+   0619 & B7 & 0502 & & STA & ERG & write result \\\hline
+   061C & 7E & 1000 & EXIT: & JMP & \$1000 & Done \\\hline
    061F & B6 & 0000 & FAIL: & LDA & 0 & Load register A with 0 \\\hline
-   0622 & B7 & 0502 & & STA & \#ERG & Write result \\\hline
-   0625 & 7E & 1000 & & JMP & 1000 & Done \\\hline
+   0622 & B7 & 0502 & & STA & ERG & Write result \\\hline
+   0625 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 
    \vdots & & & & & & \\\hline
-% \end{tabularx}
-
-% \begin{tabularx}{\textwidth}{|L||L|L|L||L|L|X|} 
-   0700 & B6 & 0500 & ADD: & LDA & \#Z1 & Load first operand \\\hline
-   0703 & BB & 0501 & & ADDA & \#Z1 & Add contents of second operand \\\hline
-   0706 & B7 & 0502 & & STA & \#EGR & Write result \\\hline
-   0709 & 7E & 1000 & & JMP & 1000 & Done \\\hline
-   070C & B6 & 0501 & SUBT: & LDA & \#Z2 & Load second operand \\\hline
+   0700 & B6 & 0500 & ADD: & LDA & Z1 & Load first operand \\\hline
+   0703 & BB & 0501 & & ADDA & Z1 & Add contents of second operand \\\hline
+   0706 & B7 & 0502 & & STA & ERG & Write result \\\hline
+   0709 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
+   070C & B6 & 0501 & SUBT: & LDA & Z2 & Load second operand \\\hline
    070F & 40 & & & NEGA & & -Z2\ldots \\\hline
-   0710 & BB & 0500 & & ADDA & \#Z1 & \ldots +Z2 \\\hline
-   0713 & B7 & 0502 & & STA & \#ERG & Write result \\\hline
-   0716 & 7E & 1000 & & JMP & 1000 & Done \\\hline
+   0710 & BB & 0500 & & ADDA & Z1 & \ldots +Z1 \\\hline
+   0713 & B7 & 0502 & & STA & ERG & Write result \\\hline
+   0716 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 \end{assemblertable}
 
 \ex{Codeumwandlung}{8+16+8=32}
