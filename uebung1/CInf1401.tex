@@ -155,22 +155,20 @@
 
 \begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
-       &    &      &       & .ORG  & \$0500 & data space                      \\
-  0504 &    &      & Z     & .BYTE & n      & variable Z                      \\
-  \hline\hline
-       &    &      &       & .ORG  & \$8000 & program code                    \\
-  8000 &    &      & INIT: & LDX   & \#0504 & init register to first char     \\
-       &    &      &       & CLRA  &        & clear A                         \\
-       &    &      & LOOP: & LDA   & @X     & load from addr X                \\
-       &    &      &       & COMA  &        & flip bits, if FF: Z flag 1      \\
-       &    &      &       & BEQ   & END    & if FF (Z flag): branch to end   \\
-       &    &      &       & COMA  &        & undo bit flip                   \\
-       &    &      &       & ADDA  & \#33   & adds 00110011(bin) to A         \\
-       &    &      &       & STA   & @X     & store result back               \\
-       &    &      &       & ADDX  & \#0001 & increment X                     \\
-       &    &      &       & BRA   & LOOP   & rinse, repeat                   \\
-       &    &      & END   & JMP   & \$1000 & end program                     \\
-  \hline
+       &    &      &       & .ORG  & \$0500 & data space                      \\\hline
+  0504 &    &      & Z     & .BYTE & n      & variable Z                      \\\hline\hline
+       &    &      &       & .ORG  & \$8000 & program code                    \\\hline
+  8000 & 8E & 0504 & INIT: & LDX   & \#0504 & init register to first char     \\\hline
+  8003 & 4F &      &       & CLRA  &        & clear A                         \\\hline
+  8004 & A6 &      & LOOP: & LDA   & @X     & load from addr X                \\\hline
+  8005 & 43 &      &       & COMA  &        & flip bits, if FF: Z flag 1      \\\hline
+  8006 & 27 & 0B   &       & BEQ   & END    & if FF (Z flag): branch to END   \\\hline
+  8008 & 43 &      &       & COMA  &        & undo bit flip                   \\\hline
+  8009 & 8B & 33   &       & ADDA  & \#33   & adds 00110011(bin) to A         \\\hline
+  800B & A7 &      &       & STA   & @X     & store result back               \\\hline
+  800C & 30 & 0001 &       & ADDX  & \#0001 & increment X                     \\\hline
+  800F & 20 & F5   &       & BRA   & LOOP   & jump -8, i.e. F5                \\\hline
+  8011 & 7E & 1000 & END   & JMP   & \$1000 & end program                     \\\hline
 \end{assemblertable}
 
 \addex{Multiplikation von Variablen}
