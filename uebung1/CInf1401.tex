@@ -27,22 +27,22 @@
 \hline
 %\multicol{7}{some initialization, see ex. 3. We assume ADD at 0510 etc.}     \\ 
 \hline
-0510 &    &      & ADD:  & CLRA &      & clear A to perform ADD              \\
-0511 &    &      &       & LDA  & 0500 & load Z1 to A                        \\
-0514 &    &      &       & ADDA & 0501 & add Z2 to A                         \\
-0517 &    &      &       & STA  & 0502 & store A to ERG                      \\
-051A &    &      &       & JMP  & 1000 & jump out of subroutine              \\
-051D &    &      & SUB:  & CLRA &      & clear A to perform SUB              \\
-051E &    &      &       & LDA  & 0501 & load Z2 to A                        \\
-0521 &    &      &       & NEGA &      & two's complement of A               \\
-0522 &    &      &       & ADDA & 0500 & add Z1 to A                         \\
-0525 &    &      &       & STA  & 0502 & store A to ERG                      \\
-0528 &    &      &       & JMP  & 1000 & jump out of subroutine              \\
-052A &    &      & AND:  & CLRA &      & clear A to perform AND              \\
-052B &    &      &       & LDA  & 0500 & load Z1 to A                        \\
-052E &    &      &       & ANDA & 0501 & and Z2 with A                       \\
-0531 &    &      &       & STA  & 0502 & store A to ERG                      \\
-0534 &    &      &       & JMP  & 1000 & jump out of subroutine              \\\hline
+0510 & 4F &      & ADD:  & CLRA &      & clear A to perform ADD              \\
+0511 & B6 & 0500 &       & LDA  & 0500 & load Z1 to A                        \\
+0514 & BB & 0501 &       & ADDA & 0501 & add Z2 to A                         \\
+0517 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
+051A & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\
+051D & 4F &      & SUB:  & CLRA &      & clear A to perform SUB              \\
+051E & B6 & 0501 &       & LDA  & 0501 & load Z2 to A                        \\
+0521 & 40 &      &       & NEGA &      & two's complement of A               \\
+0522 & BB & 0500 &       & ADDA & 0500 & add Z1 to A                         \\
+0525 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
+0528 & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\
+052A & 4F &      & AND:  & CLRA &      & clear A to perform AND              \\
+052B & B6 & 0500 &       & LDA  & 0500 & load Z1 to A                        \\
+052E & B4 & 0501 &       & ANDA & 0501 & and Z2 with A                       \\
+0531 & B7 & 0502 &       & STA  & 0502 & store A to ERG                      \\
+0534 & 7E & 1000 &       & JMP  & 1000 & jump out of subroutine              \\\hline
 \end{tabularx}
 
 
