@@ -124,8 +124,17 @@ Das Programm läuft folgendermaßen ab:
   0504 &    &      & Z     & .BYTE & n      & variable Z                      \\
   \hline\hline
        &    &      &       & .ORG  & \$8000 & program code                    \\
-  8000 &    &      &       & CLRA  &        & clear A                         \\
-       &    &      &       &       &        &                                 \\
+  8000 &    &      & INIT: & LDX   & \#0504 & init register to first char     \\
+       &    &      &       & CLRA  &        & clear A                         \\
+       &    &      & LOOP: & LDA   & @X     & load from addr X                \\
+       &    &      &       & COMA  &        & flip bits, if FF: Z flag 1      \\
+       &    &      &       & BEQ   & END    & if FF (Z flag): branch to end   \\
+       &    &      &       & COMA  &        & undo bit flip                   \\
+       &    &      &       & ADDA  & \#33   & adds 00110011(bin) to A         \\
+       &    &      &       & STA   & @X     & store result back               \\
+       &    &      &       & ADDX  & \#0001 & increment X                     \\
+       &    &      &       & BRA   & LOOP   & rinse, repeat                   \\
+       &    &      & END   & JMP   & \$1000 & end program                     \\
   \hline
 \end{assemblertable}
 
