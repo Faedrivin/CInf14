@@ -37,12 +37,6 @@
 \ex{For-Schleife}{8+16=24}
 
 \begin{assemblertable}
-% \begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
-%    \hline
-%    \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
-%       & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
-%    \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
-%                               & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
    0700 & ?? & & LOOP\_SIZE & .Byte & 1 &    \\\hline
    0701 & ?? & & LIMIT & .Byte & 1 & Used in X, could make it 2 Bytes\\\hline
    0702 & ?? & & ZERO & .Byte & 2 & To clear X register\\\hline
@@ -57,7 +51,7 @@
    080C & B7 & 0702 & & STA & ZERO & \\\hline
    080F & 86 & 00 & & LDA & \#-1 & Initialise byte for use with X register\\\hline
    0811 & B7 & 0703 & & STA & MINUS\_1 & \\\hline
-   0814 & 86 & 01 & & LDA & \#1 & Initialise loop counter \\ \hline
+   0814 & 86 & 01 & & LDA & \#1 & Initialise or reload loop counter \\ \hline
    0816 & B7 & 0705 & & STA & COUNTER & \\\hline
    0817 & BE & 0703 & & LDX & ZERO & Zero out X\\\hline
    0818 & B6 & 0704 & LOOP: & LDA & COUNTER & Start loop \\\hline
@@ -84,8 +78,8 @@
    0837 & BB & 0504 & & ADDA & Z & Add 50 to Z \\\hline
    083A & B7 & 0504 & & STA & Z & Write back into Z \\\hline
    084D & 7E & 0818 & & JMP & LOOP & Go to next iteration \\\hline
+   0850 & 7E & 0100 & EXIT: & JMP & \$1000 & Back to OS\\\hline
 \end{assemblertable}
-% \end{tabularx}
 
 
 \ex{Taschenrechner}{8+16+8=32}
@@ -119,14 +113,6 @@
 %    \item Nach jeder Operation wird die Adresse 1000 angesprungen.
 % \end{enumerate}
 
-% \subex{Asemblerprogramm}
-
-% \begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
-%    \hline
-%    \rmfamily\multirow{2}{1cm}{Adr (hex)} & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
-%       & \rmfamily\multirow{2}{*}{Label} & \rmfamily\multirow{2}{*}{Opcode} & \rmfamily\multirow{2}{*}{Operand} &
-%    \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
-%                               & \footnotesize\rmfamily Opc. & \rmfamily\footnotesize Oper. & & & &\\\hline\hline
 \begin{assemblertable}
    0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
    0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
@@ -145,24 +131,21 @@
    0614 & B6 & 0500 & AND: & LDA & Z1 & If PC is here, operation is AND \\\hline
    0616 & B4 & 0501 & & ANDA & Z2 & AND with Z2 \\\hline
    0619 & B7 & 0502 & & STA & ERG & write result \\\hline
-   061C & 7E & 1000 & EXIT: & JMP & 1000 & Done \\\hline
+   061C & 7E & 1000 & EXIT: & JMP & \$1000 & Done \\\hline
    061F & B6 & 0000 & FAIL: & LDA & 0 & Load register A with 0 \\\hline
    0622 & B7 & 0502 & & STA & ERG & Write result \\\hline
-   0625 & 7E & 1000 & & JMP & 1000 & Done \\\hline
+   0625 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 
    \vdots & & & & & & \\\hline
-% \end{tabularx}
-
-% \begin{tabularx}{\textwidth}{|L||L|L|L||L|L|X|} 
    0700 & B6 & 0500 & ADD: & LDA & Z1 & Load first operand \\\hline
    0703 & BB & 0501 & & ADDA & Z1 & Add contents of second operand \\\hline
    0706 & B7 & 0502 & & STA & ERG & Write result \\\hline
-   0709 & 7E & 1000 & & JMP & 1000 & Done \\\hline
+   0709 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
    070C & B6 & 0501 & SUBT: & LDA & Z2 & Load second operand \\\hline
    070F & 40 & & & NEGA & & -Z2\ldots \\\hline
    0710 & BB & 0500 & & ADDA & Z1 & \ldots +Z1 \\\hline
    0713 & B7 & 0502 & & STA & ERG & Write result \\\hline
-   0716 & 7E & 1000 & & JMP & 1000 & Done \\\hline
+   0716 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 \end{assemblertable}
 
 \ex{Codeumwandlung}{8+16+8=32}
