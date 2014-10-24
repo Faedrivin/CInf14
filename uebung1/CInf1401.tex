@@ -40,7 +40,7 @@
 %     Like: 0701 ZERO 2 Bytes; 0703 LIMIT 1 Byte; 0824 LDX 0702
 %     This would also remove the assumption in 082A.
 \begin{assemblertable}
-   0000 &    &      &            & .ORG  & 0700 & Start                        \\\hline
+   0000 &    &      &            & .ORG  & \$0700 & Start                        \\\hline
    \vdots & & & & & & \\\hline
    0504 &    &      & Z          & .BYTE & 1 & Variable Z                      \\\hline
    \vdots &  &      &            &       &   &                                 \\\hline
@@ -75,7 +75,7 @@
    082E & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
    0830 & 31 & 0705 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
    0833 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
-   0836 & B6 & 0701 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
+   0836 & B6 & 0702 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
    0839 & 40 &      &          & NEGA &          & Make -50                  \\\hline
    083A & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
    083D & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
@@ -121,7 +121,7 @@
 % \end{enumerate}
 
 \begin{assemblertable}
-   0000 &    & &     & .ORG  & 0600 & Start \\\hline
+   0000 &    & &     & .ORG  & \$0600 & Start \\\hline
    0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
    0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
    0502 & ?? & & ERG: & .Byte & 1 & Result\\\hline
