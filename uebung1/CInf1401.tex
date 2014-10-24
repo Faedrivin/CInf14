@@ -109,27 +109,27 @@
    081B & 8B & 01   &          & ADDA & \#1      & Increment counter         \\\hline 
    081D & B7 & 0707 &          & STA  & COUNTER  & Store it                  \\\hline
    0820 & B1 & 0700 &          & CMPA & LOOP\_SIZE & Check if done           \\\hline
-   0823 & 27 &      &          & BEQ  & EXIT     & If zero, we're done       \\\hline % misses offset yet
+   0823 & 27 & 33\footnote{\ttfamily 0x0858 - 0x0823 - 2}   &          & BEQ  & EXIT     & If zero, we're done       \\\hline 
    0825 & B6 & 0504 & CHK\_Z:  & LDA  & Z        & Load Z into A             \\\hline 
    0828 & BE & 0701 &          & LDX  & LIMIT    & Load limit in LIMIT into X.\\\hline 
    082B & 81 & 00   & DECR:    & CMPA & \#0      & Check if Z is zero        \\\hline 
-   082D & 27 &      &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline % misses offset yet
+   082D & 27 & 29\footnote{\ttfamily 0x0858 - 0x082D - 2}   &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline 
    082F & 8C & 0703 &          & CMPX & ZERO     & Compare X with 0. \\\hline 
-   082C & 27 &      &          & BEQ  & BRANCH1  & If X is 0 instead of Z, then Z is larger.\\\hline % misses offset
-   082E & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
-   0830 & 31 & 0705 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
-   0833 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
-   0836 & B6 & 0702 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
-   0839 & 40 &      &          & NEGA &          & Make -50                  \\\hline
-   083A & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
-   083D & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
-   0840 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
-   0841 & B6 & 0504 & BRANCH2: & LDA  & Z        & Load Z into A             \\\hline
-   0834 & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
-   0837 & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
-   083A & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
-   084D & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
-   0850 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
+   0832 & 27 & 24\footnote{\ttfamily 0x0858 - 0x0832 - 2}  &          & BEQ  & BRANCH1  & If X is 0 instead of Z, then Z is larger.\\\hline 
+   0834 & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
+   0836 & 31 & 0705 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
+   0839 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
+   083C & B6 & 0702 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
+   083F & 40 &      &          & NEGA &          & Make -50                  \\\hline
+   0840 & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
+   0843 & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
+   0846 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
+   0849 & B6 & 0504 & BRANCH2: & LDA  & Z        & Load Z into A             \\\hline
+   084C & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
+   084F & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
+   0852 & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
+   0855 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
+   0858 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
 \end{assemblertable}
 
 
