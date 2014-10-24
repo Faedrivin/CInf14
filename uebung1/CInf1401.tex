@@ -40,46 +40,49 @@
 %     Like: 0701 ZERO 2 Bytes; 0703 LIMIT 1 Byte; 0824 LDX 0702
 %     This would also remove the assumption in 082A.
 \begin{assemblertable}
-   0504 &    &      & Z          & .BYTE & 2 & Variable Z                      \\\hline\hline
-   0700 & ?? &      & LOOP\_SIZE & .Byte & 1 &                                 \\\hline
-   0701 & ?? &      & LIMIT      & .Byte & 1 & Used in X, could make it 2 Bytes\\\hline
-   0702 & ?? &      & ZERO       & .Byte & 2 & To clear X register             \\\hline
-   0704 & ?? &      & MINUS\_1   & .Byte & 1 &                                 \\\hline
-   0705 & ?? &      & COUNTER    & .Byte & 1 &                                 \\\hline
+   0000 &    &      &            & .ORG  & 0700 & Start                        \\\hline
+   \vdots & & & & & & \\\hline
+   0504 &    &      & Z          & .BYTE & 1 & Variable Z                      \\\hline
+   \vdots &  &      &            &       &   &                                 \\\hline
+   0700 & ?? &      & LOOP\_SIZE & .BYTE & 1 &                                 \\\hline
+   0701 & ?? &      & LIMIT      & .BYTE & 2 & Used in X                       \\\hline
+   0703 & ?? &      & ZERO       & .BYTE & 2 & To clear X register             \\\hline
+   0705 & ?? &      & MINUS\_1   & .BYTE & 2 & To decrement X                  \\\hline
+   0707 & ?? &      & COUNTER    & .BYTE & 1 &                                 \\\hline
    \vdots & & & & & & \\\hline
    0800 & 86 & CE   & INIT:    & LDA  & \#41     & Initialise loop size      \\\hline
    0802 & B7 & 0700 &          & STA  & LOOP\_SIZE &                         \\\hline
-   0805 & 86 & 32   &          & LDA  & \#50     & Initialise Z limit        \\\hline
-   0807 & B7 & 0701 &          & STA  & LIMIT    &                           \\\hline
-   080A & 86 & FF   &          & LDA  & \#0      & Initialise byte for use with X register\\\hline % this seems to be the -1
-   080C & B7 & 0702 &          & STA  & ZERO     &                           \\\hline
-   080F & 86 & 00   &          & LDA  & \#-1     & Initialise byte for use with X register\\\hline % and this 0
-   0811 & B7 & 0703 &          & STA  & MINUS\_1 &                           \\\hline
-   0814 & 86 & 01   &          & LDA  & \#1      & Initialise or reload loop counter \\ \hline % why "reload"?
-   0816 & B7 & 0705 &          & STA  & COUNTER  &                           \\\hline
-   0817 & BE & 0703 &          & LDX  & ZERO     & Zero out X                \\\hline
-   0818 & B6 & 0704 & LOOP:    & LDA  & COUNTER  & Start loop                \\\hline
-   081B & 8B & 01   &          & ADDA & \#1      & Increment counter         \\\hline % think we should store it as well
-   081D & B1 & 0700 &          & CMPA & LOOP\_SIZE & Check if done           \\\hline
-   0820 & 27 &      &          & BEQ  & EXIT     & If zero, we're done       \\\hline % misses offset yet
-   0822 & B6 & 0504 & CHK\_Z:  & LDA  & Z        & Load Z into A             \\\hline % can A even hold 2 Byte?
-   0824 & BE & 0701 &          & LDX  & LIMIT    & Load limit in LIMIT into X. Assume low nibble is set \\\hline % Comment [1] above
-   0826 & 81 & 00   & DECR:    & CMPA & \#0      & Check if Z is zero        \\\hline 
-   0828 & 27 &      &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline % misses offset yet
-   082A & 8C & 0702 &          & CMPX & ZERO     & Compare X with 0. Assume low nibble is
-                                                   compared, high nibble is 0 anyway\\\hline % not sure if we can make assumptions
+   0805 & BE & 0032 &          & LDX  & \#50     & Initialise Z limit        \\\hline
+   0807 & BF & 0701 &          & STX  & LIMIT    &                           \\\hline
+   080A & 8E & 0000 &          & LDX  & \#0      & Initialise byte for use with X register\\\hline
+   080C & BF & 0703 &          & STX  & ZERO     &                           \\\hline
+   080F & 8E & FFFF &          & LDX  & \#-1     & Initialise byte for use with X register\\\hline 
+   0811 & BF & 0705 &          & STX  & MINUS\_1 &                           \\\hline
+   0814 & 86 & 01   &          & LDA  & \#1      & Initialise loop counter   \\\hline
+   0816 & B7 & 0707 &          & STA  & COUNTER  &                           \\\hline
+   0817 & BE & 0705 &          & LDX  & ZERO     & Zero out X (now redundant)\\\hline
+   0818 & B6 & 0707 & LOOP:    & LDA  & COUNTER  & Start loop                \\\hline
+   081B & 8B & 01   &          & ADDA & \#1      & Increment counter         \\\hline 
+   081D & B7 & 0707 &          & STA  & COUNTER  & Store it                  \\\hline
+   0820 & B1 & 0700 &          & CMPA & LOOP\_SIZE & Check if done           \\\hline
+   0823 & 27 &      &          & BEQ  & EXIT     & If zero, we're done       \\\hline % misses offset yet
+   0825 & B6 & 0504 & CHK\_Z:  & LDA  & Z        & Load Z into A             \\\hline 
+   0828 & BE & 0701 &          & LDX  & LIMIT    & Load limit in LIMIT into X.\\\hline 
+   082B & 81 & 00   & DECR:    & CMPA & \#0      & Check if Z is zero        \\\hline 
+   082D & 27 &      &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline % misses offset yet
+   082F & 8C & 0703 &          & CMPX & ZERO     & Compare X with 0. \\\hline 
    082C & 27 &      &          & BEQ  & BRANCH1  & If X is 0 instead of Z, then Z is larger.\\\hline % misses offset
    082E & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
-   0830 & 31 & 0704 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
+   0830 & 31 & 0705 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
    0833 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
-   0836 & B6 & 0701 & BRANCH1: & LDA  & LIMIT    & Load 50 into A            \\\hline
+   0836 & B6 & 0701 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
    0839 & 40 &      &          & NEGA &          & Make -50                  \\\hline
    083A & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
    083D & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
    0840 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
-   0841 & B6 & 0701 & BRANCH2: & LDA  & LIMIT    & Load Z into A             \\\hline
-   0834 & BB & 0504 &          & ADDA & Z        & Add 50 to Z               \\\hline % x*3, not 50*3
-   0837 & BB & 0504 &          & ADDA & Z        & Add 50 to Z               \\\hline
+   0841 & B6 & 0504 & BRANCH2: & LDA  & Z        & Load Z into A             \\\hline
+   0834 & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
+   0837 & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
    083A & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
    084D & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
    0850 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
@@ -118,25 +121,26 @@
 % \end{enumerate}
 
 \begin{assemblertable}
+   0000 &    & &     & .ORG  & 0600 & Start \\\hline
    0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
    0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
    0502 & ?? & & ERG: & .Byte & 1 & Result\\\hline
    0503 & ?? & & INP: & .Byte & 1 & Operation\\\hline
    \vdots & & & & & & \\\hline
    0600 & B6 & 0503 & INIT: & LDA & INP & Load operation\\\hline
-   0603 & 8B & 01 & & ADDA & 01 &\\\hline
+   0603 & 8B & 01 & & ADDA & \#01 &\\\hline
    0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
-   0607 & 26 & 18\footnote{\texttt{0x061F - 0x0607}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
+   0607 & 26 & 16\footnote{\texttt{0x061F - 0x0607 - 2}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
    0609 & B8 & 0503 & & LDA & INP & Reload operation \\\hline
-   060C & 81 & 00 & CHK\_ADD: & CMPA & 00 & Check if operation is ADD \\\hline
-   060E & 27 & F2\footnote{\texttt{0x0700 - 0x060E}} & & BEQ & ADD & Jump to ADD if yes \\\hline
-   0610 & 81 & 01 & CHK\_SUBT: & CMPA & 01 & Check if operation is SUBT \\\hline
-   0612 & 27 & FE\footnote{\texttt{0x0700 - 0x0612}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
+   060C & 81 & 00 & CHK\_ADD: & CMPA & \#00 & Check if operation is ADD \\\hline
+   060E & 27 & F0\footnote{\texttt{0x0700 - 0x060E - 2}} & & BEQ & ADD & Jump to ADD if yes \\\hline
+   0610 & 81 & 01 & CHK\_SUBT: & CMPA & \#01 & Check if operation is SUBT \\\hline
+   0612 & 27 & FC\footnote{\texttt{0x0700 - 0x0612 - 2}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
    0614 & B6 & 0500 & AND: & LDA & Z1 & If PC is here, operation is AND \\\hline
    0616 & B4 & 0501 & & ANDA & Z2 & AND with Z2 \\\hline
    0619 & B7 & 0502 & & STA & ERG & write result \\\hline
    061C & 7E & 1000 & EXIT: & JMP & \$1000 & Done \\\hline
-   061F & B6 & 0000 & FAIL: & LDA & 0 & Load register A with 0 \\\hline
+   061F & B6 & 0000 & FAIL: & LDA & \#0 & Load register A with 0 \\\hline
    0622 & B7 & 0502 & & STA & ERG & Write result \\\hline
    0625 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 
