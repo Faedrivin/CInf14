@@ -18,7 +18,7 @@
 % layout etc.
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
+\RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=3cm]{geometry}
 \RequirePackage{lmodern, listings, multirow, tabularx}
 
 % math
@@ -178,6 +178,7 @@
 
 % environment for a table with assembler code
 \newenvironment{assemblertable}{%
+   \small
   \noindent\tabularx{\textwidth}{|L||L|L|L||L|R|X|} 
     \hline
     \rmfamily\multirow{2}{1cm}{Adr (hex)} 
