@@ -35,6 +35,50 @@
 
 
 \ex{For-Schleife}{8+16=24}
+
+\subex{Programmablaufplan}
+
+\newcommand{\la}{\ensuremath{\leftarrow}}
+\begin{tikzpicture}[node distance=2cm]
+   \node [cloud] (Begin) {Begin};
+   \node [block, below=1cm of Begin] (init) {\begin{tabular}{l}LOOP\_SIZE \la 41 \\ LIMIT \la 50 \\
+   ZERO \la 0 \\ MINUS\_1 \la FFFF \\ COUNTER \la 1\end{tabular}};
+   \node [cloud, below of=init] (Loop) {LOOP};
+   \node [block, right=2cm of Loop] (Incr counter) {\begin{tabular}{l}A \la COUNTER \\ A \la A + 1
+   \\ COUNTER \la A\end{tabular}};
+   \node [decision, above of=Incr counter] (Done?) {A == LOOP\_SIZE?};
+   \node [cloud, above of=Done?] (Check Z) {CHK\_Z};
+\node [block, above of=Check Z] (Load A X) {\begin{tabular}{l}A \la Z \\ X \la LIMIT \end{tabular}};
+   \node [decision,above of=Load A X] (Is A 0?) {A == 0?};
+   \node [decision, right=of Check Z] (Is X 0?) {X == 0?};
+   \node [cloud, right=of Is A 0?] (Branch2) {BRANCH2};
+\node [block, above=1cm of Is X 0?] (Decr) {\begin{tabular}{l} A \la A - 1 \\ X \la X - 1 \end{tabular}};
+\node [block, right=of Is X 0?] (Z*=3) {\begin{tabular}{l} A \la Z \\ A \la A + Z \\ A \la A + Z \\ Z \la A \end{tabular}};
+   \node [cloud,below=1cm of Is X 0?] (Branch1) {BRANCH1};
+\node [block, below=of Branch1] (Z-=50) {\begin{tabular}{l} A \la LIMIT \\ A \la -a \\ A \la A + Z \\ Z \la A \end{tabular}};
+   \node [cloud,left=of Load A X] (Exit) {EXIT};
+
+   \path [line] (Begin) -- (init);
+   \path [line] (init) -- (Loop);
+   \path [line] (Loop) -- (Incr counter);
+   \path [line] (Incr counter) -- (Done?);
+   \path [line] (Done?) -- (Check Z) node [near start,left] {No};
+   \path [line] (Done?) -- (Exit);
+   \path [line] (Check Z) -- (Load A X);
+   \path [line] (Load A X) -- (Is A 0?);
+   \path [line] (Is A 0?) -- (Branch2) node [near start,above] {Yes};
+   \path [line] (Is A 0?)  -- (Is X 0?) node [near start,above=5pt] {No};
+   \path [line] (Is X 0?)  -- (Branch1) node [near start,left] {Yes};
+   \path [line] (Is X 0?)  -- (Decr) node [near start,left] {No};
+   \path [line] (Decr.north west)  -| (Is A 0?) {};
+   \path [line] (Branch2)  -| (Z*=3) {};
+   \path [line] (Z*=3)  -- ++(0,-8cm) -- ($(Loop) + (0,-2cm)$) -- (Loop) {};
+   \path [line] (Branch1)  -- (Z-=50) {};
+   % \path [line] (Z-=50)  -- (Z-=50) {};
+   \node [draw=none] (p) at ($(Loop) + (0,-2cm)$) {};
+   \path [line,-] (Z-=50) -- (Z-=50 |- p);
+
+\end{tikzpicture}
 % [1] Should we switch LIMIT and ZERO? That way we could load the intermediate value into 
 %     the register (line 0824) without having to make assumptions about the low nibble.
 %     Like: 0701 ZERO 2 Bytes; 0703 LIMIT 1 Byte; 0824 LDX 0702

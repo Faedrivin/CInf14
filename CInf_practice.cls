@@ -76,7 +76,17 @@
 }
 
 % choose tikz libraries
-%\usetikzlibrary{automata, arrows}
+\usetikzlibrary{shapes, automata, positioning, arrows,calc,intersections}
+
+\tikzstyle{every node} = [font=\small\ttfamily]
+% define styles for program flow charts
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
+    text width=8em, text centered, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+    minimum height=2em]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
