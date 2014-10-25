@@ -8,7 +8,7 @@
 
 \ex{Arithmetik auf Variablen}{12}
 
-\begin{assemblertable}
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
 %  add & oc & oper & label & op    & oper   & comment
        &    &      &       & .ORG  & \$0500 & Data space                      \\\hline
   0500 &    &      & Z1    & .BYTE & 1      & Variable Z1                     \\\hline
@@ -31,64 +31,142 @@
   052E & B4 & 0501 &       & ANDA  & Z2     & AND Z2 with A                   \\\hline
   0531 & B7 & 0502 &       & STA   & ERG    & Store A to ERG                  \\\hline
   0534 & 7E & 1000 &       & JMP   & \$1000 & Jump out of subroutine          \\\hline
-\end{assemblertable}
+\end{tabularx}
 
 
+
+\newpage
 \ex{For-Schleife}{8+16=24}
-% [1] Should we switch LIMIT and ZERO? That way we could load the intermediate value into 
-%     the register (line 0824) without having to make assumptions about the low nibble.
-%     Like: 0701 ZERO 2 Bytes; 0703 LIMIT 1 Byte; 0824 LDX 0702
-%     This would also remove the assumption in 082A.
-\begin{assemblertable}
-   0504 &    &      & Z          & .BYTE & 2 & Variable Z                      \\\hline\hline
-   0700 & ?? &      & LOOP\_SIZE & .Byte & 1 &                                 \\\hline
-   0701 & ?? &      & LIMIT      & .Byte & 1 & Used in X, could make it 2 Bytes\\\hline
-   0702 & ?? &      & ZERO       & .Byte & 2 & To clear X register             \\\hline
-   0704 & ?? &      & MINUS\_1   & .Byte & 1 &                                 \\\hline
-   0705 & ?? &      & COUNTER    & .Byte & 1 &                                 \\\hline
+
+\subex{Programmablaufplan}
+
+\begin{center}
+  \begin{tikzpicture}
+    \node [cloud] (Begin) {Begin};
+    \node [block, below=.5cm of Begin] (init){\begin{tabular}{l}
+                                                LOOP\_SIZE \la 41 \\ 
+                                                LIMIT \la 50 \\
+                                                ZERO \la 0 \\ 
+                                                MINUS\_1 \la FFFF \\ 
+                                                COUNTER \la 1
+                                              \end{tabular}};
+    \node [cloud, below=.5cm of init]  (Loop)         {LOOP};
+    \node [block, right=1.5cm of Loop] (Incr counter) {\begin{tabular}{l}
+                                                            A \la COUNTER \\ 
+                                                            A \la A + 1 \\ 
+                                                            COUNTER \la A
+                                                          \end{tabular}};
+    \node [decision, above=1cm of Incr counter] (Done?)  {\footnotesize 
+                                                          A == LOOP\_SIZE?};
+    \node [cloud, above=1cm of Done?]        (Check Z)  {CHK\_Z};
+    \node [block, above left=1cm of Check Z] (Load A X) {\begin{tabular}{l}
+                                                           A \la Z \\ 
+                                                           X \la LIMIT 
+                                                         \end{tabular}};
+    \node [decision, right=2cm of Check Z]  (Is X 0?) {X == 0?};
+    \node [block,    right=1cm of Load A X] (Decr)    {\begin{tabular}{l} 
+                                                         A \la A - 1 \\ 
+                                                         X \la X - 1 
+                                                       \end{tabular}};
+    \node [decision, above=3cm of Is X 0?]  (Is A 0?) {A == 0?};
+    \node [cloud,    right=1cm of Is A 0?]  (Branch2) {BRANCH2};
+    \node [block,    below=2cm of Branch2]  (Z*=3)    {\begin{tabular}{l} 
+                                                         A \la Z \\ 
+                                                         A \la A + Z \\
+                                                         A \la A + Z \\ 
+                                                         Z \la A 
+                                                       \end{tabular}};
+    \node [cloud,    below=1cm of Is X 0?] (Branch1) {BRANCH1};
+    \node [block,    below=2cm of Branch1] (Z-=50)   {\begin{tabular}{l} 
+                                                         A \la LIMIT \\ 
+                                                         A \la -a \\ 
+                                                         A \la A + Z \\ 
+                                                         Z \la A 
+                                                       \end{tabular}};
+    \node [cloud,    left=2cm of Check Z]  (Exit)    {EXIT};
+  
+    \path [line] (Begin)        -- (init);
+    \path [line] (init)         -- (Loop);
+    \path [line] (Loop)         -- (Incr counter);
+    \path [line] (Incr counter) -- (Done?);
+    \path [line] (Done?)        -- (Check Z) node [near start, left]  {No};
+    \path [line] (Done?)        -- (Exit);
+    \path [line] (Check Z)      -- (Load A X);
+    \path [line] (Load A X)     |- (Is A 0?);
+    \path [line] (Is A 0?)      -- (Branch2) node [near start, above] {Yes};
+    \path [line] (Is A 0?)      -- (Is X 0?) node [near start, left]  {No};
+    \path [line] (Is X 0?)      -- (Branch1) node [near start, left]  {Yes};
+    \path [line] (Is X 0?)      -- (Decr)    node [near start, left]  {No};
+    \path [line] (Decr)         |- (Is A 0?) {}; % Decr.north west -|
+    \path [line] (Branch2)      -- (Z*=3) {};
+    \path [line] (Branch1)      -- (Z-=50) {};
+    %\path [line] (Z*=3)  -- ++(0,-9cm) -- ($(Loop) + (0,-1cm)$) -- (Loop) {};
+    
+    \node [draw=none] (p) at ($(Loop) + (0,-2cm)$) {};
+    \path [line,-]    (Z-=50) -- (Z-=50 |- p);
+    \path [line,-]    (Z*=3)  -- (Z*=3  |- p);
+    \path [line]      (p)     -| (Loop);
+    \path [line,-]    (p)     -| (Z*=3);
+  \end{tikzpicture}
+\end{center}
+
+\subex{Assemblersequenz}
+
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
+   0000 &    &      &            & .ORG  & \$0700 & Start                        \\\hline
+   \vdots & & & & & & \\\hline
+   0504 &    &      & Z          & .BYTE & 1 & Variable Z                      \\\hline
+   \vdots &  &      &            &       &   &                                 \\\hline
+   0700 & ?? &      & LOOP\_SIZE & .BYTE & 1 &                                 \\\hline
+   0701 & ?? &      & LIMIT      & .BYTE & 2 & Used in X                       \\\hline
+   0703 & ?? &      & ZERO       & .BYTE & 2 & To clear X register             \\\hline
+   0705 & ?? &      & MINUS\_1   & .BYTE & 2 & To decrement X                  \\\hline
+   0707 & ?? &      & COUNTER    & .BYTE & 1 &                                 \\\hline
    \vdots & & & & & & \\\hline
    0800 & 86 & CE   & INIT:    & LDA  & \#41     & Initialise loop size      \\\hline
    0802 & B7 & 0700 &          & STA  & LOOP\_SIZE &                         \\\hline
-   0805 & 86 & 32   &          & LDA  & \#50     & Initialise Z limit        \\\hline
-   0807 & B7 & 0701 &          & STA  & LIMIT    &                           \\\hline
-   080A & 86 & FF   &          & LDA  & \#0      & Initialise byte for use with X register\\\hline % this seems to be the -1
-   080C & B7 & 0702 &          & STA  & ZERO     &                           \\\hline
-   080F & 86 & 00   &          & LDA  & \#-1     & Initialise byte for use with X register\\\hline % and this 0
-   0811 & B7 & 0703 &          & STA  & MINUS\_1 &                           \\\hline
-   0814 & 86 & 01   &          & LDA  & \#1      & Initialise or reload loop counter \\ \hline % why "reload"?
-   0816 & B7 & 0705 &          & STA  & COUNTER  &                           \\\hline
-   0817 & BE & 0703 &          & LDX  & ZERO     & Zero out X                \\\hline
-   0818 & B6 & 0704 & LOOP:    & LDA  & COUNTER  & Start loop                \\\hline
-   081B & 8B & 01   &          & ADDA & \#1      & Increment counter         \\\hline % think we should store it as well
-   081D & B1 & 0700 &          & CMPA & LOOP\_SIZE & Check if done           \\\hline
-   0820 & 27 &      &          & BEQ  & EXIT     & If zero, we're done       \\\hline % misses offset yet
-   0822 & B6 & 0504 & CHK\_Z:  & LDA  & Z        & Load Z into A             \\\hline % can A even hold 2 Byte?
-   0824 & BE & 0701 &          & LDX  & LIMIT    & Load limit in LIMIT into X. Assume low nibble is set \\\hline % Comment [1] above
-   0826 & 81 & 00   & DECR:    & CMPA & \#0      & Check if Z is zero        \\\hline 
-   0828 & 27 &      &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline % misses offset yet
-   082A & 8C & 0702 &          & CMPX & ZERO     & Compare X with 0. Assume low nibble is
-                                                   compared, high nibble is 0 anyway\\\hline % not sure if we can make assumptions
-   082C & 27 &      &          & BEQ  & BRANCH1  & If X is 0 instead of Z, then Z is larger.\\\hline % misses offset
-   082E & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
-   0830 & 31 & 0704 &          & ADDX & MINUS\_1 & Decrement X by use of MINUS\_1 \\\hline
-   0833 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
-   0836 & B6 & 0701 & BRANCH1: & LDA  & LIMIT    & Load 50 into A            \\\hline
-   0839 & 40 &      &          & NEGA &          & Make -50                  \\\hline
-   083A & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
-   083D & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
-   0840 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
-   0841 & B6 & 0701 & BRANCH2: & LDA  & LIMIT    & Load Z into A             \\\hline
-   0834 & BB & 0504 &          & ADDA & Z        & Add 50 to Z               \\\hline % x*3, not 50*3
-   0837 & BB & 0504 &          & ADDA & Z        & Add 50 to Z               \\\hline
-   083A & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
-   084D & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
-   0850 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
-\end{assemblertable}
+   0805 & BE & 0032 &          & LDX  & \#50     & Initialise Z limit        \\\hline
+   0807 & BF & 0701 &          & STX  & LIMIT    &                           \\\hline
+   080A & 8E & 0000 &          & LDX  & \#0      & Initialise byte for use with X register\\\hline
+   080C & BF & 0703 &          & STX  & ZERO     &                           \\\hline
+   080F & 8E & FFFF &          & LDX  & \#-1     & Initialise byte for use with X register\\\hline 
+   0811 & BF & 0705 &          & STX  & MINUS\_1 &                           \\\hline
+   0814 & 86 & 01   &          & LDA  & \#1      & Initialise loop counter   \\\hline
+   0816 & B7 & 0707 &          & STA  & COUNTER  &                           \\\hline
+   0817 & BE & 0705 &          & LDX  & ZERO     & Zero out X (now redundant)\\\hline
+   0818 & B6 & 0707 & LOOP:    & LDA  & COUNTER  & Start loop                \\\hline
+   081B & 8B & 01   &          & ADDA & \#1      & Increment counter         \\\hline 
+   081D & B7 & 0707 &          & STA  & COUNTER  & Store it                  \\\hline
+   0820 & B1 & 0700 &          & CMPA & LOOP\_SIZE & Check if done           \\\hline
+   0823 & 27 & 33\footnote{\ttfamily 0x0858 - 0x0823 - 2}   &          & BEQ  & EXIT     & If zero, we're done       \\\hline 
+   0825 & B6 & 0504 & CHK\_Z:  & LDA  & Z        & Load Z into A             \\\hline 
+   0828 & BE & 0701 &          & LDX  & LIMIT    & Load limit in LIMIT into X.\\\hline 
+   082B & 81 & 00   & DECR:    & CMPA & \#0      & Check if Z is zero        \\\hline 
+   082D & 27 & 29\footnote{\ttfamily 0x0858 - 0x082D - 2}   &          & BEQ  & BRANCH2  & If yes, can't be > 50, go to else branch\\\hline 
+   082F & 8C & 0703 &          & CMPX & ZERO     & Compare X with 0. \\\hline 
+   0832 & 27 & 24\footnote{\ttfamily 0x0858 - 0x0832 - 2}  &          & BEQ  & BRANCH1  & If X is 0 instead of Z, then Z is larger.\\\hline 
+   0834 & 8B & FF   &          & ADDA & \#-1     & Decrement Z in A          \\\hline
+   0836 & 31 & 0705 &          & ADDX & MINUS\_1 & Decrement X using MINUS\_1 \\\hline
+   0839 & 7E & 0826 &          & JMP  & DECR     & Continue decrement loop   \\\hline
+   083C & B6 & 0702 & BRANCH1: & LDA  & LIMIT+1    & Load 50 into A            \\\hline
+   083F & 40 &      &          & NEGA &          & Make -50                  \\\hline
+   0840 & BB & 0504 &          & ADDA & Z        & Add -50 to Z              \\\hline
+   0843 & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
+   0846 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
+   0849 & B6 & 0504 & BRANCH2: & LDA  & Z        & Load Z into A             \\\hline
+   084C & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
+   084F & BB & 0504 &          & ADDA & Z        & Add Z to Z               \\\hline
+   0852 & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
+   0855 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
+   0858 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
+\end{tabularx}
 
 
+
+\newpage
 \ex{Taschenrechner}{8+16+8=32}
 
-% \subex{Programmablauf}
+\subex{Programmablauf}
 %    \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[font=\small,minimum
 %    size=3ex,left=8pt,below=8pt,shape=circle, draw,inner sep=1pt] (char) {#1};}}
 
@@ -116,27 +194,28 @@
 %    \item Beim Fehlerziel 0 in ERG schreiben
 %    \item Nach jeder Operation wird die Adresse 1000 angesprungen.
 % \end{enumerate}
-
-\begin{assemblertable}
+\subex{Assemblersequenz}
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
+   0000 &    & &     & .ORG  & \$0600 & Start \\\hline
    0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
    0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
    0502 & ?? & & ERG: & .Byte & 1 & Result\\\hline
    0503 & ?? & & INP: & .Byte & 1 & Operation\\\hline
    \vdots & & & & & & \\\hline
    0600 & B6 & 0503 & INIT: & LDA & INP & Load operation\\\hline
-   0603 & 8B & 01 & & ADDA & 01 &\\\hline
+   0603 & 8B & 01 & & ADDA & \#01 &\\\hline
    0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
-   0607 & 26 & 18\footnote{\texttt{0x061F - 0x0607}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
+   0607 & 26 & 16\footnote{\texttt{0x061F - 0x0607 - 2}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
    0609 & B8 & 0503 & & LDA & INP & Reload operation \\\hline
-   060C & 81 & 00 & CHK\_ADD: & CMPA & 00 & Check if operation is ADD \\\hline
-   060E & 27 & F2\footnote{\texttt{0x0700 - 0x060E}} & & BEQ & ADD & Jump to ADD if yes \\\hline
-   0610 & 81 & 01 & CHK\_SUBT: & CMPA & 01 & Check if operation is SUBT \\\hline
-   0612 & 27 & FE\footnote{\texttt{0x0700 - 0x0612}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
+   060C & 81 & 00 & CHK\_ADD: & CMPA & \#00 & Check if operation is ADD \\\hline
+   060E & 27 & F0\footnote{\texttt{0x0700 - 0x060E - 2}} & & BEQ & ADD & Jump to ADD if yes \\\hline
+   0610 & 81 & 01 & CHK\_SUBT: & CMPA & \#01 & Check if operation is SUBT \\\hline
+   0612 & 27 & FC\footnote{\texttt{0x0700 - 0x0612 - 2}} & & BEQ & SUBT & Jump to SUBT if yes \\\hline
    0614 & B6 & 0500 & AND: & LDA & Z1 & If PC is here, operation is AND \\\hline
    0616 & B4 & 0501 & & ANDA & Z2 & AND with Z2 \\\hline
    0619 & B7 & 0502 & & STA & ERG & write result \\\hline
    061C & 7E & 1000 & EXIT: & JMP & \$1000 & Done \\\hline
-   061F & B6 & 0000 & FAIL: & LDA & 0 & Load register A with 0 \\\hline
+   061F & B6 & 0000 & FAIL: & LDA & \#0 & Load register A with 0 \\\hline
    0622 & B7 & 0502 & & STA & ERG & Write result \\\hline
    0625 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
 
@@ -150,14 +229,54 @@
    0710 & BB & 0500 & & ADDA & Z1 & \ldots +Z1 \\\hline
    0713 & B7 & 0502 & & STA & ERG & Write result \\\hline
    0716 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
-\end{assemblertable}
+\end{tabularx}
 
+
+
+\newpage
 \ex{Codeumwandlung}{8+16+8=32}
 
-\subex{}
+\subex{Programmablauf}
 
+\begin{center}
+  \begin{tikzpicture}
+    \node [cloud]                             (begin)     {Begin};
+    \node [block,    below=.5cm of begin]     (init)      {\begin{tabular}{l}
+                                                             LDX \la Z \\ 
+                                                             CLRA
+                                                           \end{tabular}};
+    \node [cloud,    below=.5cm of init]      (loop)      {LOOP};
+    \node [block,    right=2cm  of loop]      (ldaflip)   {\begin{tabular}{l}
+                                                             LDA @X \\ 
+                                                             COMA
+                                                           \end{tabular}};
+    \node [decision, below=.5cm of ldaflip]   (zeroflag)  {Z flag == 1?};
+    \node [block,    left =2cm  of zeroflag]  (add)       {\begin{tabular}{l}
+                                                             COMA \\ 
+                                                             ADDA \#33 \\ 
+                                                             ADDX \#0001 \\ 
+                                                             BRA LOOP
+                                                           \end{tabular}};
+    \node [block,    right=2cm  of zeroflag]  (branchend) {\begin{tabular}{l}
+                                                             BEQ END
+                                                           \end{tabular}};
+    \node [cloud,    above=.5cm of branchend] (end)       {END};
+    \node [block,    above=.5cm of end]       (jmpout)    {JMP \$1000};
+    
+    \path [line] (begin)     -- (init);
+    \path [line] (init)      -- (loop);
+    \path [line] (loop)      -- (ldaflip);
+    \path [line] (ldaflip)   -- (zeroflag);
+    \path [line] (zeroflag)  -- (add)       node [near start, above] {No};
+    \path [line] (zeroflag)  -- (branchend) node [near start, above] {Yes};
+    \path [line] (branchend) -- (end);
+    \path [line] (end)       -- (jmpout);
+  \end{tikzpicture}
+\end{center}
 
-\begin{assemblertable}
+\subex{Assemblersequenz}
+
+\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
 %  add & oc & oper & label & op    & oper   & comment
        &    &      &       & .ORG  & \$0500 & data space                      \\\hline
   0504 &    &      & Z     & .BYTE & n      & variable Z                      \\\hline\hline
@@ -172,10 +291,13 @@
   800B & A7 &      &       & STA   & @X     & store result back               \\\hline
   800C & 30 & 0001 &       & ADDX  & \#0001 & increment X                     \\\hline
   800F & 20 & F5   &       & BRA   & LOOP   & jump -8, i.e. F5                \\\hline
-  8011 & 7E & 1000 & END   & JMP   & \$1000 & end program                     \\\hline
-\end{assemblertable}
+  8011 & 7E & 1000 & END:  & JMP   & \$1000 & end program                     \\\hline
+\end{tabularx}
 
-\addex{Multiplikation von Variablen}
+
+
+%\newpage
+%\addex{Multiplikation von Variablen}
 
 
 

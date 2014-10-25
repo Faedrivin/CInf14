@@ -19,13 +19,18 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
-\RequirePackage{lmodern, listings, multirow, tabularx}%, ltablex}
+\RequirePackage{lmodern, listings}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
 
 % tables
-\RequirePackage{tabularx, multicol, colortbl, booktabs}
+%\RequirePackage{tabularx}
+\RequirePackage{ltablex}
+\RequirePackage{multicol, multirow, colortbl, booktabs}
+
+% lists/enumerations
+\RequirePackage{enumitem}
 
 % graphics, diagrams
 \RequirePackage{graphicx, tikz}
@@ -40,8 +45,6 @@
   plainpages         = false,
   citecolor          = lightgray
   ]{hyperref}
-
-\RequirePackage{enumitem}
 
 % not used yet
 % subcaption, microtype, textcomp 
@@ -76,7 +79,17 @@
 }
 
 % choose tikz libraries
-%\usetikzlibrary{automata, arrows}
+\usetikzlibrary{shapes, automata, positioning, arrows,calc,intersections}
+
+\tikzstyle{every node} = [font=\small\ttfamily]
+% define styles for program flow charts
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
+    text width=8em, text centered, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+    minimum height=2em]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
@@ -141,8 +154,7 @@
   \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Aufgabe \@sheet.\arabic{excount} & \bf #2 & \bf(#3 P)
   \end{tabularx}
-
-  \vspace{\baselineskip}
+  %\vspace{\baselineskip}
   \par
 }
 
@@ -159,33 +171,42 @@
   \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
     \bf Zusatzaufgabe \@sheet.\arabic{excount} & \bf #2 & \bf (freiwillig)
   \end{tabularx}
-
   \vspace{\baselineskip}
   \par
 }
 
 % Prints a subexercise's number
-\newcommand{\subex}[2][]{ % \subex[Number]{Title}
-  \ifx&#1&
+\newcommand{\subex}[2][-1]{ % \subex[Number]{Title}
+  \ifnum#1=-1
     \stepcounter{subexcount}
   \else
     \setcounter{subexcount}{#1}
   \fi
-  \par%\smallskip
-  {\setlength{\parindent}{1cm} \bf \alph{subexcount})\ifx&#2&{ }#2\fi}
-  \vspace{\baselineskip}
+  \par\vspace{\baselineskip}
+  {\setlength{\parindent}{1cm} \bf \alph{subexcount})\ifx&#2&\else{ #2}\fi}
+  \par\vspace{\baselineskip}
 }
 
-% environment for a table with assembler code
+% assemblertablehead
+\newcommand{\assemblertablehead}{
+  \hline
+  \rmfamily\multirow{2}{1cm}{Adr (hex)} 
+    & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
+    & \rmfamily\multirow{2}{*}{Label} 
+    & \rmfamily\multirow{2}{*}{Opcode} 
+    & \rmfamily\multirow{2}{*}{Operand} 
+    & \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
+  & \footnotesize\rmfamily Opc. 
+    & \rmfamily\footnotesize Oper. & & & & \\ \hline\hline
+}
+
+% environment for a table with assembler code (not functioning with page breaks)
 \newenvironment{assemblertable}{%
+  \small
   \noindent\tabularx{\textwidth}{|L||L|L|L||L|R|X|} 
-    \hline
-    \rmfamily\multirow{2}{1cm}{Adr (hex)} 
-        & \multicolumn{2}{c|}{\rmfamily M(Adr) (hex)} 
-        & \rmfamily\multirow{2}{*}{Label} 
-        & \rmfamily\multirow{2}{*}{Opcode} 
-        & \rmfamily\multirow{2}{*}{Operand} 
-        & \multicolumn{1}{c|}{\rmfamily\multirow{2}{*}{Kommentare}} \\
-    & \footnotesize\rmfamily Opc. 
-        & \rmfamily\footnotesize Oper. & & & & \\ \hline\hline
+    \assemblertablehead
 }{\endtabularx}
+
+
+% 
+\newcommand{\la}{\ensuremath{\leftarrow}}
