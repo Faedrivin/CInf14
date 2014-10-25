@@ -19,7 +19,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
-\RequirePackage{lmodern, listings, multirow, tabularx}
+\RequirePackage{lmodern, listings, multirow, tabularx}%, ltablex}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
