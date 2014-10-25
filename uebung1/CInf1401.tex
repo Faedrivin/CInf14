@@ -8,7 +8,7 @@
 
 \ex{Arithmetik auf Variablen}{12}
 
-\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
+\begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
        &    &      &       & .ORG  & \$0500 & Data space                      \\\hline
   0500 &    &      & Z1    & .BYTE & 1      & Variable Z1                     \\\hline
@@ -31,7 +31,7 @@
   052E & B4 & 0501 &       & ANDA  & Z2     & AND Z2 with A                   \\\hline
   0531 & B7 & 0502 &       & STA   & ERG    & Store A to ERG                  \\\hline
   0534 & 7E & 1000 &       & JMP   & \$1000 & Jump out of subroutine          \\\hline
-\end{tabularx}
+\end{assemblertable}
 
 
 
@@ -112,7 +112,7 @@
 
 \subex{Assemblersequenz}
 
-\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
+\begin{assemblertable}
    0000 &    &      &            & .ORG  & \$0700 & Start                        \\\hline
    \vdots & & & & & & \\\hline
    0504 &    &      & Z          & .BYTE & 1 & Variable Z                      \\\hline
@@ -159,7 +159,7 @@
    0852 & B7 & 0504 &          & STA  & Z        & Write back into Z         \\\hline
    0855 & 7E & 0818 &          & JMP  & LOOP     & Go to next iteration      \\\hline
    0858 & 7E & 1000 & EXIT:    & JMP  & \$1000   & Back to OS                \\\hline
-\end{tabularx}
+\end{assemblertable}
 
 
 
@@ -276,7 +276,7 @@
 
 \subex{Assemblersequenz}
 
-\noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
+\begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
        &    &      &       & .ORG  & \$0500 & data space                      \\\hline
   0504 &    &      & Z     & .BYTE & n      & variable Z                      \\\hline\hline
@@ -292,7 +292,7 @@
   800C & 30 & 0001 &       & ADDX  & \#0001 & increment X                     \\\hline
   800F & 20 & F3   &       & BRA   & LOOP   & jump to LOOP                    \\\hline
   8011 & 7E & 1000 & END:  & JMP   & \$1000 & end program                     \\\hline
-\end{tabularx}
+\end{assemblertable}
 
 
 

@@ -19,7 +19,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2cm]{geometry}
-\RequirePackage{lmodern, listings}
+\RequirePackage{lmodern, listings, environ}
 
 % math
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
@@ -201,11 +201,14 @@
 }
 
 % environment for a table with assembler code (not functioning with page breaks)
-\newenvironment{assemblertable}{%
+\NewEnviron{assemblertable}{%
   \small
-  \noindent\tabularx{\textwidth}{|L||L|L|L||L|R|X|} 
+  \noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|} 
     \assemblertablehead
-}{\endtabularx}
+    \BODY
+    \hline
+  \end{tabularx}
+}
 
 
 % 
