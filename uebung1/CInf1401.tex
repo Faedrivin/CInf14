@@ -11,6 +11,7 @@
 \begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
   0000 &    &      &       & .ORG  & \$0500 & \\\hline
+  %0000 &    &      &       & .ORG  & \$0510 & Program space                   \\\hline
    \vdots & &      &       &       &        & \\\hline
   0500 &    &      & Z1    & .BYTE & 1      & Variable Z1                     \\\hline
   0501 &    &      & Z2    & .BYTE & 1      & Variable Z2                     \\\hline
@@ -168,7 +169,44 @@
 
 \subex{Programmablauf}
 
-Fehlt aus Motivationsgründen.
+\begin{center}
+	\begin{tikzpicture}
+    \node [cloud] (Begin) {Begin};
+    \node [block, below=.5cm of Begin] (init){\begin{tabular}{l}
+                                                A \la INP \\
+                                                A \la A+\#01
+                                              \end{tabular}};
+    \node [decision, below=.5cm of init] (validInp) {A \& FC\\ == 0?};
+    \node [cloud, right=6cm of validInp] (exit) {EXIT};
+    \node [block, below=1cm of validInp] (ldInp) {A \la INP};
+    \node [decision, below=.5cm of ldInp] (isAdd) {\tiny
+                                                     CHK\_ADD:\\
+                                                     CMPA \#00 == 0?
+                                                   };
+    \node [decision, below=.5cm of isAdd] (isSub) {\tiny
+                                                     CHK\_SUB:\\
+                                                     CMPA \#01 == 0?
+                                                   };
+    \node [block, below=1cm of isSub] (and) {\begin{tabular}{l}A\la Z1\\A\la A \& Z2\\ERG\la A\end{tabular}};
+    \node [block, right=2cm of isAdd] (add) {\begin{tabular}{l}A\la Z1\\A\la A + Z2\\ERG\la A\end{tabular}};
+    \node [block, right=1cm of isSub] (sub) {\begin{tabular}{l}A\la Z2\\A\la -A\\A\la A+Z1\\ERG\la A\end{tabular}};
+    
+    \path [line] (Begin) -- (init);
+    \path [line] (init) -- (validInp);
+    \path [line] (validInp) -- node[above]{no} (exit);
+    \path [line] (validInp) -- node[left]{yes} (ldInp);
+    \path [line] (ldInp) -- (isAdd);
+    \path [line] (isAdd) -- node[left]{no} (isSub);
+    \path [line] (isAdd) -- node[above]{yes} (add);
+    \path [line] (isSub) -- node[left]{no} (and);
+    \path [line] (isSub) -- node[above]{yes} (sub);
+    \path [line] (and) -| (exit);
+    \path [line] (add) -| (exit);
+    \path [line] (sub) -| (exit);
+    
+    
+  \end{tikzpicture}
+\end{center}
 
 %    \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[font=\small,minimum
 %    size=3ex,left=8pt,below=8pt,shape=circle, draw,inner sep=1pt] (char) {#1};}}
@@ -224,7 +262,7 @@ Fehlt aus Motivationsgründen.
 
    \vdots & & & & & & \\\hline
    0700 & B6 & 0500 & ADD: & LDA & Z1 & Load first operand \\\hline
-   0703 & BB & 0501 & & ADDA & Z1 & Add contents of second operand \\\hline
+   0703 & BB & 0501 & & ADDA & Z2 & Add contents of second operand \\\hline
    0706 & B7 & 0502 & & STA & ERG & Write result \\\hline
    0709 & 7E & 1000 & & JMP & \$1000 & Done \\\hline
    070C & B6 & 0501 & SUBT: & LDA & Z2 & Load second operand \\\hline
