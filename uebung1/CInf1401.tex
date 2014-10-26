@@ -10,11 +10,12 @@
 
 \begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
-       &    &      &       & .ORG  & \$0500 & Data space                      \\\hline
+  0000 &    &      &       & .ORG  & \$0500 & \\\hline
+   \vdots & &      &       &       &        & \\\hline
   0500 &    &      & Z1    & .BYTE & 1      & Variable Z1                     \\\hline
   0501 &    &      & Z2    & .BYTE & 1      & Variable Z2                     \\\hline
-  0502 &    &      & ERG   & .BYTE & 1      & Variable ERG                    \\\hline\hline
-       &    &      &       & .ORG  & \$0510 & Program space                   \\\hline
+  0502 &    &      & ERG   & .BYTE & 1      & Variable ERG                    \\\hline
+   \vdots & &      &       &       &        & \\\hline
   0510 & 4F &      & ADD:  & CLRA  &        & Clear A to perform ADD          \\\hline
   0511 & B6 & 0500 &       & LDA   & Z1     & Load Z1 to A                    \\\hline
   0514 & BB & 0501 &       & ADDA  & Z2     & Add Z2 to A                     \\\hline
@@ -79,7 +80,7 @@
     \node [cloud,    below=1cm of Is X 0?] (Branch1) {BRANCH1};
     \node [block,    below=2cm of Branch1] (Z-=50)   {\begin{tabular}{l} 
                                                          A \la LIMIT \\ 
-                                                         A \la -a \\ 
+                                                         A \la -A \\ 
                                                          A \la A + Z \\ 
                                                          Z \la A 
                                                        \end{tabular}};
@@ -100,11 +101,10 @@
     \path [line] (Decr)         |- (Is A 0?) {}; % Decr.north west -|
     \path [line] (Branch2)      -- (Z*=3) {};
     \path [line] (Branch1)      -- (Z-=50) {};
-    %\path [line] (Z*=3)  -- ++(0,-9cm) -- ($(Loop) + (0,-1cm)$) -- (Loop) {};
     
     \node [draw=none] (p) at ($(Loop) + (0,-2cm)$) {};
     \path [line,-]    (Z-=50) -- (Z-=50 |- p);
-    \path [line,-]    (Z*=3)  -- (Z*=3  |- p);
+    % \path [line,-]    (Z*=3)  -- (Z*=3  |- p);
     \path [line]      (p)     -| (Loop);
     \path [line,-]    (p)     -| (Z*=3);
   \end{tikzpicture}
