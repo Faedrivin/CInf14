@@ -10,13 +10,11 @@
 
 \begin{assemblertable}
 %  add & oc & oper & label & op    & oper   & comment
-  0000 &    &      &       & .ORG  & \$0500 & \\\hline
-  %0000 &    &      &       & .ORG  & \$0510 & Program space                   \\\hline
-   \vdots & &      &       &       &        & \\\hline
+       &    &      &       & .ORG  & \$0500 & Data space \\\hline
   0500 &    &      & Z1    & .BYTE & 1      & Variable Z1                     \\\hline
   0501 &    &      & Z2    & .BYTE & 1      & Variable Z2                     \\\hline
   0502 &    &      & ERG   & .BYTE & 1      & Variable ERG                    \\\hline
-   \vdots & &      &       &       &        & \\\hline
+       &    &      &       & .ORG  & \$0510 & Program space                   \\\hline
   0510 & 4F &      & ADD:  & CLRA  &        & Clear A to perform ADD          \\\hline
   0511 & B6 & 0500 &       & LDA   & Z1     & Load Z1 to A                    \\\hline
   0514 & BB & 0501 &       & ADDA  & Z2     & Add Z2 to A                     \\\hline
@@ -114,7 +112,7 @@
 \subex{Assemblersequenz}
 
 \begin{assemblertable}
-   0000 &    &      &            & .ORG  & \$0700 & Start                        \\\hline
+        &    &      &            & .ORG  & \$0700 & Data space                   \\\hline
    \vdots & & & & & & \\\hline
    0504 &    &      & Z          & .BYTE & 1 & Variable Z                      \\\hline
    \vdots &  &      &            &       &   &                                 \\\hline
@@ -124,6 +122,7 @@
    0705 & ?? &      & MINUS\_1   & .BYTE & 2 & To decrement X                  \\\hline
    0707 & ?? &      & COUNTER    & .BYTE & 1 &                                 \\\hline
    \vdots & & & & & & \\\hline
+        &    &      &            & .ORG  & \$0800 & Program space                   \\\hline
    0800 & 86 & CE   & INIT:    & LDA  & \#41     & Initialise loop size      \\\hline
    0802 & B7 & 0700 &          & STA  & LOOP\_SIZE &                         \\\hline
    0805 & BE & 0032 &          & LDX  & \#50     & Initialise Z limit        \\\hline
@@ -179,13 +178,13 @@
     \node [decision, below=.5cm of init] (validInp) {A \& FC\\ == 0?};
     \node [cloud, right=6cm of validInp] (exit) {EXIT};
     \node [block, below=1cm of validInp] (ldInp) {A \la INP};
-    \node [decision, below=.5cm of ldInp] (isAdd) {\tiny
+    \node [decision, below=.5cm of ldInp] (isAdd) {\small
                                                      CHK\_ADD:\\
-                                                     CMPA \#00 == 0?
+                                                     A == 0?
                                                    };
-    \node [decision, below=.5cm of isAdd] (isSub) {\tiny
+    \node [decision, below=.5cm of isAdd] (isSub) {\small
                                                      CHK\_SUB:\\
-                                                     CMPA \#01 == 0?
+                                                     A == 1?
                                                    };
     \node [block, below=1cm of isSub] (and) {\begin{tabular}{l}A\la Z1\\A\la A \& Z2\\ERG\la A\end{tabular}};
     \node [block, right=2cm of isAdd] (add) {\begin{tabular}{l}A\la Z1\\A\la A + Z2\\ERG\la A\end{tabular}};
@@ -237,12 +236,13 @@
 % \end{enumerate}
 \subex{Assemblersequenz}
 \noindent\begin{tabularx}{\textwidth}{|L||L|L|L||L|R|X|}\assemblertablehead
-   0000 &    & &     & .ORG  & \$0600 & Start \\\hline
+        &    & &     & .ORG  & \$0500 & Data space \\\hline
    0500 & ?? & & Z1: & .Byte & 1 & First operand\\\hline
    0501 & ?? & & Z2: & .Byte & 1 & Second operand \\\hline
    0502 & ?? & & ERG: & .Byte & 1 & Result\\\hline
    0503 & ?? & & INP: & .Byte & 1 & Operation\\\hline
    \vdots & & & & & & \\\hline
+        &    & &     & .ORG  & \$0600 & Program space \\\hline
    0600 & B6 & 0503 & INIT: & LDA & INP & Load operation\\\hline
    0603 & 8B & 01 & & ADDA & \#01 &\\\hline
    0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}}& Check if valid \\\hline
