@@ -283,34 +283,34 @@
   \begin{tikzpicture}
     \node [cloud]                             (begin)     {Begin};
     \node [block,    below=.5cm of begin]     (init)      {\begin{tabular}{l}
-                                                             LDX \la Z \\ 
+                                                             X \la Z \\ 
                                                              CLRA
                                                            \end{tabular}};
     \node [cloud,    below=.5cm of init]      (loop)      {LOOP};
     \node [block,    right=2cm  of loop]      (ldaflip)   {\begin{tabular}{l}
-                                                             LDA @X \\ 
-                                                             COMA
+                                                             A \la @X \\ 
+                                                             A \la $\neg$ A
                                                            \end{tabular}};
     \node [decision, below=.5cm of ldaflip]   (zeroflag)  {Z flag == 1?};
-    \node [block,    left =1.5cm  of zeroflag]  (add)       {\begin{tabular}{l}
-                                                             COMA \\ 
-                                                             ADDA \#33 \\ 
-                                                             ADDX \#0001 \\ 
-                                                             BRA LOOP
+    \node [block,    left =1.5cm of zeroflag] (add)       {\begin{tabular}{l}
+                                                             A \la $\neg$ A \\ 
+                                                             A \la A + \$33 \\ 
+                                                             X \la X + 1 \\ 
+                                                             %BRA LOOP
                                                            \end{tabular}};
-    \node [block,    right=2cm  of zeroflag]  (branchend) {\begin{tabular}{l}
-                                                             BEQ END
-                                                           \end{tabular}};
-    \node [cloud,    above=.5cm of branchend] (end)       {END};
+    %\node [block,    right=2cm  of zeroflag]  (branchend) {\begin{tabular}{l}
+    %                                                         BEQ END
+    %                                                       \end{tabular}};
+    \node [cloud,    right=2cm of zeroflag]   (end)       {END};
     \node [block,    above=.5cm of end]       (jmpout)    {JMP \$1000};
     
     \path [line] (begin)     -- (init);
     \path [line] (init)      -- (loop);
     \path [line] (loop)      -- (ldaflip);
     \path [line] (ldaflip)   -- (zeroflag);
-    \path [line] (zeroflag)  -- (add)       node [near start, above] {No};
-    \path [line] (zeroflag)  -- (branchend) node [near start, above] {Yes};
-    \path [line] (branchend) -- (end);
+    \path [line] (zeroflag)  -- (add) node [near start, above] {No};
+    \path [line] (zeroflag)  -- (end) node [near start, above] {Yes};
+    %\path [line] (branchend) -- (end);
     \path [line] (add)       -- (loop);
     \path [line] (end)       -- (jmpout);
   \end{tikzpicture}
