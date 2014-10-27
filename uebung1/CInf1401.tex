@@ -292,7 +292,7 @@
                                                              COMA
                                                            \end{tabular}};
     \node [decision, below=.5cm of ldaflip]   (zeroflag)  {Z flag == 1?};
-    \node [block,    left =2cm  of zeroflag]  (add)       {\begin{tabular}{l}
+    \node [block,    left =1.5cm  of zeroflag]  (add)       {\begin{tabular}{l}
                                                              COMA \\ 
                                                              ADDA \#33 \\ 
                                                              ADDX \#0001 \\ 
@@ -311,6 +311,7 @@
     \path [line] (zeroflag)  -- (add)       node [near start, above] {No};
     \path [line] (zeroflag)  -- (branchend) node [near start, above] {Yes};
     \path [line] (branchend) -- (end);
+    \path [line] (add)       -- (loop);
     \path [line] (end)       -- (jmpout);
   \end{tikzpicture}
 \end{center}
