@@ -10,10 +10,13 @@
 
 \LoadClass[11pt,a4paper,oneside]{article}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%
 % Packages
 %%%%%%%%%%%%%%%%%%%%%%%
+% To provide more registers to load more packages
+% since we were at the limit for \dimen
+% (see: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=noroom)
+\RequirePackage{etex}
 
 % layout etc.
 \RequirePackage[T1]{fontenc}
@@ -25,8 +28,7 @@
 \RequirePackage{amsmath, amssymb, array, IEEEtrantools}
 
 % tables
-%\RequirePackage{tabularx}
-\RequirePackage{ltablex}\keepXColumns % ltablex redefinitions of X columns destroys their usefulness
+\RequirePackage{ltablex}\keepXColumns % restores tabularx' X column behaviour
 \RequirePackage{multicol, multirow, colortbl, booktabs}
 
 % lists/enumerations
@@ -34,6 +36,7 @@
 
 % graphics, diagrams
 \RequirePackage{graphicx, tikz}
+\RequirePackage[european]{circuitikz}
 
 % other packages
 \RequirePackage[
@@ -84,12 +87,13 @@
 \tikzstyle{every node} = [font=\small\ttfamily]
 % define styles for program flow charts
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
-\tikzstyle{block} = [rectangle, draw, fill=blue!10, 
-    text width=8em, text centered, minimum height=4em]
-\tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
-    minimum height=2em]
+                        text width=4.5em, text badly centered, 
+                        node distance=3cm, inner sep=0pt]
+\tikzstyle{block}    = [rectangle, draw, fill=blue!10, 
+                        text width=8em, text centered, minimum height=4em]
+\tikzstyle{line}     = [draw, -latex']
+\tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
+                        minimum height=2em]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
@@ -111,6 +115,8 @@
 \newcolumntype{B}{>{\bf}l}
 
 % helper for headers/individual rows
+% define columns with a special row type with extra columns e.g.
+% e.g. Hchchc for three centered columns
 \newcolumntype{H}{>{\global\let\currentrowstyle\relax}}
 \newcolumntype{h}{>{\currentrowstyle}}
 \newcommand{\rowstyle}[1]{\gdef\currentrowstyle{#1}% \rowstyle{style}
@@ -118,7 +124,7 @@
 }
 
 % table emphasis
-\newcommand{\temph}{\cellcolor{blue!10}}
+\newcommand{\temph}{\cellcolor{blue!10}} % \temph{text}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -211,5 +217,6 @@
 }
 
 
-% 
+% short hand for $\leftarrow$
 \newcommand{\la}{\ensuremath{\leftarrow}}
+\newcommand{\comp}[1]{\overline{#1}}
