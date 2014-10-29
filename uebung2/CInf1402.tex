@@ -1,0 +1,96 @@
+\documentclass{CInf_practice}
+
+\sheet{2}{Beispiel-CPU H6809 und Schaltfunktionen}
+
+\begin{document}
+
+\cinftitle
+
+\ex{Division mit Quotient und Rest}{6 + 12 + 6 = 24}
+
+\ex{Addition von BCD-Zahlen}{6 + 12 = 18}
+
+\ex{Absorptionsgesetze}{7 + 7 = 14}
+
+\ex{Schaltfunktionen}{6 + 14 + 6 = 26}
+
+\subex{Wertetabelle $f$ und $g$}
+
+\begin{center}
+  \begin{tabular}{cccc|c|c}
+    \bf a & \bf b & \bf c & \bf d & \bf f & \bf g \\ \hline
+    0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 & 0 & 0 \\
+    0 & 0 & 1 & 0 & 1 & 1 \\
+    0 & 0 & 1 & 1 & 1 & 1 \\
+    0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 1 & 0 & 0 \\
+    0 & 1 & 1 & 0 & 1 & 1 \\
+    0 & 1 & 1 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 0 & 1 & 1 \\
+    1 & 0 & 0 & 1 & 1 & 1 \\
+    1 & 0 & 1 & 0 & 1 & 1 \\
+    1 & 0 & 1 & 1 & 1 & 1 \\
+    1 & 1 & 0 & 0 & 0 & 0 \\
+    1 & 1 & 0 & 1 & 0 & 0 \\
+    1 & 1 & 1 & 0 & 0 & 0 \\
+    1 & 1 & 1 & 1 & 1 & 1 
+  \end{tabular}
+\end{center}
+
+$f$ und $g$ sind äquivalent.
+
+\subex{Algebraischer Äquivalenzbeweis}
+
+
+\subex{Schaltung}
+\begin{center}
+  \begin{circuitikz}
+  % start nodes
+  \node[anchor=east] at(4, 3) (b) {B};
+  \node[anchor=east] at(4, 2) (a) {A};
+  \node[anchor=east] at(4, 1) (c) {C};
+  \node[anchor=east] at(4, 0) (d) {D};
+
+  % ~B & A
+  \node[and port] at(7, 2.725) (not B and A) {};
+  \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.35, 0)$) {};
+  \draw ($(a) + (0.2, 0)$) to[short, -*] (5, 2) to (5, 2.45) to (not B and A.in 2) {};
+
+  % C & ~A
+  \node[and port] at(7, 1.275) (C and not A) {};
+  \draw ($(c) + (0.2, 0)$) to (C and not A.in 2) {};
+  \draw (5, 2) to (5, 1.55) to[short, -o] ($(C and not A.in 1) + (0.35, 0)$) {};
+
+  % A & B & C & D
+  \node[rectangle, draw, minimum width=1.2cm, minimum height=3.7cm, thick, anchor=center] at(2, 1.5) (bigAnd) {\rmfamily \&};
+  \draw ($(b) - (0.2, 0)$) to (2.6, 3);
+  \draw ($(a) - (0.2, 0)$) to (2.6, 2);
+  \draw ($(c) - (0.2, 0)$) to (2.6, 1);
+  \draw ($(d) - (0.2, 0)$) to (2.6, 0);
+  \draw (1.4, 1.5) to (1, 1.5) {};
+
+  % combination of all outputs
+  \draw (1, 1.5) to (1, -0.75) to (7.5, -0.75) to[short, -*] (7.5, 1.275) to (C and not A.out);
+  \draw (not B and A.out) to ($(not B and A.out) + (0.3, 0)$) to (7.5, 1.275) to (9, 1.275);
+
+  % dummy to avoid underful \vbox
+  \node at(0,-1) (dummy) {};
+  \end{circuitikz}
+\end{center}
+
+
+\ex{Sicherheitstür}{4 + 8 + 6 = 18}
+
+\subex{Veriablen}
+
+\subex{Schaltfunktion}
+
+\subex{Sheffer stroke}
+
+
+\addex{Bignum}
+
+
+
+\end{document}
