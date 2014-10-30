@@ -7,13 +7,49 @@
 \cinftitle
 
 \ex{Division mit Quotient und Rest}{6 + 12 + 6 = 24}
+\begin{assemblertable}
+% Adr & Op & Oper & Label  & Opc  & Oper   & Comment                          \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+      &    &      &        &      &        &                                  \\
+\end{assemblertable}
 
 
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
+\subex{}
+\begin{align*}
+a\cdot \left( a + b \right) &= a & \\
+todo
+\end{align*}
 
+\subex{}
+\begin{align*}% not sure if we are allowed to use associative law!
+      \comp a + \left(a        + b\right) &= 1 &\\ 
+\left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)}\\ 
+              1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
+              1                           &= 1 &\text{(Neutr. Element)}\\
+                                          &    &\square
+\end{align*}
 
 \ex{Schaltfunktionen}{6 + 14 + 6 = 26}
 
@@ -77,7 +113,7 @@ f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd
   &= \comp{\left(\comp a+ b\right) \left(a + \comp c \right)} && + abcd & \text{(Distrib.)} \\
   &= \comp{ \comp a+ b } + \comp{a + \comp c} && + abcd & \text{(De Morgan)} \\
   &= a \comp b + \comp a c && + abcd & \text{(De Morgan)} \\
-  &= \comp a c + a \comp b && + abcd & \text{Komm.} \\
+  &= \comp a c + a \comp b && + abcd & \text{(Komm.)} \\
   &= g && &\square
 \end{align*}
 
@@ -161,7 +197,11 @@ t = K_1K_2B+FB = (K_1K_2+F)B
 \def\ShefferOR#1#2{\bigg(\Big(#1\Big|#1\Big)\bigg|\Big(#2\Big|#2\Big)\bigg)}
 \def\ShefferANDouter#1#2{\Bigg(#1\Bigg|#2\Bigg)\Bigg|\Bigg(#1\Bigg|#2\Bigg)}
 \begin{align*}
-\ShefferANDouter{\ShefferOR{\ShefferAND{K_1}{K_2}}{F}}{B}
+% the first three lines are just to show the expansion steps
+& && (K_1K_2+F)B\\
+&=&& \bigg(\ShefferAND{K_1}{K_2}+F\bigg)B\\
+&=&& \ShefferOR{\ShefferAND{K_1}{K_2}}{F}B\\
+&=&& \ShefferANDouter{\ShefferOR{\ShefferAND{K_1}{K_2}}{F}}{B}
 \end{align*}
 } % end group
 
