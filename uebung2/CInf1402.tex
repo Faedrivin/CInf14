@@ -8,9 +8,12 @@
 
 \ex{Division mit Quotient und Rest}{6 + 12 + 6 = 24}
 
+
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
+
 \ex{Absorptionsgesetze}{7 + 7 = 14}
+
 
 \ex{Schaltfunktionen}{6 + 14 + 6 = 26}
 
@@ -40,7 +43,43 @@
 
 $f$ und $g$ sind äquivalent.
 
-\subex{Algebraischer Äquivalenzbeweis}
+\subex{Algebraischer Äquivalenzbeweis}\allowdisplaybreaks
+\begin{align*}
+f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd + a \comp b d} } &  \\
+  &= \comp{ab} \cdot \comp{\comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } } \cdot \comp{ \comp{acd + a \comp b d} } & \text{(De Morgan)} \\  
+  &= \left(\comp a + \comp b \right) \cdot \left( \comp {\comp a} + \comp {\comp c} \right) &&+ \comp{ \comp{ bcd + c \comp d } } \cdot \comp{ \comp{acd + a \comp b d} } & \text{(De Morgan)} \\
+  &= \left(\comp a + \comp b \right) \cdot \left( a + c \right)&&+ \left( bcd + c \comp d \right) \cdot \left( acd + a \comp b d \right) & \text{(Eind. d. Kompl.)} \\
+  &= \comp a a + \comp a c + \comp b a + \comp b c &&+ bcdacd + bcda\comp b d + c\comp d acd + c\comp d a \comp b d & \text{(Distrib.)} \\
+  &= \comp a a + \comp a c + \comp b a + \comp b c &&+ abccdd + ab\comp b cdd + accd\comp d + a\comp b c d\comp d & \text{(Komm.)} \\
+  &= 0 + \comp a c + \comp b a + \comp b c &&+ abccdd + a 0 cdd + acc0 + a\comp b c 0 & \text{((4): $a\comp a = 0$)} \\
+  &= 0 + \comp a c + \comp b a + \comp b c &&+ abccdd + 0 + 0 + 0 & \text{(Neutr. Elem.)} \\
+  &= \comp a c + \comp b a + \comp b c &&+ abccdd & \text{(Nullelement)} \\
+  &= \comp a c + \comp b a + \comp b c &&+ abcd & \text{(Idempotenz)} \\
+  &= \comp a c + \comp b a + \comp b c + \comp b c &&+ abcd & \text{(Idempotenz)} \\
+  &= \comp a c + \comp b a + \comp b c + \comp b c \cdot 1 &&+ abcd & \text{(Einselement)} \\
+  &= \comp a c + \comp b a + \comp b c + \comp b c \cdot \left(a+\comp a\right) &&+ abcd & \text{((4): $a+\comp a = 1$)} \\
+  &= \comp a c + \comp b a + \comp b c + \comp b c a + \comp b c \comp a && + abcd & \text{(Distrib.)} \\
+  &= \comp a c + \comp b a + \comp b c + \comp b c + \comp b c a + \comp b c \comp a && + abcd & \text{(Idempotenz)} \\
+  &= \comp a cc + \comp b \comp b a + \comp b \comp b c + \comp b cc + \comp b c a + \comp b c \comp a && + abcd & \text{(Idempotenz)} \\
+  &= \left( c + \comp b \right)\left( a\comp b + \comp a c + \comp b c\right) && + abcd & \text{(Distrib.)} \\
+  &= \left( c + \comp b \right)\left( 0 + \comp a c + \comp b c\right) && + abcd & \text{(Nullelement)} \\
+  &= \left( c + \comp b \right)\left( a\comp a + a\comp b + \comp a c + \comp b c\right) && + abcd & \text{((4): $a\comp a = 0$)} \\
+  &= \left( c + \comp b \right)\left( a\left(\comp a + \comp b\right)+c\left(\comp a + \comp b\right) \right) && + abcd & \text{(Distrib.)} \\
+  &= \left( c + \comp b \right)\left( \left(a+c\right)\left(\comp a + \comp b\right)\right) && + abcd & \text{(Distrib.)} \\
+  &= \left( c + \comp b \right)\left(a+c\right)\left(\comp a + \comp b\right) && + abcd & \text{(Distrib.)} \\
+  &= \comp{\comp c b} \cdot \comp{\comp a \comp c} \cdot \comp{ab} && + abcd & \text{(De Morgan)} \\
+  &= \comp{\comp c b +\comp a \comp c} \cdot \comp{ab} && + abcd & \text{(De Morgan)} \\
+  &= \comp{\comp c b +\comp a \comp c + ab} && + abcd & \text{(De Morgan)} \\
+  &= \comp{0 + \comp c b +\comp a \comp c + ab} && + abcd & \text{(Nullelement)} \\
+  &= \comp{a\comp a + \comp c b +\comp a \comp c + ab} && + abcd & \text{((4): $a\comp a=0$)} \\
+  &= \comp{a\left(\comp a+ b\right) + \comp c \left(b +\comp a\right)} && + abcd & \text{(Distrib.)} \\
+  &= \comp{a\left(\comp a+ b\right) + \comp c \left(\comp a + b\right)} && + abcd & \text{(Komm.)} \\
+  &= \comp{\left(\comp a+ b\right) \left(a + \comp c \right)} && + abcd & \text{(Distrib.)} \\
+  &= \comp{ \comp a+ b } + \comp{a + \comp c} && + abcd & \text{(De Morgan)} \\
+  &= a \comp b + \comp a c && + abcd & \text{(De Morgan)} \\
+  &= \comp a c + a \comp b && + abcd & \text{Komm.} \\
+  &= g && &\square
+\end{align*}
 
 
 \subex{Schaltung}
@@ -54,16 +93,22 @@ $f$ und $g$ sind äquivalent.
 
   % ~B & A
   \node[and port] at(7, 2.725) (not B and A) {};
-  \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.35, 0)$) {};
-  \draw ($(a) + (0.2, 0)$) to[short, -*] (5, 2) to (5, 2.45) to (not B and A.in 2) {};
+  \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.35, 0)$);
+  \draw ($(a) + (0.2, 0)$) to[short, -*] (5, 2) 
+                           to (5, 2.45) 
+                           to (not B and A.in 2);
 
   % C & ~A
   \node[and port] at(7, 1.275) (C and not A) {};
   \draw ($(c) + (0.2, 0)$) to (C and not A.in 2) {};
-  \draw (5, 2) to (5, 1.55) to[short, -o] ($(C and not A.in 1) + (0.35, 0)$) {};
+  \draw (5, 2) to (5, 1.55) 
+               to[short, -o] ($(C and not A.in 1) + (0.35, 0)$) {};
 
   % A & B & C & D
-  \node[rectangle, draw, minimum width=1.2cm, minimum height=3.7cm, thick, anchor=center] at(2, 1.5) (bigAnd) {\rmfamily \&};
+  \node[rectangle, draw, minimum width=1.2cm, 
+        minimum height=3.7cm, thick, anchor=center] at(2, 1.5) (bigAnd) 
+        {\rmfamily \&};
+    % 4 in, 1 out
   \draw ($(b) - (0.2, 0)$) to (2.6, 3);
   \draw ($(a) - (0.2, 0)$) to (2.6, 2);
   \draw ($(c) - (0.2, 0)$) to (2.6, 1);
@@ -71,8 +116,13 @@ $f$ und $g$ sind äquivalent.
   \draw (1.4, 1.5) to (1, 1.5) {};
 
   % combination of all outputs
-  \draw (1, 1.5) to (1, -0.75) to (7.5, -0.75) to[short, -*] (7.5, 1.275) to (C and not A.out);
-  \draw (not B and A.out) to ($(not B and A.out) + (0.3, 0)$) to (7.5, 1.275) to (9, 1.275);
+  \draw (1, 1.5) to (1, -0.75) 
+                 to (7.5, -0.75) 
+                 to[short, -*] (7.5, 1.275) 
+                 to (C and not A.out);
+  \draw (not B and A.out) to ($(not B and A.out) + (0.3, 0)$) 
+                          to (7.5, 1.275) 
+                          to (9, 1.275);
 
   % dummy to avoid underful \vbox
   \node at(0,-1) (dummy) {};
@@ -82,11 +132,40 @@ $f$ und $g$ sind äquivalent.
 
 \ex{Sicherheitstür}{4 + 8 + 6 = 18}
 
-\subex{Veriablen}
+\subex{Variablen}
+Als Variablen führen wir ein $K_1$, $K_2$, $B$ und $F$. $K_1$ und $K_2$ 
+stehen für die Schlüssel 1 und 2 und sind 1, während der jeweils richtige 
+Schlüssel im Schloss gedreht wird, sonst 0. $B$ steht für den Knopf und ist 1, 
+während der Knopf gedrückt ist. $F$ steht für den Fingerabdruck und ist 1, 
+während der korrekte Finger auf die Sensorfläche gelegt ist.
 
 \subex{Schaltfunktion}
+Die Schaltfunktion $t$ kann durch einfaches Kombinieren erstellt werden: Für 
+Methode 1 müssen Schlüssel 1 und Schlüssel 2 gleichzeitig gedreht sein, das 
+heißt $K_1K_2$. Da zusätzlich der Knopf gedrückt werden muss, erweitert sich 
+der Ausdruck auf $K_1K_2B$. Die zweite Methode erlaubt den Fingerabdruck und 
+den Knopf, also $FB$. Da beide Methoden individuell zulässig sind, können die 
+beiden Formel ODER-verknüpft werden: $K_1K_2B+FB$. Durch das 
+Distributivgesetz kann die Formel noch vereinfacht werden:
+
+\begin{align*}
+t = K_1K_2B+FB = (K_1K_2+F)B
+\end{align*}
 
 \subex{Sheffer stroke}
+{ % group for some special commands - note I used AND and ANDouter because
+  % I found no easy way to scale parentheses automatically for nested
+  % commands.
+\tiny
+\def\ShefferAND#1#2{\big(\left(#1\middle|#2\right)\big|\left(#1\middle|#2\right)\big)}
+\def\ShefferOR#1#2{\bigg(\Big(#1\Big|#1\Big)\bigg|\Big(#2\Big|#2\Big)\bigg)}
+\def\ShefferANDouter#1#2{\Bigg(#1\Bigg|#2\Bigg)\Bigg|\Bigg(#1\Bigg|#2\Bigg)}
+\begin{align*}
+\ShefferANDouter{\ShefferOR{\ShefferAND{K_1}{K_2}}{F}}{B}
+\end{align*}
+} % end group
+
+
 
 
 \addex{Bignum}
