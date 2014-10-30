@@ -105,3 +105,4 @@ sympy-plots-for-*.tex/
 *.tps
 *.glsdefs
 *.bat
+*.tmp
