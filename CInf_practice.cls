@@ -49,6 +49,8 @@
   citecolor          = lightgray
   ]{hyperref}
 
+\RequirePackage{xstring}
+
 % not used yet
 % subcaption, microtype, textcomp 
  
@@ -84,23 +86,23 @@
 % choose tikz libraries
 \usetikzlibrary{shapes, automata, positioning, arrows,calc,intersections}
 
-\tikzstyle{every node} = [font=\small\ttfamily]
+\tikzstyle{typewriter} = [font=\small\ttfamily]
 % define styles for program flow charts
-\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, typewriter,
                         text width=4.5em, text badly centered, 
                         node distance=3cm, inner sep=0pt]
-\tikzstyle{block}    = [rectangle, draw, fill=blue!10, 
+\tikzstyle{block}    = [rectangle, draw, fill=blue!10, typewriter,
                         text width=8em, text centered, minimum height=4em]
-\tikzstyle{line}     = [draw, -latex']
+\tikzstyle{line}     = [draw, -latex', typewriter]
 \tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
-                        minimum height=2em]
+                        minimum height=2em, typewriter]
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
 %%%%%%%%%%%%%%%%%%%%%%%
 
 % sheet number
-\def\sheet#1#2{\def\@sheet{#1}\title{#2}} % \sheet{Number}{Title}
+\def\sheet#1#2{\def\@sheet{#1}\title{#2}} % \sheet{<Number>}{<Title>}
 
 % (sub)exercise counter
 \newcounter{excount}
@@ -119,12 +121,12 @@
 % e.g. Hchchc for three centered columns
 \newcolumntype{H}{>{\global\let\currentrowstyle\relax}}
 \newcolumntype{h}{>{\currentrowstyle}}
-\newcommand{\rowstyle}[1]{\gdef\currentrowstyle{#1}% \rowstyle{style}
+\newcommand{\rowstyle}[1]{\gdef\currentrowstyle{#1} % \rowstyle{<style>}
   #1\ignorespaces
 }
 
 % table emphasis
-\newcommand{\temph}{\cellcolor{blue!10}} % \temph{text}
+\newcommand{\temph}{\cellcolor{blue!10}} % \temph{<text>}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -148,7 +150,7 @@
 }
 
 % Prints an exercise's headline
-\newcommand{\ex}[3][]{ % \ex[Number]{Title}{Points}
+\newcommand{\ex}[3][]{ % \ex[<Number>]{<Title>}{<Points>}
   \ifx&#1&
     \stepcounter{excount}
   \else
@@ -165,7 +167,7 @@
 }
 
 % prints an additional exercise's headline
-\newcommand{\addex}[2][]{ % \addex[Number]{Title}
+\newcommand{\addex}[2][]{ % \addex[<Number>]{<Title>}
   \ifx&#1&
     \stepcounter{excount}
   \else
@@ -182,7 +184,7 @@
 }
 
 % Prints a subexercise's number
-\newcommand{\subex}[2][-1]{ % \subex[Number]{Title}
+\newcommand{\subex}[2][-1]{ % \subex[<Number>]{<Title>}
   \ifnum#1=-1
     \stepcounter{subexcount}
   \else
@@ -219,4 +221,14 @@
 
 % short hand for $\leftarrow$
 \newcommand{\la}{\ensuremath{\leftarrow}}
-\newcommand{\comp}[1]{\overline{#1}}
+
+% complement for boolean algebra
+\newcommand{\comp}[1]{% \comp{<expr>}
+\noexpandarg\StrLen{#1}[\strlen]
+\ensuremath
+\ifnum\strlen=1
+  \bar{#1}
+\else
+  \overline{#1}
+\fi
+}
