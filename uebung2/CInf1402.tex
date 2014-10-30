@@ -64,34 +64,34 @@
 \subex{Assemblersequenz}
 \begin{assemblertable}
 % Adr & Op & Oper & Label  & Opc  & Oper     & Comment                        \\
-      &    &      &        & .ORG & \$\#0500 & data space                     \\
- 0500 &    &      & Z1     & .BYTE& 1        &                                \\
- 0501 &    &      & Z2     & .BYTE& 1        &                                \\
- 0502 &    &      & ERG    & .BYTE& 1        &                                \\
- 0503 &    &      & REST   & .BYTE& 1        &                                \\
-      &    &      &        & .ORG & \$\#0600 & program space                  \\% cycles
- 0600 & B6 & 0501 & BEGIN: & LDA  & Z2       & load divisor                   \\% 4
- 0603 & 26 & 0A   &        & BNE  & LOOPS    & if divisor is not zero: divide \\% 2
- 0605 & B7 & 0502 &        & STA  & ERG      & store A (zero) to ERG          \\% 4
- 0608 & 43 &      &        & COMA &          & flip it                        \\% 1
- 0609 & B7 & 0503 &        & STA  & REST     & store A to REST                \\% 4
- 060C & 7E & 1000 &        & JMP  & \$\#1000 & exit program                   \\% 3
- 060F & B6 & 0500 & LOOPS: & LDA  & Z1       & load dividend                  \\% 4
- 0612 & B7 & 0503 &        & STA  & REST     & dividend is initial rest       \\% 4
- 0615 & B6 & 0503 & LOOPO: & LDA  & REST     & load rest                      \\% 4
- 0618 & 8E & 0501 &        & LDX  & Z2       & load divisor                   \\% 3
- 061B & 27 & 0B   & LOOPI: & BEQ  & STRST    & if X is zero, divisor fit      \\% 2
- 061D & 81 & 00   &        & CMPA & \$\#00   & update zero flag               \\% 2
- 061F & 27 & 14   &        & BEQ  & EXIT     & if A is zero, it is done       \\% 2
- 0621 & 8B & FF   &        & ADDA & \$\#FF   & decrement A                    \\% 2
- 0623 & 30 & FFFF &        & ADDX & \$\#FFFF & decrement X                    \\% 3
- 0626 & 20 & F3   &        & BRA  & LOOPI    & go back and check X again      \\% 2
- 0628 & B7 & 0503 & STRST: & STA  & REST     & store rest                     \\% 3
- 062B & B6 & 0502 &        & LDA  & ERG      & load result                    \\% 3
- 062E & 8B & 01   &        & ADDA & \$\#01   & increment A                    \\% 2
- 0630 & B7 & 0502 &        & STA  & ERG      & store new result               \\% 4
- 0633 & 20 & E0   &        & BRA  & LOOPO    & continue outer loop            \\% 2
- 0635 & 7E & 1000 & EXIT:  & JMP  & \$\#1000 & exit program                   \\% 3
+      &    &      &        & .ORG & \$\#0500 & data space                     \\\hline
+ 0500 &    &      & Z1     & .BYTE& 1        &                                \\\hline
+ 0501 &    &      & Z2     & .BYTE& 1        &                                \\\hline
+ 0502 &    &      & ERG    & .BYTE& 1        &                                \\\hline
+ 0503 &    &      & REST   & .BYTE& 1        &                                \\\hline
+      &    &      &        & .ORG & \$\#0600 & program space                  \\\hline% cycles
+ 0600 & B6 & 0501 & BEGIN: & LDA  & Z2       & load divisor                   \\\hline% 4
+ 0603 & 26 & 0A   &        & BNE  & LOOPS    & if divisor is not zero: divide \\\hline% 2
+ 0605 & B7 & 0502 &        & STA  & ERG      & store A (zero) to ERG          \\\hline% 4
+ 0608 & 43 &      &        & COMA &          & flip it                        \\\hline% 1
+ 0609 & B7 & 0503 &        & STA  & REST     & store A to REST                \\\hline% 4
+ 060C & 7E & 1000 &        & JMP  & \$\#1000 & exit program                   \\\hline% 3
+ 060F & B6 & 0500 & LOOPS: & LDA  & Z1       & load dividend                  \\\hline% 4
+ 0612 & B7 & 0503 &        & STA  & REST     & dividend is initial rest       \\\hline% 4
+ 0615 & B6 & 0503 & LOOPO: & LDA  & REST     & load rest                      \\\hline% 4
+ 0618 & 8E & 0501 &        & LDX  & Z2       & load divisor                   \\\hline% 3
+ 061B & 27 & 0B   & LOOPI: & BEQ  & STRST    & if X is zero, divisor fit      \\\hline% 2
+ 061D & 81 & 00   &        & CMPA & \$\#00   & update zero flag               \\\hline% 2
+ 061F & 27 & 14   &        & BEQ  & EXIT     & if A is zero, it is done       \\\hline% 2
+ 0621 & 8B & FF   &        & ADDA & \$\#FF   & decrement A                    \\\hline% 2
+ 0623 & 30 & FFFF &        & ADDX & \$\#FFFF & decrement X                    \\\hline% 3
+ 0626 & 20 & F3   &        & BRA  & LOOPI    & go back and check X again      \\\hline% 2
+ 0628 & B7 & 0503 & STRST: & STA  & REST     & store rest                     \\\hline% 3
+ 062B & B6 & 0502 &        & LDA  & ERG      & load result                    \\\hline% 3
+ 062E & 8B & 01   &        & ADDA & \$\#01   & increment A                    \\\hline% 2
+ 0630 & B7 & 0502 &        & STA  & ERG      & store new result               \\\hline% 4
+ 0633 & 20 & E0   &        & BRA  & LOOPO    & continue outer loop            \\\hline% 2
+ 0635 & 7E & 1000 & EXIT:  & JMP  & \$\#1000 & exit program                   \\\hline% 3
 \end{assemblertable}
 
 \subex{Befehlszahl}
@@ -104,6 +104,53 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
+\tikzset{block/.append style={minimum height=2em,text width=6em}}
+\begin{tikzpicture}[node distance=.4cm]
+   \node[cloud] (begin) {BEGIN};
+   \node[block,below=1cm of begin] (A<-Z1) {A \la Z1};
+   \node[block,below=of A<-Z1] (A<-A+Z2) {A \la A + Z2};
+   \node[block,below=of A<-A+Z2] (ERG<-A) {ERG \la A};
+   \node[cloud, right=1cm of ERG<-A] (fix_lower) {FIX\_LOWER};
+   \node[block,above=1cm of fix_lower] (A<-A+06) {A \la A + 06$_{16}$};
+   \node[block,above=of A<-A+06] (Aand08) {A \&= 08$_{16}$};
+   \node[decision,above right=of A<-A+06] (aIs0?) {A == 0?};
+   \node[block,below=of aIs0?] (A<-ERG) {A \la ERG};
+   \node[block,below=of A<-ERG] (A<-A+08) {A \la A + 08$_{16}$};
+   \node[block,below=of A<-A+08] (ERG<-A-2) {ERG \la A};
+   \node[cloud,right=of aIs0?] (fix_upper) {FIX\_UPPER};
+   \node[block,below=of fix_upper] (A>>4) {A >> 4};
+   \node[block,below=of A>>4] (Aand15) {A \&= 0F$_{16}$};
+   \node[block,below=of Aand15] (A<-A+06-2) {A \la A + 06$_{16}$};
+   \node[decision,below=1.3cm of A<-A+06-2] (aIs0?-2) {A == 0?};
+   \node[block,left=of aIs0?-2] (A<-A+60) {A \la A + 60$_{16}$};
+   \node[block,left=of A<-A+60] (A<-ERG-2) {A \la ERG};
+   \node[block,left=of A<-ERG-2] (ERG<-A-3) {ERG \la A};
+   \node[cloud,left=of ERG<-A-3] (end) {END};
+
+   \path[line] (begin) -- (A<-Z1);
+   \path[line] (A<-Z1) -- (A<-A+Z2);
+   \path[line] (A<-A+Z2) -- (ERG<-A);
+   \path[line] (ERG<-A) -- (fix_lower);
+   \path[line](fix_lower) -- (A<-A+06);
+   \path[line](A<-A+06) -- (Aand08);
+   \path[line] (Aand08) |- (aIs0?);
+   \path[line] (aIs0?) -- node[left] {NO} (A<-ERG);
+   \path[line] (A<-ERG) -- (A<-A+08);
+   \path[line] (A<-A+08) -- (ERG<-A-2);
+   \path[draw] (ERG<-A-2) -| ($(fix_upper.west) + (-1.2cm,0cm)$) -- (fix_upper);
+   \path[line] (aIs0?) -- node[above] {YES} (fix_upper);
+   \path[line] (fix_upper) -- (A>>4);
+   \path[line] (A>>4) -- (Aand15);
+   \path[line] (Aand15) -- (A<-A+06-2);
+   \path[line] (A<-A+06-2) -- (aIs0?-2);
+   \path[line] (aIs0?-2) -- node[above] {NO} (A<-A+60);
+   \path[line] (A<-A+60) -- (A<-ERG-2);
+   \path[line] (A<-ERG-2) -- (ERG<-A-3);
+   \path[line] (ERG<-A-3) -- (end);
+   \path[line] (aIs0?-2) |- ($(end.south) + (0cm,-1cm)$) -- (end);
+
+
+\end{tikzpicture}
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 \subex{}
