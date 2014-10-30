@@ -25,7 +25,7 @@
 \RequirePackage{lmodern, listings, environ}
 
 % math
-\RequirePackage{amsmath, amssymb, array, IEEEtrantools}
+\RequirePackage{amsmath, amsthm, amssymb, array, IEEEtrantools}
 
 % tables
 \RequirePackage{ltablex}\keepXColumns % restores tabularx' X column behaviour
