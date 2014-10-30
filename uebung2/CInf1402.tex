@@ -7,37 +7,107 @@
 \cinftitle
 
 \ex{Division mit Quotient und Rest}{6 + 12 + 6 = 24}
+
+\subex{Programmablaufplan}
+\begin{center}
+  \begin{tikzpicture}
+    \def\a{1cm}
+    \def\b{2cm}
+    \node[cloud]                              (begin)     {Begin};
+    \node[block,    below=.5cm of begin]      (init)      {A \la Z$_2$};
+    \node[decision, below=1cm of init]        (divzero)   {A==0?};
+    \node[block,    left =2cm of divzero]     (preloop)   {REST \la Z$_1$};
+    \node[cloud,    below=1cm of preloop]     (loopOuter) {LoopO};
+    \node[block,    below=1cm of loopOuter]   (initLoop)  {\begin{tabular}{l}
+                                                             A\la REST\\
+                                                             X\la Z$_2$
+                                                           \end{tabular}};
+    \node[cloud,    below=1cm of initLoop]    (loopInner) {LoopI};
+    \node[decision, right=3cm of loopInner]   (xzero)     {X==0?};
+    \node[decision, right=2.5cm of xzero]     (azero)     {A==0?};
+    \node[block,    below=.5cm of azero]      (loopContentInner) {\begin{tabular}{l}
+                                                                    X\la X-1\\
+                                                                    A\la A-1
+                                                                  \end{tabular}};
+    % split into 3? or 
+    % REST \la A \\ ERG \la ERG + 1
+    % ?
+    \node[block,    right=2.3cm of loopOuter] (loopContentOuter) {\begin{tabular}{l}
+                                                                    REST \la A\\
+                                                                    A \la ERG\\
+                                                                    ERG \la A+1
+                                                                  \end{tabular}};
+    \node[block,    right=2cm of divzero]   (error) {\begin{tabular}{l}
+                                                       ERG\la \$00\\
+                                                       REST\la \$FF
+                                                     \end{tabular}};
+    \node[cloud,    below=1cm of error]     (exit) {Exit};
+    
+    \path[line] (begin)            -- (init);
+    \path[line] (init)             -- (divzero);
+    \path[line] (divzero)          -- node[anchor=south]{n} (preloop);preloop
+    \path[line] (divzero)          -- node[anchor=south]{y} (error);
+    \path[line] (error)            -- (exit);
+    \path[line] (preloop)          -- (loopOuter);
+    \path[line] (loopOuter)        -- (initLoop);
+    \path[line] (initLoop)         -- (loopInner);
+    \path[line] (loopInner)        -- (xzero);
+    \path[line] (xzero)            -- node[anchor=south]{n} (azero);
+    \path[line] (azero)            -- node[anchor=east]{n}  (loopContentInner);
+    \path[line] (loopContentInner) -| (loopInner);
+    \path[line] (xzero)            -- node[anchor=east]{y}  (loopContentOuter);
+    \path[line] (loopContentOuter) -- (loopOuter);
+    \path[line] (azero)            -- node[anchor=east]{y}  (exit);
+  \end{tikzpicture}
+\end{center}
+
+\subex{Assemblersequenz}
 \begin{assemblertable}
-% Adr & Op & Oper & Label  & Opc  & Oper   & Comment                          \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
-      &    &      &        &      &        &                                  \\
+% Adr & Op & Oper & Label  & Opc  & Oper     & Comment                        \\
+      &    &      &        & .ORG & \$\#0500 & data space                     \\
+ 0500 &    &      & Z1     & .BYTE& 1        &                                \\
+ 0501 &    &      & Z2     & .BYTE& 1        &                                \\
+ 0502 &    &      & ERG    & .BYTE& 1        &                                \\
+ 0503 &    &      & REST   & .BYTE& 1        &                                \\
+      &    &      &        & .ORG & \$\#0600 & program space                  \\% cycles
+ 0600 & B6 & 0501 & BEGIN: & LDA  & Z2       & load divisor                   \\% 4
+ 0603 & 26 & 0A   &        & BNE  & LOOPS    & if divisor is not zero: divide \\% 2
+ 0605 & B7 & 0502 &        & STA  & ERG      & store A (zero) to ERG          \\% 4
+ 0608 & 43 &      &        & COMA &          & flip it                        \\% 1
+ 0609 & B7 & 0503 &        & STA  & REST     & store A to REST                \\% 4
+ 060C & 7E & 1000 &        & JMP  & \$\#1000 & exit program                   \\% 3
+ 060F & B6 & 0500 & LOOPS: & LDA  & Z1       & load dividend                  \\% 4
+ 0612 & B7 & 0503 &        & STA  & REST     & dividend is initial rest       \\% 4
+ 0615 & B6 & 0503 & LOOPO: & LDA  & REST     & load rest                      \\% 4
+ 0618 & 8E & 0501 &        & LDX  & Z2       & load divisor                   \\% 3
+ 061B & 27 & 0B   & LOOPI: & BEQ  & STRST    & if X is zero, divisor fit      \\% 2
+ 061D & 81 & 00   &        & CMPA & \$\#00   & update zero flag               \\% 2
+ 061F & 27 & 14   &        & BEQ  & EXIT     & if A is zero, it is done       \\% 2
+ 0621 & 8B & FF   &        & ADDA & \$\#FF   & decrement A                    \\% 2
+ 0623 & 30 & FFFF &        & ADDX & \$\#FFFF & decrement X                    \\% 3
+ 0626 & 20 & F3   &        & BRA  & LOOPI    & go back and check X again      \\% 2
+ 0628 & B7 & 0503 & STRST: & STA  & REST     & store rest                     \\% 3
+ 062B & B6 & 0502 &        & LDA  & ERG      & load result                    \\% 3
+ 062E & 8B & 01   &        & ADDA & \$\#01   & increment A                    \\% 2
+ 0630 & B7 & 0502 &        & STA  & ERG      & store new result               \\% 4
+ 0633 & 20 & E0   &        & BRA  & LOOPO    & continue outer loop            \\% 2
+ 0635 & 7E & 1000 & EXIT:  & JMP  & \$\#1000 & exit program                   \\% 3
 \end{assemblertable}
 
+\subex{Befehlszahl}
+Der Minimalfall ist die Division einer beliebigen Zahl mit 0. Hierbei werden 
+sechs Befehle in $18$ Takten abgearbeitet.
+Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
+=3584$ Befehle (Takte: $14+36\dot 255+9=9203$) (Initialisierung, Loop, Beenden
+) benötigt. 
+% ~2.6 Takte pro Befehl, scheint etwa zu passen. Bei Langeweile darf aber nachgerechnet werden.
 
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 \subex{}
-\begin{align*}
+\begin{align*}% no ideas anymore
 a\cdot \left( a + b \right) &= a & \\
 todo
 \end{align*}
@@ -79,6 +149,8 @@ todo
 
 $f$ und $g$ sind äquivalent.
 
+% according to practice session this should be possible in about five lines. 
+% I don't see how. But I'm certain this is not optimal.
 \subex{Algebraischer Äquivalenzbeweis}\allowdisplaybreaks
 \begin{align*}
 f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd + a \comp b d} } &  \\
@@ -129,7 +201,7 @@ f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd
 
   % ~B & A
   \node[and port] at(7, 2.725) (not B and A) {};
-  \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.35, 0)$);
+  \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.325, 0)$);
   \draw ($(a) + (0.2, 0)$) to[short, -*] (5, 2) 
                            to (5, 2.45) 
                            to (not B and A.in 2);
@@ -138,7 +210,7 @@ f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd
   \node[and port] at(7, 1.275) (C and not A) {};
   \draw ($(c) + (0.2, 0)$) to (C and not A.in 2) {};
   \draw (5, 2) to (5, 1.55) 
-               to[short, -o] ($(C and not A.in 1) + (0.35, 0)$) {};
+               to[short, -o] ($(C and not A.in 1) + (0.325, 0)$) {};
 
   % A & B & C & D
   \node[rectangle, draw, minimum width=1.2cm, 

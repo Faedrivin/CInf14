@@ -160,7 +160,7 @@
     \par\bigskip
   \fi
   \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
-    \bf Aufgabe \@sheet.\arabic{excount} & \bf #2 & \bf(#3 P)
+    \bf Aufgabe \@sheet.\arabic{excount}: & \bf #2 & \bf(#3 P)
   \end{tabularx}
   %\vspace{\baselineskip}
   \par
