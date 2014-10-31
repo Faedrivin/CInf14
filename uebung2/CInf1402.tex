@@ -29,13 +29,10 @@
                                                                     X\la X-1\\
                                                                     A\la A-1
                                                                   \end{tabular}};
-    % split into 3? or 
-    % REST \la A \\ ERG \la ERG + 1
-    % ?
+    % split?
     \node[block,    right=2.3cm of loopOuter] (loopContentOuter) {\begin{tabular}{l}
                                                                     REST \la A\\
-                                                                    A \la ERG\\
-                                                                    ERG \la A+1
+                                                                    ERG \la ERG+1
                                                                   \end{tabular}};
     \node[block,    right=2cm of divzero]   (error) {\begin{tabular}{l}
                                                        ERG\la \$00\\
@@ -98,8 +95,8 @@
 Der Minimalfall ist die Division einer beliebigen Zahl mit 0. Hierbei werden 
 sechs Befehle in $18$ Takten abgearbeitet.
 Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
-=3584$ Befehle (Takte: $14+36\cdot 255+9=9203$) (Initialisierung, Loop, Beenden
-) benötigt. 
+=3584$ Befehle (Takte: $14+36\cdot 255+9=9203$) (Initialisierung, Loop, Beenden)
+benötigt. 
 % ~2.6 Takte pro Befehl, scheint etwa zu passen. Bei Langeweile darf aber nachgerechnet werden.
 
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
@@ -180,8 +177,7 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 \end{assemblertable}
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
-\subex{}
-Wir beweisen vorab das Idempotenzgesetz.
+Wir beweisen vorab die Idempotenzgesetze.
 \begin{IEEEeqnarray*}{rC?l}
    a + 0 & = a & \text{(Nullelement)} \\
    a + (a \cdot \comp a) & = a & \text{(Komplementäres Element)} \\
@@ -191,6 +187,35 @@ Wir beweisen vorab das Idempotenzgesetz.
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
+\begin{IEEEeqnarray*}{rC?l}
+   a \cdot 1 & = a &  \\
+   a \cdot (a + \comp a) & = a & \text{(Komplementäres Element)} \\
+   (a \cdot a) + (a \cdot \comp a) & = a & \text{(Distributivgesetz)} \\
+   (a \cdot a) + 0 & = a & \text{(Komplementäres Element)} \\
+   a \cdot a & = a & \text{(Nullelement)}
+\end{IEEEeqnarray*}
+\hfill{$\square$}
+
+Außerdem beweisen wir die Existenz der neutralen Elemente.
+\begin{IEEEeqnarray*}
+          1 + a & = 1 & \\
+a + \comp a + a & = 1 & \text{((4): $a+\comp a = 1$)} \\
+a + a + \comp a & = 1 & \text{(Kommutativgesetz)} \\
+    a + \comp a & = 1 & \text{(Idempotenzgesetz, s.o.)} \\
+              1 & = 1 & \text{((4): $a+\comp a = 1$)} \\
+\end{IEEEeqnarray*}
+\hfill{$\square$}
+
+\begin{IEEEeqnarray*}
+          0 * a & = 0 & \\
+a * \comp a * a & = 0 & \text{((4): $a\cdot\comp a = 0$)} \\
+a * a * \comp a & = 0 & \text{(Kommutativgesetz)} \\
+    a * \comp a & = 0 & \text{(Idempotenzgesetz, s.o.)} \\
+              0 & = 0 & \text{((4): $a\cdot\comp a = 0$)} \\
+\end{IEEEeqnarray*}
+\hfill{$\square$}
+
+\subex{}
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
    (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
@@ -213,10 +238,7 @@ Wir beweisen vorab das Idempotenzgesetz.
    \comp a + \left(a        + b\right) &= 1 &\\ 
    \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)} \\ 
    1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
-   b + \comp b      +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
-   b + b + \comp b             &= 1 &\text{(Kommutativgesetz)} \\
-   b + \comp b                 &= 1 &\text{(Itempotenzgesetz, s.o.)} \\
-   1                           &= 1 &\text{((4): $a+\comp a = 1$)} \\
+   1                           &= 1 &\text{(Neutrales Element)} \\
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
