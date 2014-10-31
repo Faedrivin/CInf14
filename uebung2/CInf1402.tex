@@ -104,7 +104,8 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
-\tikzset{block/.append style={minimum height=2em,text width=6em}}
+\subex{Programmablaufplan}
+\tikzset{block/.append style={minimum height=1.7em,text width=6em}}
 \begin{tikzpicture}[node distance=.3cm]
    \node[cloud] (begin) {BEGIN};
    \node[block,below=1cm of begin] (A<-Z1) {A \la Z1};
@@ -150,9 +151,33 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
    \path[line] (A<-A+60) -- (ERG<-A-3);
    \path[line] (ERG<-A-3) -- (end);
    \path[line] (aIs0?-2) |- ($(end.south) + (0cm,-1cm)$) -- (end);
-
-
 \end{tikzpicture}
+
+\subex{Assemblerprogramm}
+
+\begin{assemblertable}
+   &  &  & BEGIN: & LDA    & Z1  & First regular binary addition \\\hline
+   &  &  &        & ADDA   & Z2  & \\\hline
+   &  &  &        & STA    & ERG & \\\hline
+   &  &  & FIX\_LOWER: & ADDA & \#0x06 & +6 is equiv. to -10 \\\hline
+   &  &  &            & ANDA & \#0x10 & Check if carry was generated \\\hline
+   &  &  &            & BEQ  & FIX\_UPPER & If not, do nothing, move to high nibble \\\hline
+   &  &  &            & LDA  & ERG & Otherwise, roll back and do the computation again\\\hline
+   &  &  &            & ADDA  & \#0x06 & \\\hline
+   &  &  &            & STA  & ERG & This time, save it\\\hline
+   &  &  & FIX\_UPPER: & RORA & &For the upper nibble, shift to right \\\hline
+   &  &  &             & RORA & &\\\hline
+   &  &  &             & RORA & &\\\hline
+   &  &  &             & RORA & &\\\hline
+   &  &  &             & ANDA & \#0x0F & Mask out high nibble\\\hline
+   &  &  &             & ADDA & \#0x06 & Again try to substract 10\\\hline
+   &  &  &             & ANDA & \#0x10 & Check if correct\\\hline
+   &  &  &             & BEQ & END & If not, don't save and exit\\\hline
+   &  &  &             & LDA & ERG & Else do again and save it\\\hline
+   &  &  &            & ADDA  & \#0x60 & This time, add to high nibble, leave low nibble alone\\\hline
+   &  &  &            & STA  & ERG & \\\hline
+   &  &  & END:       & JMP  & \$1000 & \\\hline
+\end{assemblertable}
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 \subex{}
@@ -169,7 +194,7 @@ Wir beweisen vorab das Idempotenzgesetz.
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
    (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
-   ((b \cdot a) + (\comp b \cdot a)) \cdot (a + b) & =  a\\
+   ((b \cdot a) + (\comp b \cdot a)) \cdot (a + b) & = a &\text{(Distributivgesetz)}\\
    ((b \cdot a) \cdot (a + b)) + ((\comp b \cdot a) \cdot (a + b)) & =  a & \text{(Distributivgesetz)}\\
    (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
    (((a \cdot b) + (b \cdot b)) \cdot ((a \cdot b) + (a\cdot a))) + ((\comp b \cdot a) \cdot (a + b))& =  a &  \text{(Distributivgesetz)}\\

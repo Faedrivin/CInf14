@@ -159,7 +159,7 @@
   \ifnum \value{excount}>1
     \par\bigskip
   \fi
-  \noindent\begin{tabularx}{.9\textwidth}{l>{\centering}Xr}
+  \noindent\begin{tabularx}{\textwidth}{l>{\centering}Xr}
     \bf Aufgabe \@sheet.\arabic{excount}: & \bf #2 & \bf(#3 P)
   \end{tabularx}
   %\vspace{\baselineskip}
