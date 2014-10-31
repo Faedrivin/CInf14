@@ -99,6 +99,7 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 benötigt. 
 % ~2.6 Takte pro Befehl, scheint etwa zu passen. Bei Langeweile darf aber nachgerechnet werden.
 
+\vbox{
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
 \subex{Programmablaufplan}
@@ -149,6 +150,7 @@ benötigt.
    \path[line] (ERG<-A-3) -- (end);
    \path[line] (aIs0?-2) |- ($(end.south) + (0cm,-1cm)$) -- (end);
 \end{tikzpicture}
+}% end vbox
 
 \subex{Assemblerprogramm}
 
@@ -176,6 +178,7 @@ benötigt.
    &  &  & END:       & JMP  & \$1000 & \\\hline
 \end{assemblertable}
 
+\vbox{
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 Wir beweisen vorab die Idempotenzgesetze.
 \begin{IEEEeqnarray*}{rC?l}
@@ -186,9 +189,10 @@ Wir beweisen vorab die Idempotenzgesetze.
    a + a & = a & \text{(Einselement)}
 \end{IEEEeqnarray*}
 \hfill{$\square$}
-
+}
+%
 \begin{IEEEeqnarray*}{rC?l}
-   a \cdot 1 & = a &  \\
+   a \cdot 1 & = a & \text{(Einselement)} \\
    a \cdot (a + \comp a) & = a & \text{(Komplementäres Element)} \\
    (a \cdot a) + (a \cdot \comp a) & = a & \text{(Distributivgesetz)} \\
    (a \cdot a) + 0 & = a & \text{(Komplementäres Element)} \\
@@ -202,19 +206,20 @@ Außerdem beweisen wir die Existenz der neutralen Elemente.
 a + \comp a + a & = 1 & \text{((4): $a+\comp a = 1$)} \\
 a + a + \comp a & = 1 & \text{(Kommutativgesetz)} \\
     a + \comp a & = 1 & \text{(Idempotenzgesetz, s.o.)} \\
-              1 & = 1 & \text{((4): $a+\comp a = 1$)} \\
+              1 & = 1 & \text{((4): $a+\comp a = 1$)} 
 \end{IEEEeqnarray*}
 \hfill{$\square$}
-
+%
 \begin{IEEEeqnarray*}{rC?l}
           0 \cdot a & = 0 & \\
 a \cdot \comp a \cdot a & = 0 & \text{((4): $a\cdot\comp a = 0$)} \\
 a \cdot a \cdot \comp a & = 0 & \text{(Kommutativgesetz)} \\
     a \cdot \comp a & = 0 & \text{(Idempotenzgesetz, s.o.)} \\
-              0 & = 0 & \text{((4): $a\cdot\comp a = 0$)} \\
+              0 & = 0 & \text{((4): $a\cdot\comp a = 0$)}
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
+\vbox{
 \subex{}
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
@@ -229,19 +234,32 @@ a \cdot a \cdot \comp a & = 0 & \text{(Kommutativgesetz)} \\
    (a \cdot b) + ((\comp b \cdot a) + 0)& =  a & \text{($a \cdot \comp a = 0$)}\\
    (a \cdot b) + (\comp b \cdot a)& =  a & \text{($a + 0 = a$)}\\
    a \cdot (b + \comp b) & = a & \text{(Distributivgesetz, invers)} \\
-   a & = a & \text{($b + \comp b = 1$)}\\
+   a & = a & \text{($b + \comp b = 1$)}
 \end{IEEEeqnarray*}
 \hfill{$\square$}
+}% end vbox
 
 \subex{}
 \begin{IEEEeqnarray*}{rC?l} % not sure if we are allowed to use associative law!
    \comp a + \left(a        + b\right) &= 1 &\\ 
    \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)} \\ 
    1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
-   1                           &= 1 &\text{(Neutrales Element)} \\
+   1                           &= 1 &\text{(Neutrales Element)} 
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
+Alternative ohne Assoziativgesetz:
+\begin{IEEEeqnarray*}{rC?l}
+\comp a + (a + b) & =1& \\
+\comp a + (a + b) \cdot 1 & = 1 & \text{(Einselement)} \\
+\comp a + (a \cdot 1) + (b \cdot 1) & = 1 & \text{(Distributivgesetz)} \\
+\comp a + a + b & = 1 & \text{(Einselement)} \\
+        1   + b & = 1 & \text{((4): $a+\comp a=1$)} \\
+              1 & = 1 & \text{(Neutrales Element)} 
+\end{IEEEeqnarray*}
+\hfill{$\square$}
+
+\vbox{
 \ex{Schaltfunktionen}{6 + 14 + 6 = 26}
 
 \subex{Wertetabelle $f$ und $g$}
@@ -269,6 +287,7 @@ a \cdot a \cdot \comp a & = 0 & \text{(Kommutativgesetz)} \\
 \end{center}
 
 $f$ und $g$ sind äquivalent.
+}% end vbox
 
 % according to practice session this should be possible in about five lines. 
 % I don't see how. But I'm certain this is not optimal.
@@ -368,6 +387,7 @@ Schlüssel im Schloss gedreht wird, sonst 0. $B$ steht für den Knopf und ist 1,
 während der Knopf gedrückt ist. $F$ steht für den Fingerabdruck und ist 1, 
 während der korrekte Finger auf die Sensorfläche gelegt ist.
 
+\vbox{
 \subex{Schaltfunktion}
 Die Schaltfunktion $t$ kann durch einfaches Kombinieren erstellt werden: Für 
 Methode 1 müssen Schlüssel 1 und Schlüssel 2 gleichzeitig gedreht sein, das 
@@ -380,6 +400,7 @@ Distributivgesetz kann die Formel noch vereinfacht werden:
 \begin{align*}
 t = K_1K_2B+FB = (K_1K_2+F)B
 \end{align*}
+}% end vbox
 
 \subex{Sheffer stroke}
 { % group for some special commands - note I used AND and ANDouter because
@@ -401,7 +422,7 @@ t = K_1K_2B+FB = (K_1K_2+F)B
 
 
 
-\addex{Bignum}
+%\addex{Bignum}
 
 
 
