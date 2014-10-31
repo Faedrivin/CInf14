@@ -105,26 +105,27 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 \ex{Addition von BCD-Zahlen}{6 + 12 = 18}
 
 \tikzset{block/.append style={minimum height=2em,text width=6em}}
-\begin{tikzpicture}[node distance=.4cm]
+\begin{tikzpicture}[node distance=.3cm]
    \node[cloud] (begin) {BEGIN};
    \node[block,below=1cm of begin] (A<-Z1) {A \la Z1};
    \node[block,below=of A<-Z1] (A<-A+Z2) {A \la A + Z2};
    \node[block,below=of A<-A+Z2] (ERG<-A) {ERG \la A};
    \node[cloud, right=1cm of ERG<-A] (fix_lower) {FIX\_LOWER};
    \node[block,above=1cm of fix_lower] (A<-A+06) {A \la A + 06$_{16}$};
-   \node[block,above=of A<-A+06] (Aand08) {A \&= 08$_{16}$};
+   \node[block,above=of A<-A+06] (Aand10) {A \&= 10$_{16}$};
    \node[decision,above right=of A<-A+06] (aIs0?) {A == 0?};
    \node[block,below=of aIs0?] (A<-ERG) {A \la ERG};
-   \node[block,below=of A<-ERG] (A<-A+08) {A \la A + 08$_{16}$};
-   \node[block,below=of A<-A+08] (ERG<-A-2) {ERG \la A};
+   \node[block,below=of A<-ERG] (A<-A+06-3) {A \la A + 06$_{16}$};
+   \node[block,below=of A<-A+06-3] (ERG<-A-2) {ERG \la A};
    \node[cloud,right=of aIs0?] (fix_upper) {FIX\_UPPER};
    \node[block,below=of fix_upper] (A>>4) {A >> 4};
    \node[block,below=of A>>4] (Aand15) {A \&= 0F$_{16}$};
    \node[block,below=of Aand15] (A<-A+06-2) {A \la A + 06$_{16}$};
-   \node[decision,below=1.3cm of A<-A+06-2] (aIs0?-2) {A == 0?};
-   \node[block,left=of aIs0?-2] (A<-A+60) {A \la A + 60$_{16}$};
-   \node[block,left=of A<-A+60] (A<-ERG-2) {A \la ERG};
-   \node[block,left=of A<-ERG-2] (ERG<-A-3) {ERG \la A};
+   \node[block,below=of A<-A+06-2] (Aand10-2) {A \&= 10$_{16}$};
+   \node[decision,below=.5cm of Aand10-2] (aIs0?-2) {A == 0?};
+   \node[block,left=of aIs0?-2] (A<-ERG-2) {A \la ERG};
+   \node[block,left=of A<-ERG-2] (A<-A+60) {A \la A + 60$_{16}$};
+   \node[block,left=of A<-A+60] (ERG<-A-3) {ERG \la A};
    \node[cloud,left=of ERG<-A-3] (end) {END};
 
    \path[line] (begin) -- (A<-Z1);
@@ -132,20 +133,21 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
    \path[line] (A<-A+Z2) -- (ERG<-A);
    \path[line] (ERG<-A) -- (fix_lower);
    \path[line](fix_lower) -- (A<-A+06);
-   \path[line](A<-A+06) -- (Aand08);
-   \path[line] (Aand08) |- (aIs0?);
+   \path[line](A<-A+06) -- (Aand10);
+   \path[line] (Aand10) |- (aIs0?);
    \path[line] (aIs0?) -- node[left] {NO} (A<-ERG);
-   \path[line] (A<-ERG) -- (A<-A+08);
-   \path[line] (A<-A+08) -- (ERG<-A-2);
+   \path[line] (A<-ERG) -- (A<-A+06-3);
+   \path[line] (A<-A+06-3) -- (ERG<-A-2);
    \path[draw] (ERG<-A-2) -| ($(fix_upper.west) + (-1.2cm,0cm)$) -- (fix_upper);
    \path[line] (aIs0?) -- node[above] {YES} (fix_upper);
    \path[line] (fix_upper) -- (A>>4);
    \path[line] (A>>4) -- (Aand15);
    \path[line] (Aand15) -- (A<-A+06-2);
-   \path[line] (A<-A+06-2) -- (aIs0?-2);
-   \path[line] (aIs0?-2) -- node[above] {NO} (A<-A+60);
-   \path[line] (A<-A+60) -- (A<-ERG-2);
-   \path[line] (A<-ERG-2) -- (ERG<-A-3);
+   \path[line] (A<-A+06-2) -- (Aand10-2);
+   \path[line] (Aand10-2) -- (aIs0?-2);
+   \path[line] (aIs0?-2) -- node[above] {NO} (A<-ERG-2);
+   \path[line] (A<-ERG-2) -- (A<-A+60);
+   \path[line] (A<-A+60) -- (ERG<-A-3);
    \path[line] (ERG<-A-3) -- (end);
    \path[line] (aIs0?-2) |- ($(end.south) + (0cm,-1cm)$) -- (end);
 
@@ -157,7 +159,7 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 \begin{proof}[]
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
-   (b + \comp b) \cdot a \cdot (a + b) & = a\\
+   (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
    ((b \cdot a) + (\comp b \cdot a)) \cdot (a + b) & =  a\\
    ((b \cdot a) \cdot (a + b)) + ((\comp b \cdot a) \cdot (a + b)) & =  a & \text{(Distributivgesetz)}\\
    (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
