@@ -174,7 +174,7 @@ Wir beweisen vorab das Idempotenzgesetz.
    (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
    (((a \cdot b) + (b \cdot b)) \cdot ((a \cdot b) + (a\cdot a))) + ((\comp b \cdot a) \cdot (a + b))& =  a &  \text{(Distributivgesetz)}\\
    ((a \cdot b) + (a \cdot b)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz, invers)}\\
-   (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{Idempotenzgesetz}\\
+   (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Idempotenzgesetz)}\\
    (a \cdot b) + ((\comp b \cdot a \cdot a) + (\comp b \cdot a \cdot b))& =  a & \text{(Distributivgesetz)}\\
    (a \cdot b) + ((\comp b \cdot a) + 0)& =  a & \text{($a \cdot \comp a = 0$)}\\
    (a \cdot b) + (\comp b \cdot a)& =  a & \text{($a + 0 = a$)}\\
@@ -186,9 +186,12 @@ Wir beweisen vorab das Idempotenzgesetz.
 \subex{}
 \begin{IEEEeqnarray*}{rC?l} % not sure if we are allowed to use associative law!
    \comp a + \left(a        + b\right) &= 1 &\\ 
-   \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)}\\ 
+   \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)} \\ 
    1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
-   1                           &= 1 &\text{(Neutr. Element)}\\
+   b + \comp b      +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
+   b + b + \comp b             &= 1 &\text{(Kommutativgesetz)} \\
+   b + \comp b                 &= 1 &\text{(Itempotenzgesetz, s.o.)} \\
+   1                           &= 1 &\text{((4): $a+\comp a = 1$)} \\
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
