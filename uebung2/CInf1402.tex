@@ -156,6 +156,17 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 \subex{}
+Wir beweisen vorab das Idempotenzgesetz.
+\begin{proof}[]
+\begin{IEEEeqnarray*}{rC?l}
+   a + 0 & = a & \text{(Nullelement)} \\
+   a + (a \cdot \comp a) & = a & \text{(Komplementäres Element)} \\
+   (a + a) \cdot (a + \comp a) & = a & \text{(Distributivgesetz)} \\
+   (a + a) \cdot 1 & = a & \text{(Komplementäres Element)} \\
+   a + a & = a & \text{(Einselement)}
+\end{IEEEeqnarray*}
+\end{proof}
+
 \begin{proof}[]
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
@@ -165,7 +176,7 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
    (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
    (((a \cdot b) + (b \cdot b)) \cdot ((a \cdot b) + (a\cdot a))) + ((\comp b \cdot a) \cdot (a + b))& =  a &  \text{(Distributivgesetz)}\\
    ((a \cdot b) + (a \cdot b)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz, invers)}\\
-   (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{($a + a = a$)}\\
+   (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{Idempotenzgesetz}\\
    (a \cdot b) + ((\comp b \cdot a \cdot a) + (\comp b \cdot a \cdot b))& =  a & \text{(Distributivgesetz)}\\
    (a \cdot b) + ((\comp b \cdot a) + 0)& =  a & \text{($a \cdot \comp a = 0$)}\\
    (a \cdot b) + (\comp b \cdot a)& =  a & \text{($a + 0 = a$)}\\
