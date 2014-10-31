@@ -157,7 +157,6 @@ Der Maximalfall ist die Division von 255 mit 1. Hierzu werden $8+14\cdot 255+6
 \ex{Absorptionsgesetze}{7 + 7 = 14}
 \subex{}
 Wir beweisen vorab das Idempotenzgesetz.
-\begin{proof}[]
 \begin{IEEEeqnarray*}{rC?l}
    a + 0 & = a & \text{(Nullelement)} \\
    a + (a \cdot \comp a) & = a & \text{(Komplementäres Element)} \\
@@ -165,9 +164,8 @@ Wir beweisen vorab das Idempotenzgesetz.
    (a + a) \cdot 1 & = a & \text{(Komplementäres Element)} \\
    a + a & = a & \text{(Einselement)}
 \end{IEEEeqnarray*}
-\end{proof}
+\hfill{$\square$}
 
-\begin{proof}[]
 \begin{IEEEeqnarray*}{rC?l}
    a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
    (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
@@ -183,17 +181,16 @@ Wir beweisen vorab das Idempotenzgesetz.
    a \cdot (b + \comp b) & = a & \text{(Distributivgesetz, invers)} \\
    a & = a & \text{($b + \comp b = 1$)}\\
 \end{IEEEeqnarray*}
-\end{proof}
+\hfill{$\square$}
 
 \subex{}
-\begin{proof}[]
-   \begin{IEEEeqnarray*}{rC?l} % not sure if we are allowed to use associative law!
-      \comp a + \left(a        + b\right) &= 1 &\\ 
-      \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)}\\ 
-      1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
-      1                           &= 1 &\text{(Neutr. Element)}\\
-   \end{IEEEeqnarray*}
-\end{proof}
+\begin{IEEEeqnarray*}{rC?l} % not sure if we are allowed to use associative law!
+   \comp a + \left(a        + b\right) &= 1 &\\ 
+   \left(\comp a +       a\right) + b        &= 1 &\text{(Assoziativgesetz)}\\ 
+   1                +        b &= 1 &\text{((4): $a+\comp a = 1$)} \\
+   1                           &= 1 &\text{(Neutr. Element)}\\
+\end{IEEEeqnarray*}
+\hfill{$\square$}
 
 \ex{Schaltfunktionen}{6 + 14 + 6 = 26}
 
