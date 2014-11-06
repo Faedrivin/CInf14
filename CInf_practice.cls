@@ -35,7 +35,7 @@
 \RequirePackage{enumitem}
 
 % graphics, diagrams
-\RequirePackage{graphicx, tikz}
+\RequirePackage{graphicx, tikz, calc}
 \RequirePackage[european]{circuitikz}
 
 % other packages
@@ -84,7 +84,7 @@
 }
 
 % choose tikz libraries
-\usetikzlibrary{shapes, automata, positioning, arrows,calc,intersections}
+\usetikzlibrary{shapes, automata, positioning, arrows, calc, intersections}
 
 \tikzstyle{typewriter} = [font=\small\ttfamily]
 % define styles for program flow charts
@@ -97,6 +97,15 @@
 \tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
                         minimum height=2em, typewriter]
 
+% styles for circuit diagrams
+\newlength{\portsize}
+\setlength{\portsize}{\widthof{\&}*3}
+\tikzstyle{and port}=[font={\&},draw,shape=rectangle,text centered,text
+   width=\portsize,minimum height=1.3*\portsize] % :D why the fuck do I need to scale the length for minimum height to get a friggin square?
+\tikzstyle{or port}=[font={$\ge 1$},draw,shape=rectangle,text centered,text
+   width=\portsize,minimum height=1.3*\portsize] 
+
+   \usetikzlibrary{intersections}
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -227,8 +236,8 @@
 \noexpandarg\StrLen{#1}[\strlen]
 \ensuremath
 \ifnum\strlen=1
-  \bar{#1}
+\bar{\vphantom{b}#1}
 \else
-  \overline{#1}
+\overline{\vphantom{b}#1}
 \fi
 }
