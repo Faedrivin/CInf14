@@ -58,14 +58,14 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-and-1] (a) |- (and-1.145);
             \draw[name path=b-and-1] (b) |- (and-1.180);
             \draw[name path=c-and-1] (c) |- (and-1.215);
-            \fill[black,name intersections={of=a-line and a-and-1}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-and-1}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-and-1}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-and-1}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-and-1}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-and-1}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (and-1.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(and-1.145)$) circle (2pt);
-               \filldraw[fill=white] ($(and-1.180)$) circle (2pt);
-               \filldraw[fill=white] ($(and-1.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-1.145] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-1.180] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-1.215] () {};
             \end{scope}
 
             % second and
@@ -73,13 +73,13 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-and-2] (a) |- (and-2.145);
             \draw[name path=b-and-2] (b) |- (and-2.180);
             \draw[name path=c-and-2] (c) |- (and-2.215);
-            \fill[black,name intersections={of=a-line and a-and-2}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-and-2}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-and-2}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-and-2}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-and-2}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-and-2}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (and-2.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(and-2.145)$) circle (2pt);
-               \filldraw[fill=white] ($(and-2.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-2.145] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-2.215] () {};
             \end{scope}
 
             % third and
@@ -87,12 +87,12 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-and-3] (a) |- (and-3.145);
             \draw[name path=b-and-3] (b) |- (and-3.180);
             \draw[name path=c-and-3] (c) |- (and-3.215);
-            \fill[black,name intersections={of=a-line and a-and-3}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-and-3}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-and-3}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-and-3}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-and-3}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-and-3}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (and-3.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(and-3.145)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-3.145] () {};
             \end{scope}
 
             % fourth and
@@ -100,12 +100,12 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-and-4] (a) |- (and-4.145);
             \draw[name path=b-and-4] (b) |- (and-4.180);
             \draw[name path=c-and-4] (c) |- (and-4.215);
-            \fill[black,name intersections={of=a-line and a-and-4}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-and-4}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-and-4}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-and-4}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-and-4}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-and-4}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (and-4.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(and-4.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of and-4.215] () {};
             \end{scope}
 
             % or
@@ -133,12 +133,12 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-or-1] (a) |- (or-1.145);
             \draw[name path=b-or-1] (b) |- (or-1.180);
             \draw[name path=c-or-1] (c) |- (or-1.215);
-            \fill[black,name intersections={of=a-line and a-or-1}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-or-1}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-or-1}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-or-1}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-or-1}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-or-1}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (or-1.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(or-1.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-1.215] () {};
             \end{scope}
 
             % second or
@@ -146,12 +146,12 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-or-2] (a) |- (or-2.145);
             \draw[name path=b-or-2] (b) |- (or-2.180);
             \draw[name path=c-or-2] (c) |- (or-2.215);
-            \fill[black,name intersections={of=a-line and a-or-2}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-or-2}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-or-2}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-or-2}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-or-2}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-or-2}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (or-2.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(or-2.145)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-2.145] () {};
             \end{scope}
 
             % third or
@@ -159,13 +159,13 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-or-3] (a) |- (or-3.145);
             \draw[name path=b-or-3] (b) |- (or-3.180);
             \draw[name path=c-or-3] (c) |- (or-3.215);
-            \fill[black,name intersections={of=a-line and a-or-3}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-or-3}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-or-3}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-or-3}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-or-3}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-or-3}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (or-3.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(or-3.145)$) circle (2pt);
-               \filldraw[fill=white] ($(or-3.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-3.145] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-3.215] () {};
             \end{scope}
 
             % fourth or
@@ -173,14 +173,14 @@ oder rückwärts) zur Vereinfachung angewandt.
             \draw[name path=a-or-4] (a) |- (or-4.145);
             \draw[name path=b-or-4] (b) |- (or-4.180);
             \draw[name path=c-or-4] (c) |- (or-4.215);
-            \fill[black,name intersections={of=a-line and a-or-4}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=b-line and b-or-4}] (intersection-1) circle (2pt);
-            \fill[black,name intersections={of=c-line and c-or-4}] (intersection-1) circle (2pt);
+            \fill[black,name intersections={of=a-line and a-or-4}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=b-line and b-or-4}] (intersection-1) circle (1.5pt);
+            \fill[black,name intersections={of=c-line and c-or-4}] (intersection-1) circle (1.5pt);
             \begin{scope} % scope to only clip circles
                \clip (or-4.north west) rectangle ++(-3cm,-3cm); % to cut circles
-               \filldraw[fill=white] ($(or-4.145)$) circle (2pt);
-               \filldraw[fill=white] ($(or-4.180)$) circle (2pt);
-               \filldraw[fill=white] ($(or-4.215)$) circle (2pt);
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-4.145] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-4.180] () {};
+               \node[shape=circle,draw,fill=white,inner sep=1.5pt,left=0pt of or-4.215] () {};
             \end{scope}
 
             % and
