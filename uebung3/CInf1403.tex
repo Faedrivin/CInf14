@@ -196,6 +196,39 @@ oder rückwärts) zur Vereinfachung angewandt.
       \end{center}
 \end{enumerate}
 \ex{Schaltungsanalyse}{6 + 6 + 3 + 3 = 18}
+% ruby for ttable generation
+% expr = expr.gsub(/\\comp{(.*)}/, "not \\1").gsub("+", " or ").gsub("\\cdot", " and ").gsub(/\\comp (.)/, "not \\1")
+%    table = '\begin{tabular}{ccc|l}'
+%    table += "\n $a$ & $b$ & $c$ & $f$\\\\\\hline"
+%    [true,false].each do |a|
+%       [true,false].each do |b|
+%          [true,false].each do |c|
+%             table += "\n#{a} & #{b} & #{c} & #{eval expr}\\\\"
+%          end
+%       end
+%    end
+%    puts table.gsub("true", "1").gsub("false", "0").concat("\n\\end{tabular}")
+\begin{enumerate}[label=\alph{*})]
+   \item 
+      \begin{eqnarray*}
+         f_1 & = & (a + \comp b + c) \cdot (\comp a + b + c) \cdot (\comp a + \comp b + \comp c)\\
+         f_2 & = & (a \cdot \comp c) + (\comp a \cdot \comp b \cdot c) \\
+         f_2 & = & (\comp a \cdot b \cdot c) + \comp{(a + \comp c)}
+      \end{eqnarray*}
+   \item \hspace{\linewidth}
+
+      \begin{tabular}{ccc|lll}
+         $a$ & $b$ & $c$ & $f_1$ & $f_2$ & $f_3$\\\hline
+         1 & 1 & 1 & 0&0&0\\
+         1 & 1 & 0 & 1&1&0\\
+         1 & 0 & 1 & 1&0&0\\
+         1 & 0 & 0 & 0&1&0\\
+         0 & 1 & 1 & 1&0&1\\
+         0 & 1 & 0 & 0&0&0\\
+         0 & 0 & 1 & 1&1&1\\
+         0 & 0 & 0 & 1&0&0\\
+      \end{tabular}
+\end{enumerate}
 \ex{KV-Minimierung}{6 + 8 + 8 = 22}
 \ex{KV-Minimierung mit 5 Variablen}{12}
 \ex{7-Segment-Anzeige}{2 + 8 + 8 = 18}
