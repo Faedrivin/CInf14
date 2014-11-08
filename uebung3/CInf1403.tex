@@ -389,7 +389,30 @@ Die DMF ist daher $\comp a \comp d + \comp c d + c\comp d + \comp a \comp b$
 \end{center}
 
 Die KMF ist daher $(a + b + \comp d ) \cdot (\comp c + \comp d) \cdot (\comp b +
-\comp c) + (\comp b + \comp a) + (\comp a + c + d)$
+\comp c) + (\comp a + \comp b) + (\comp a + c + d)$
+\subex{}
+
+\begin{IEEEeqnarray*}{rCl}
+   \comp a\comp d + \comp c d + c \comp d + \comp a \comp b & \stackrel{?}{=} & (a + b + \comp d ) \cdot (\comp c + \comp d) \cdot (\comp b +
+   \comp c) + (\comp a + \comp b) + (\comp a + c + d) \\
+   \comp a\comp d +\comp a\comp d + \comp c d + c \comp d + \comp a \comp b &
+   \stackrel{?}{=} & (a + b + \comp d ) \cdot (\comp c + \comp d) \cdot (\comp b
+   + \comp c) + (\comp a + \comp b) + (\comp a + c + d) \\
+   \comp{\comp a\comp d +\comp a\comp d + \comp c d + c \comp d + \comp a \comp
+   b} & \stackrel{?}{=} & \comp{(a + b + \comp d ) \cdot (\comp c + \comp d)
+   \cdot (\comp b + \comp c) + (\comp a + \comp b) + (\comp a + c + d)} \\
+   (a + d) \cdot (c + \comp d) \cdot (\comp c + d) \cdot (a + b)
+   &\stackrel{?}{=} & \comp a \comp b d + cd + cb + ab + a\comp c\comp d \\
+   (ac + cd + a\comp d + d\comp d)\cdot(\comp c  + d) \cdot (a + b) &\stackrel{?}{=} \\
+   (ac\comp c + c\comp c d + ca\comp d + acd + cf + ad\comp d) \cdot (a + b)&\stackrel{?}{=} \\
+   (ca\comp d + acd + cd) \cdot (a + b)&\stackrel{?}{=} \\
+   ca\comp d + acd + acd + abc\comp d + abcd + bcd&\stackrel{?}{=} \\
+   ac + acd +abc+ bcd &\stackrel{?}{=} & \comp a \comp b d + bcd + cd\comp b + bc + ab + a\comp c\comp d\\
+   ac + acd +abc &\stackrel{?}{=} & \comp a \comp b d + cd\comp b + bc + ab + a\comp c\comp d
+\end{IEEEeqnarray*}
+Wir können nicht weiter gewinnbringed vereinfachen und konkludieren
+Inäquivalenz.
+
 \ex{KV-Minimierung mit 5 Variablen}{12}
 \ex{7-Segment-Anzeige}{2 + 8 + 8 = 18}
 
