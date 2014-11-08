@@ -249,13 +249,13 @@ oder rückwärts) zur Vereinfachung angewandt.
 
 \usetikzlibrary{matrix}
 \tikzstyle{highlight}=[densely dotted,line width=.7pt,draw,rounded corners=5pt]
+\tikzstyle{matrix node}=[anchor=center,draw,shape=rectangle,text width=3em,minimum height=3em,text centered]
+
 \begin{center}
 \begin{tikzpicture}
    \matrix (m)[
-      nodes={draw,shape=rectangle,text width=3em,minimum height=3em,text
-      centered},
+      nodes={matrix node},
       matrix of nodes,
-      clip,
       inner sep=0pt,
       outer sep=0pt,
       row sep=-.5pt,
@@ -274,31 +274,27 @@ oder rückwärts) zur Vereinfachung angewandt.
    \clip (m.north west) rectangle (m.south east);
    \draw[highlight] ($(m-3-2.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
    \draw[highlight,loosely dashed,draw=blue] ($(m-3-3.north west) + (3pt,-3pt)$) rectangle ($(m-4-3.south east) + (-3pt,3pt)$);
-   \draw[highlight]($(m-4-4.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (+2cm,3pt)$);
-   \draw[highlight]($(m-4-1.north east) + (-3pt,-3pt)$) rectangle ($(m-4-1.south west) + (-2cm,3pt)$);
-   \draw[highlight]($(m-1-4.north west) + (3pt,-3pt)$) rectangle ($(m-1-4.south east) + (+2cm,3pt)$);
-   \draw[highlight]($(m-1-1.north east) + (-3pt,-3pt)$) rectangle ($(m-1-1.south west) + (-2cm,3pt)$);
-   \draw[highlight,draw=green]($(m-1-1.south west) + (3pt,3pt)$) rectangle ($(m-1-1.north east) + (-3pt,2cm)$);
-   \draw[highlight,draw=green]($(m-4-1.north east) + (-3pt,-3pt)$) rectangle ($(m-4-1.south west) + (3pt,-2cm)$);
-   \draw[highlight,draw=green]($(m-1-4.south west) + (3pt,3pt)$) rectangle ($(m-1-4.north east) + (-3pt,2cm)$);
-   \draw[highlight,draw=green]($(m-4-4.north east) + (-3pt,-3pt)$) rectangle ($(m-4-4.south west) + (3pt,-2cm)$);
+   % \draw[highlight]($(m-4-4.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (+2cm,3pt)$);
+   % \draw[highlight]($(m-4-1.north east) + (-3pt,-3pt)$) rectangle ($(m-4-1.south west) + (-2cm,3pt)$);
+   % \draw[highlight]($(m-1-4.north west) + (3pt,-3pt)$) rectangle ($(m-1-4.south east) + (+2cm,3pt)$);
+   % \draw[highlight]($(m-1-1.north east) + (-3pt,-3pt)$) rectangle ($(m-1-1.south west) + (-2cm,3pt)$);
+   \draw[highlight,draw=green]($(m-1-1.south east) + (-3pt,3pt)$) rectangle ($(m-1-1.north west) + (-2cm,2cm)$);
+   \draw[highlight,draw=green]($(m-4-1.north east) + (-3pt,-3pt)$) rectangle ($(m-4-1.south west) + (-2cm,-2cm)$);
+   \draw[highlight,draw=green]($(m-1-4.south west) + (3pt,3pt)$) rectangle ($(m-1-4.north east) + (2cm,2cm)$);
+   \draw[highlight,draw=green]($(m-4-4.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (2cm,-2cm)$);
    \draw[highlight,loosely dashed,draw=red]($(m-4-3.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (-3pt,--3pt)$);
 \end{tikzpicture}
 \end{center}
 
-Die DMF ist daher $\comp a \comp b \comp c + \comp b c \comp d + abc +
-ac\comp d + ab\comp d + bcd + \comp b \comp c \comp d$
+Die DMF ist daher $\comp c \comp b + bcd + abd + a \comp c d$
 
 \textbf{KMF:}
 
-\usetikzlibrary{matrix}
 \begin{center}
 \begin{tikzpicture}
    \matrix (m)[
-      nodes={draw,shape=rectangle,text width=3em,minimum height=3em,text
-      centered},
+      nodes={matrix node},
       matrix of nodes,
-      clip,
       inner sep=0pt,
       outer sep=0pt,
       row sep=-.5pt,
@@ -324,11 +320,76 @@ ac\comp d + ab\comp d + bcd + \comp b \comp c \comp d$
 \end{tikzpicture}
 \end{center}
 
-Die KMF ist daher $(\comp b + c) \cdot (a + \comp d) \cdot (c + \comp d) \cdot
-(a + \comp b + c) $
+Die KMF ist daher $(\comp b + d) \cdot (\comp c + d) \cdot
+(b + \comp d) \cdot (a + \comp b + c) $
 
 \subex{}
 
+\textbf{DMF:}
+
+\begin{center}
+\begin{tikzpicture}
+   \matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 1 & 0 & 0 \\
+      1 & X & X & 1 \\
+      X & 0 & X & 0 \\
+      X & 1 & X & 1 \\
+   };
+   \draw[|-|] ($(m-1-3.north west) + (0,1cm)$) -- node[above] () {$a$} ++(6em,0);
+   \draw[|-|] ($(m-1-2.north west) + (0,.3cm)$) -- node[above] () {$b$} ++(6em,0);
+   \draw[|-|] ($(m-2-1.north west) + (-.3cm,0)$) -- node[left] () {$c$} ++(0,-6em);
+   \draw[|-|] ($(m-3-1.north west) + (-1cm,0)$) -- node[left] () {$d$} ++(0,-6em);
+
+   \clip (m.north west) rectangle (m.south east);
+   \draw[highlight,draw=red]($(m-2-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-4.south east) + (-3pt,3pt)$);
+   \draw[highlight]($(m-4-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (-3pt,3pt)$);
+   \draw[highlight,dash dot]($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-2.south east) + (-3pt,3pt)$);
+   \draw[loosely dotted,draw=green,highlight]($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-1.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+\end{center}
+
+Die DMF ist daher $\comp a \comp d + \comp c d + c\comp d + \comp a \comp b$
+
+\textbf{KMF:}
+
+\begin{center}
+\begin{tikzpicture}
+   \matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 1 & 0 & 0 \\
+      1 & X & X & 1 \\
+      X & 0 & X & 0 \\
+      X & 1 & X & 1 \\
+   };
+   \draw[|-|] ($(m-1-3.north west) + (0,1cm)$) -- node[above] () {$a$} ++(6em,0);
+   \draw[|-|] ($(m-1-2.north west) + (0,.3cm)$) -- node[above] () {$b$} ++(6em,0);
+   \draw[|-|] ($(m-2-1.north west) + (-.3cm,0)$) -- node[left] () {$c$} ++(0,-6em);
+   \draw[|-|] ($(m-3-1.north west) + (-1cm,0)$) -- node[left] () {$d$} ++(0,-6em);
+
+   \clip (m.north west) rectangle (m.south east);
+   \draw[highlight] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-1-4.south east) + (-3pt,3pt)$);
+   \draw[highlight,draw=blue] ($(m-1-3.north east) + (-3pt,-3pt)$) rectangle ($(m-4-3.south west) + (3pt,3pt)$);
+   \draw[highlight] ($(m-2-2.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
+   \draw[highlight,draw=red] ($(m-3-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-1.south east) + (-3pt,3pt)$);
+   \draw[highlight,loosely dashed] ($(m-3-1.north west) + (3pt,-3pt)$) rectangle ($(m-3-4.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+\end{center}
+
+Die KMF ist daher $(a + b + \comp d ) \cdot (\comp c + \comp d) \cdot (\comp b +
+\comp c) + (\comp b + \comp a) + (\comp a + c + d)$
 \ex{KV-Minimierung mit 5 Variablen}{12}
 \ex{7-Segment-Anzeige}{2 + 8 + 8 = 18}
 
