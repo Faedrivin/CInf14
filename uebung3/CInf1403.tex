@@ -1,5 +1,27 @@
 \documentclass{CInf_practice}
 
+% Rasmus,
+% 3.3 habe ich anders gelöst. Wenn ich Zahlen schon weg habe, dann kümmere ich 
+% mich nicht mehr um weitere Gruppen.
+% Dadurch fällt z.B. die grüne Gruppe der DMF in b) raus, sowie bei der KMF
+% das Quadrat cb und die Spalte ba. Danach bleiben:
+% DMF: \comp a \comp d + \comp cd + c\comp d
+%   (Alternativ: \comp a \comp c + \comp cd + c\comp d)
+% KMF: (a + b + \comp d) \cdot (\comp c + \comp d)
+%    = \comp a \comp c + DMF (obere)
+%    oder
+%    = \comp a \comp d + DMF (untere)
+% -> Da die beiden DMFs ja durch ODER verknüpft werden können, müssen die 
+% beiden also äquivalent sein.
+% Die Truthtables zeigen das auch.
+%
+% Leider bin ich nicht clever genug, zu zeigen dass DMF + something = DMF ist.
+%
+% Viele Grüße
+% Sebastian
+
+
+\usepackage{multicol}
 \sheet{3}{Schaltfunktionen und Minimierung}
 
 \begin{document}
@@ -233,9 +255,9 @@ oder rückwärts) zur Vereinfachung angewandt.
    \item \hspace{\linewidth}
 
       \begin{tabular}{>{$}l<{$}@{ = }l}
-         L_d(f_1) & 0\\
-         L_d(f_2) & 2\\
-         L_d(f_3) & 2\\\hline
+         L_d(f_1) & 5\\
+         L_d(f_2) & 7\\
+         L_d(f_3) & 7\\\hline
          L_g(f_1) & 4\\
          L_g(f_2) & 3\\
          L_g(f_3) & 3\\
@@ -413,8 +435,218 @@ Die KMF ist daher $(a + b + \comp d ) \cdot (\comp c + \comp d) \cdot (\comp b +
 Wir können nicht weiter gewinnbringed vereinfachen und konkludieren
 Inäquivalenz.
 
+\newpage
 \ex{KV-Minimierung mit 5 Variablen}{12}
+\begin{center}
+\begin{tikzpicture}
+	\matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      X & X & 0 & 1 & X & 1 & 0 & 0 \\
+      X & 0 & X & 0 & 1 & X & X & 1 \\
+      X & 0 & 0 & 1 & 1 & 1 & X & 1 \\
+      X & 1 & X & X & 0 & 0 & 0 & 1 \\
+   };
+  
+   \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$a$} ($(m-1-8.north east) + (0,2.3cm)$);
+   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$b$} ($(m-1-6.north east) + (0,+1.4cm)$);
+   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c$} ($(m-1-3.north east) + (0,0.6cm)$);
+   \draw[|-|] ($(m-1-6.north west) + (0,.6cm)$) -- node[above] () {$c$} ($(m-1-7.north east) + (0,0.6cm)$);
+   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$e$} ($(m-3-1.south west) + (-.6cm,0)$);
+   \draw[|-|] ($(m-3-1.north west) + (-1.2cm,0)$) -- node[left] () {$d$} ($(m-4-1.south west) + (-1.2cm,0)$);
+   
+   \clip (m.north west) rectangle (m.south east);
+  
+   % 1
+   \draw[highlight] ($(m-2-5.north west) + (3pt, -3pt)$) rectangle ($(m-3-8.south east) + (-3pt,3pt)$);
+   % 2
+   \draw[highlight, dashed] ($(m-3-8.north west) + (3pt,-3pt)$) rectangle ($(m-4-8.south east) + (10pt,3pt)$);
+   \draw[highlight, dashed] ($(m-3-1.north west) + (-10pt,-3pt)$) rectangle ($(m-4-1.south east) + (-3pt,3pt)$);
+   % 3   
+   \draw[highlight,loosely dotted] ($(m-1-1.north west) + (3pt,10pt)$) rectangle ($(m-1-2.south east) + (-3pt,3pt)$);
+   \draw[highlight,loosely dotted] ($(m-4-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-2.south east) + (-3pt,-10pt)$);
+   % 4
+   \draw[highlight,draw=blue] ($(m-3-4.north west) + (3pt,-3pt)$) rectangle ($(m-3-5.south east) + (-3pt,3pt)$);
+   % 5
+   \draw[highlight,draw=red] ($(m-1-4.north west) + (3pt,-3pt)$) rectangle ($(m-1-5.south east) + (-3pt,3pt)$);
+   % 6
+   \draw[highlight,draw=olive] ($(m-1-5.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+
+$f = ae + \comp b \comp c d + \comp a \comp b \comp e + b \comp c de + b \comp c \comp d \comp e + ab \comp d$
+\end{center}
+
 \ex{7-Segment-Anzeige}{2 + 8 + 8 = 18}
+\subex{Modul}
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (0,3) node[left]{$x_0$} -- (1,3);
+\draw[->] (0,2) node[left]{$x_1$} -- (1,2);
+\draw[->] (0,1) node[left]{$x_2$} -- (1,1);
+\draw[->] (0,0) node[left]{$x_3$} -- (1,0);
+
+\draw[->] (5,3) -- (6,3) node[right]{$a$};
+\draw[->] (5,2.5) -- (6,2.5) node[right]{$b$};
+\draw[->] (5,2) -- (6,2) node[right]{$c$};
+\draw[->] (5,1.5) -- (6,1.5) node[right]{$d$};
+\draw[->] (5,1) -- (6,1) node[right]{$e$};
+\draw[->] (5,0.5) -- (6,0.5) node[right]{$f$};
+\draw[->] (5,0) -- (6,0) node[right]{$g$};
+
+\draw (1,-0.5) rectangle node {Schaltnetz} (5,3.5);
+\end{tikzpicture}
+\end{center}
+
+\subex{Wahrheitstafel}
+\begin{center}
+\begin{tabular}{CCCC|CCCCCCC}
+$x_3$ & $x_2$ & $x_1$ & $x_0$ & a & b & c & d & e & f & g \\ \hline
+  0   &   0   &   0   &   0   & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+  0   &   0   &   0   &   1   & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
+  0   &   0   &   1   &   0   & 1 & 1 & 0 & 1 & 1 & 0 & 1 \\
+  0   &   0   &   1   &   1   & 1 & 1 & 1 & 1 & 0 & 0 & 1 \\
+  0   &   1   &   0   &   0   & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+  0   &   1   &   0   &   1   & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+  0   &   1   &   1   &   0   &\multicolumn{7}{C}{0}      \\
+\vdots&\vdots &\vdots &\vdots &\multicolumn{7}{C}{\vdots} \\
+\end{tabular}
+\end{center}
+
+\subex{KV Diagramme \& Schaltfunktionen}
+
+\begin{multicols}{2}
+\textbf{a)}
+
+\begin{tikzpicture}
+	\matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 0 & 1 & 0 \\
+      1 & 1 & X & X \\
+      X & X & X & X \\
+      X & X & X & X \\
+   };
+  
+   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$x_2$} ($(m-1-4.north east) + (0,1.4cm)$);
+   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$x_0$} ($(m-1-3.north east) + (0,.6cm)$);
+   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$x_1$} ($(m-3-1.south west) + (-.6cm,0)$);
+   \draw[|-|] ($(m-3-1.north west) + (-1.4cm,0)$) -- node[left] () {$x_3$} ($(m-4-1.south west) + (-1.4cm,0)$);
+  
+   \draw[highlight, dashed] ($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-1.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-2-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-4.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-4-3.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+
+$a = x_1\comp x_3 + x_0 x_2 + \comp x_0 \comp x_2$
+
+
+\textbf{b)}
+
+\begin{tikzpicture}
+	\matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 1 & 1 & 0 \\
+      1 & 1 & X & X \\
+      X & X & X & X \\
+      X & X & X & X \\
+   };
+  
+   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$x_2$} ($(m-1-4.north east) + (0,1.4cm)$);
+   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$x_0$} ($(m-1-3.north east) + (0,.6cm)$);
+   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$x_1$} ($(m-3-1.south west) + (-.6cm,0)$);
+   \draw[|-|] ($(m-3-1.north west) + (-1.4cm,0)$) -- node[left] () {$x_3$} ($(m-4-1.south west) + (-1.4cm,0)$);
+  
+   \draw[highlight, dashed] ($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-2.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-4-3.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+
+$b = x_0 x_2 + \comp x_2 \comp x_3$
+
+\end{multicols}
+
+
+\subex{Zusatzaufgabe:}
+
+\begin{multicols}{2}
+\textbf{a)}
+
+\begin{tikzpicture}
+	\matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 0 & 1 & 0 \\
+      1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 \\
+      1 & 1 & 1 & 1 \\
+   };
+  
+   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$x_2$} ($(m-1-4.north east) + (0,1.4cm)$);
+   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$x_0$} ($(m-1-3.north east) + (0,.6cm)$);
+   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$x_1$} ($(m-3-1.south west) + (-.6cm,0)$);
+   \draw[|-|] ($(m-3-1.north west) + (-1.4cm,0)$) -- node[left] () {$x_3$} ($(m-4-1.south west) + (-1.4cm,0)$);
+  
+   \draw[highlight, dashed] ($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-1.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-2-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-4.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-4-3.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-3-1.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+
+$a = x_1\comp x_3 + x_0 x_2 + \comp x_0 \comp x_2 + x_3$
+
+
+\textbf{b)}
+
+\begin{tikzpicture}
+	\matrix (m)[
+      nodes={matrix node},
+      matrix of nodes,
+      inner sep=0pt,
+      outer sep=0pt,
+      row sep=-.5pt,
+      column sep=-.5pt
+   ]  {
+      1 & 1 & 1 & 0 \\
+      1 & 1 & 0 & 0 \\
+      0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 \\
+   };
+  
+   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$x_2$} ($(m-1-4.north east) + (0,1.4cm)$);
+   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$x_0$} ($(m-1-3.north east) + (0,.6cm)$);
+   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$x_1$} ($(m-3-1.south west) + (-.6cm,0)$);
+   \draw[|-|] ($(m-3-1.north west) + (-1.4cm,0)$) -- node[left] () {$x_3$} ($(m-4-1.south west) + (-1.4cm,0)$);
+  
+   \draw[highlight, dashed] ($(m-1-1.north west) + (3pt,-3pt)$) rectangle ($(m-2-2.south east) + (-3pt,3pt)$);
+   \draw[highlight, dashed] ($(m-1-2.north west) + (3pt,-3pt)$) rectangle ($(m-1-3.south east) + (-3pt,3pt)$);
+\end{tikzpicture}
+
+$b = x_0 \comp x_1 \comp x_3 + \comp x_2 \comp x_3$
+
+\end{multicols}
+\bigskip
+
+Der qualitative Unterschied ist, dass nun die \emph{don't care}-Terme eine Rolle spielen, also im Grunde keine mehr sind.
 
 
 \end{document}
