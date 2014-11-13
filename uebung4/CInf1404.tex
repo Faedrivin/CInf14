@@ -1,0 +1,141 @@
+\documentclass{CInf_practice}
+
+\sheet{4}{Quine-McCluskey und Koppelterme}
+
+\begin{document}
+
+\cinftitle
+
+\ex{Minimierung nach Quine-McCluskey}{20 + 10 = 30}
+\subex{Minimierung}
+
+\begin{align*}
+f(a,b,c,d) = \sum\limits^{15}_{i=0} \text{\bf Min}^{4}_i \cdot r_i, &\text{ mit } r_i=1 \text{ für } i = \left\{0,2,4,7,8,10,11,15\right\}\\
+& \text{und mit Don't Care für } i=\left\{1,9\right\}
+\end{align*}
+
+\begin{center}
+\begin{tabular}{CCCC|R}
+a & b & c & d & f \\ \hline
+0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 1 & X \\
+0 & 0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 0 & 1 \\
+0 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & X \\
+1 & 0 & 1 & 0 & 1 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabular}
+\end{center}
+
+\textbf{1. disjunktive kanonische Normalform}
+
+$f = \comp a \comp b \comp c \comp d
+   + \comp a \comp b \comp c       d
+   + \comp a \comp b       c \comp d 
+   + \comp a       b \comp c \comp d
+   + \comp a       b       c       d 
+   +       a \comp b \comp c \comp d
+   +       a \comp b \comp c       d   
+   +       a \comp b       c \comp d 
+   +       a \comp b       c       d 
+   +       a       b       c       d$
+
+\textbf{2. Primimplikanten}
+
+\begin{center}
+\begin{tabular}{ c | c >{$}c<{$} | c >{$}c<{$} | c >{$}c<{$}}
+Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. MinT}\\\hline
+\multirow{1}{*}{$K_0$} & 0  & \comp a \comp b \comp c \comp d & 0,1   & \comp a \comp b \comp c         &&\\
+                       &    &                                 & 0,2   & \comp a \comp b         \comp d &&\\
+                       &    &                                 & 0,4   & \comp a         \comp c \comp d &&\\
+                       &    &                                 & 0,8   &         \comp b \comp c \comp d & 0,8-1,9  & \comp b \comp c\\
+                       &    &                                 &       &                                 & 0,8-2,10 & \comp b \comp d\\
+                      
+\multirow{1}{*}{$K_1$} & 1  & \comp a \comp b \comp c       d & 1,9   &         \comp b \comp c       d &&\\
+                       & 2  & \comp a \comp b       c \comp d & 2,10  &         \comp b       c \comp d &&\\
+                       & 4  & \comp a       b \comp c \comp d &       & &&\\
+                       & 8  &       a \comp b \comp c \comp d &       & &&\\
+                      
+\multirow{1}{*}{$K_2$} & 9  &       a \comp b \comp c       d & 9,11  &       a \comp b               d &&\\
+                       & 10 &       a \comp b       c \comp d & 10,11 &       a \comp b               d &&\\
+                      
+\multirow{1}{*}{$K_3$} & 7  & \comp a       b       c       d & 7,15  &               b       c       d &&\\
+                       & 11 &       a \comp b       c       d & 11,15 &       a               c       d &&\\
+                      
+\multirow{1}{*}{$K_4$} & 15 &       a       b       c       d &       & &&\\
+\end{tabular}
+\end{center}
+
+\textbf{3. wesentl. Primimplikanten}
+
+\begin{center}
+\begin{tabular}{>{$}l<{$}|cccccccc|c}
+\text{Primimpl.}        & 0 & 2 & 4 & 7 & 8 &10 &11 &15 & WP \\ \hline
+\comp a \comp b \comp c & x &   &   &   &   &   &   &   &    \\
+\comp a \comp b \comp d & x & x &   &   &   &   &   &   &    \\
+\comp a \comp c \comp d & x &   & x &   &   &   &   &   & x (4) \\
+\comp b \comp c         & x &   &   &   & x &   &   &   &    \\
+\comp b \comp d         & x & x &   &   & x & x &   &   &    \\
+      a \comp b       d &   &   &   &   &   & x & x &   &    \\
+      b       c       d &   &   &   & x &   &   &   & x & x (7) \\
+      a       c       d &   &   &   &   &   &   & x & x &    \\
+\end{tabular}
+\end{center}
+
+\textbf{4. minimale Restüberdeckung}
+
+Spaltendominanz
+\begin{center}
+\begin{tabular}{>{$}l<{$}|cccccccc}
+\text{Primimpl.}        & 0 & 2 & 4 & 7 & 8 &10 &11 &15  \\ \hline
+\text{Enfernen}         & x &   &   &   &   &   &   &   \\ \hline
+\comp a \comp b \comp d & x & x &   &   &   &   &   &       \\
+\comp b \comp c         & x &   &   &   & x &   &   &       \\
+\comp b \comp d         & x & x &   &   & x & x &   &       \\
+      a \comp b       d &   &   &   &   &   & x & x &       \\
+      a       c       d &   &   &   &   &   &   & x & x     \\ \hline
+\end{tabular}
+\end{center}
+
+Zeilendominanz
+\begin{center}
+\begin{tabular}{>{$}l<{$}|ccccccc|c}
+\text{Primimpl.}        & 2 & 4 & 7 & 8 &10 &11 &15 & Elim. \\ \hline
+\comp a \comp b \comp d & x &   &   &   &   &   &   & x    \\
+\comp b \comp c         &   &   &   & x &   &   &   & x    \\
+\comp b \comp d         & x &   &   & x & x &   &   &     \\
+      a \comp b       d &   &   &   &   & x & x &   & x(?)    \\
+      a       c       d &   &   &   &   &   & x & x &     \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Lösung}
+
+Wesentliche:
+\begin{itemize}
+	\item $\comp a \comp c \comp d$
+  \item $bcd$
+\end{itemize}
+
+Spalten-/Zeilendom.:
+\begin{itemize}
+	\item $\comp b \comp d$
+  \item $acd$
+\end{itemize}
+
+Gesamt: $f(a,b,c,d) = \comp a \comp c \comp d + \comp b \comp d + bcd + acd$
+
+
+
+
+
+\end{document}
