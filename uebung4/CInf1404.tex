@@ -11,30 +11,30 @@
 
 \begin{align*}
 f(a,b,c,d) = \sum\limits^{15}_{i=0} \text{\bf Min}^{4}_i \cdot r_i, &\text{ mit } r_i=1 \text{ für } i = \left\{0,2,4,7,8,10,11,15\right\}\\
-& \text{und mit Don't Care für } i=\left\{1,9\right\}
+& \text{ und mit Don't Care für } i=\left\{1,9\right\}
 \end{align*}
 
-\begin{center}
-\begin{tabular}{CCCC|R}
-a & b & c & d & f \\ \hline
-0 & 0 & 0 & 0 & 1 \\
-0 & 0 & 0 & 1 & X \\
-0 & 0 & 1 & 0 & 1 \\
-0 & 0 & 1 & 1 & 0 \\
-0 & 1 & 0 & 0 & 1 \\
-0 & 1 & 0 & 1 & 0 \\
-0 & 1 & 1 & 0 & 0 \\
-0 & 1 & 1 & 1 & 1 \\
-1 & 0 & 0 & 0 & 1 \\
-1 & 0 & 0 & 1 & X \\
-1 & 0 & 1 & 0 & 1 \\
-1 & 0 & 1 & 1 & 1 \\
-1 & 1 & 0 & 0 & 0 \\
-1 & 1 & 0 & 1 & 0 \\
-1 & 1 & 1 & 0 & 0 \\
-1 & 1 & 1 & 1 & 1 \\
-\end{tabular}
-\end{center}
+%\begin{center}
+%\begin{tabular}{CCCC|R}
+%a & b & c & d & f \\ \hline
+%0 & 0 & 0 & 0 & 1 \\
+%0 & 0 & 0 & 1 & X \\
+%0 & 0 & 1 & 0 & 1 \\
+%0 & 0 & 1 & 1 & 0 \\
+%0 & 1 & 0 & 0 & 1 \\
+%0 & 1 & 0 & 1 & 0 \\
+%0 & 1 & 1 & 0 & 0 \\
+%0 & 1 & 1 & 1 & 1 \\
+%1 & 0 & 0 & 0 & 1 \\
+%1 & 0 & 0 & 1 & X \\
+%1 & 0 & 1 & 0 & 1 \\
+%1 & 0 & 1 & 1 & 1 \\
+%1 & 1 & 0 & 0 & 0 \\
+%1 & 1 & 0 & 1 & 0 \\
+%1 & 1 & 1 & 0 & 0 \\
+%1 & 1 & 1 & 1 & 1 \\
+%\end{tabular}
+%\end{center}
 
 \textbf{1. disjunktive kanonische Normalform}
 
@@ -49,12 +49,14 @@ $f = \comp a \comp b \comp c \comp d
    +       a \comp b       c       d 
    +       a       b       c       d$
 
+\bigskip
+
 \textbf{2. Primimplikanten}
 
 \begin{center}
 \begin{tabular}{ c | c >{$}c<{$} | c >{$}c<{$} | c >{$}c<{$}}
 Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. MinT}\\\hline
-\multirow{1}{*}{$K_0$} & 0  & \comp a \comp b \comp c \comp d & 0,1   & \comp a \comp b \comp c         &&\\
+\multirow{1}{*}{$K_0$} & 0  & \comp a \comp b \comp c \comp d & 0,1   & \comp a \comp b \comp c         & 0,1-8,9  & \comp b \comp c \\
                        &    &                                 & 0,2   & \comp a \comp b         \comp d &&\\
                        &    &                                 & 0,4   & \comp a         \comp c \comp d &&\\
                        &    &                                 & 0,8   &         \comp b \comp c \comp d & 0,8-1,9  & \comp b \comp c\\
@@ -63,7 +65,8 @@ Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. 
 \multirow{1}{*}{$K_1$} & 1  & \comp a \comp b \comp c       d & 1,9   &         \comp b \comp c       d &&\\
                        & 2  & \comp a \comp b       c \comp d & 2,10  &         \comp b       c \comp d &&\\
                        & 4  & \comp a       b \comp c \comp d &       & &&\\
-                       & 8  &       a \comp b \comp c \comp d &       & &&\\
+                       & 8  &       a \comp b \comp c \comp d & 8,9   &       a \comp b \comp c         &&\\
+                       &    &                                 & 8,10  &       a \comp b               d &&\\
                       
 \multirow{1}{*}{$K_2$} & 9  &       a \comp b \comp c       d & 9,11  &       a \comp b               d &&\\
                        & 10 &       a \comp b       c \comp d & 10,11 &       a \comp b               d &&\\
@@ -75,67 +78,131 @@ Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. 
 \end{tabular}
 \end{center}
 
-\textbf{3. wesentl. Primimplikanten}
+\textbf{3. wesentliche Primimplikanten}
 
 \begin{center}
 \begin{tabular}{>{$}l<{$}|cccccccc|c}
 \text{Primimpl.}        & 0 & 2 & 4 & 7 & 8 &10 &11 &15 & WP \\ \hline
-\comp a \comp b \comp c & x &   &   &   &   &   &   &   &    \\
-\comp a \comp b \comp d & x & x &   &   &   &   &   &   &    \\
-\comp a \comp c \comp d & x &   & x &   &   &   &   &   & x (4) \\
-\comp b \comp c         & x &   &   &   & x &   &   &   &    \\
-\comp b \comp d         & x & x &   &   & x & x &   &   &    \\
+\comp a \comp c \comp d & x &   & x &   &   &   &   &   & x(4) \\
       a \comp b       d &   &   &   &   &   & x & x &   &    \\
-      b       c       d &   &   &   & x &   &   &   & x & x (7) \\
+      b       c       d &   &   &   & x &   &   &   & x & x(7) \\
       a       c       d &   &   &   &   &   &   & x & x &    \\
+\comp b \comp c         & x &   &   &   & x &   &   &   &    \\
+\comp b \comp d         & x & x &   &   & x & x &   &   & x(2) \\
 \end{tabular}
 \end{center}
 
 \textbf{4. minimale Restüberdeckung}
 
-Spaltendominanz
+Nach Herausstreichen der wesentlichen Primimplikanten und Kürzen der so abgedeckten Minterme bleiben übrig:
 \begin{center}
 \begin{tabular}{>{$}l<{$}|cccccccc}
-\text{Primimpl.}        & 0 & 2 & 4 & 7 & 8 &10 &11 &15  \\ \hline
-\text{Enfernen}         & x &   &   &   &   &   &   &   \\ \hline
-\comp a \comp b \comp d & x & x &   &   &   &   &   &       \\
-\comp b \comp c         & x &   &   &   & x &   &   &       \\
-\comp b \comp d         & x & x &   &   & x & x &   &       \\
-      a \comp b       d &   &   &   &   &   & x & x &       \\
-      a       c       d &   &   &   &   &   &   & x & x     \\ \hline
+\text{Primimpl.}        &11   \\ \hline
+      a \comp b       d & x   \\
+      a       c       d & x   \\
 \end{tabular}
 \end{center}
+Das kann direkt als Alternative angegeben werden: 
+$\left\{\genfrac{}{}{}{}{a\comp b d}{a c d}\right\}$
 
-Zeilendominanz
+\bigskip
+
+\textbf{5. Lösung}
+
+%Wesentliche Primimplikanten:
+%\begin{itemize}
+	%\item $\comp a \comp c \comp d$
+  %\item $bcd$
+  %\item $\comp b \comp d$
+%\end{itemize}
+%
+%Restüberdeckung: $\left\{\genfrac{}{}{}{}{a\comp b d}{a c d}\right\} \rightarrow acd$ 
+%
+%\smallskip
+
+Gesamt: $f(a,b,c,d) = \comp a \comp c \comp d + bcd + \comp b \comp d + acd$
+
+
+
+\ex{Quine-McCluskey mit Petrick}{20 + 10 = 30}
+\begin{align*}
+f(a,b,c,d) = \sum\limits^{15}_{i=0} \text{\bf Min}^{4}_i \cdot r_i, &\text{ mit } r_i=1 \text{ für } i = \left\{0,1,2,4,6,7,8,9,10,11,15\right\}\\
+\end{align*}
+%
+%\begin{center}
+%\begin{tabular}{CCCC|R}
+%a & b & c & d & f \\ \hline
+%0 & 0 & 0 & 0 & 1 \\
+%0 & 0 & 0 & 1 & 1 \\
+%0 & 0 & 1 & 0 & 1 \\
+%0 & 0 & 1 & 1 & 0 \\
+%0 & 1 & 0 & 0 & 1 \\
+%0 & 1 & 0 & 1 & 0 \\
+%0 & 1 & 1 & 0 & 1 \\
+%0 & 1 & 1 & 1 & 1 \\
+%1 & 0 & 0 & 0 & 1 \\
+%1 & 0 & 0 & 1 & 1 \\
+%1 & 0 & 1 & 0 & 1 \\
+%1 & 0 & 1 & 1 & 1 \\
+%1 & 1 & 0 & 0 & 0 \\
+%1 & 1 & 0 & 1 & 0 \\
+%1 & 1 & 1 & 0 & 0 \\
+%1 & 1 & 1 & 1 & 1 \\
+%\end{tabular}
+%\end{center}
+
+\textbf{1. disjunktive kanonische Normalform}
+
+$f = \comp a \comp b \comp c \comp d
+   + \comp a \comp b \comp c       d
+   + \comp a \comp b       c \comp d
+   + \comp a       b \comp c \comp d
+   + \comp a       b       c \comp d
+   + \comp a       b       c       d
+   +       a \comp b \comp c \comp d
+   +       a \comp b \comp c       d
+   +       a \comp b       c \comp d
+   +       a \comp b       c       d
+   +       a       b       c       d$
+  
+\bigskip
+
+\textbf{2. Primimplikanten}
+
 \begin{center}
-\begin{tabular}{>{$}l<{$}|ccccccc|c}
-\text{Primimpl.}        & 2 & 4 & 7 & 8 &10 &11 &15 & Elim. \\ \hline
-\comp a \comp b \comp d & x &   &   &   &   &   &   & x    \\
-\comp b \comp c         &   &   &   & x &   &   &   & x    \\
-\comp b \comp d         & x &   &   & x & x &   &   &     \\
-      a \comp b       d &   &   &   &   & x & x &   & x(?)    \\
-      a       c       d &   &   &   &   &   & x & x &     \\ \hline
+\begin{tabular}{ c | c >{$}c<{$} | c >{$}c<{$} | c >{$}c<{$}}
+Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. MinT}\\\hline
+\multirow{1}{*}{$K_0$} & 0  & \comp a \comp b \comp c \comp d & 0,1   & \comp a \comp b \comp c         & 0,1,8,9 & \comp b \comp c \\
+                       &    &                                 & 0,2   & \comp a \comp b         \comp d & 0,2,4,6 & \comp a \comp d \\
+                       &    &                                 & 0,4   & \comp a         \comp c \comp d & 0,1,2,6 & \comp a \comp d \\
+                       &    &                                 & 0,8   &         \comp b \comp c \comp d &&\\
+
+\multirow{1}{*}{$K_1$} & 1  & \comp a \comp b \comp c       d &       &                                 &&\\
+                       & 2  & \comp a \comp b       c \comp d & 2,6   & \comp a               c \comp d &&\\
+                       & 4  & \comp a       b \comp c \comp d & 4,6   & \comp a       b         \comp d &&\\
+                       & 8  &       a \comp b \comp c \comp d & 8,9   &       a \comp b \comp c         &&\\
+                      
+\multirow{1}{*}{$K_2$} & 6  & \comp a       b       c \comp d &       &                                 &&\\
+                       & 9  &       a \comp b \comp c       d & 9,11  &       a \comp b               d &&\\
+                      
+\multirow{1}{*}{$K_3$} & 11 &       a \comp b       c       d & 11,15 &       a               c       d &&\\
+                      
+\multirow{1}{*}{$K_4$} & 15 &       a       b       c       d &       &                                 &&\\
 \end{tabular}
 \end{center}
 
-\textbf{Lösung}
-
-Wesentliche:
-\begin{itemize}
-	\item $\comp a \comp c \comp d$
-  \item $bcd$
-\end{itemize}
-
-Spalten-/Zeilendom.:
-\begin{itemize}
-	\item $\comp b \comp d$
-  \item $acd$
-\end{itemize}
-
-Gesamt: $f(a,b,c,d) = \comp a \comp c \comp d + \comp b \comp d + bcd + acd$
-
-
-
-
+\textbf{3. wesentliche Primimplikanten}
+\begin{center}
+\begin{tabular}{>{$}l<{$}|cccccccc|c}
+\text{Primimpl.}        & 0 & 1 & 2 & 4 & 6 & 8 & 9 &11 &15 & WP \\ \hline
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+                        &   &   &   &   &   &   &   &   &   &    \\
+\end{tabular}
+\end{center}
 
 \end{document}
