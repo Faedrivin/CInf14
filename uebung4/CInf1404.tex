@@ -94,7 +94,7 @@ Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. 
 
 \textbf{4. minimale Restüberdeckung}
 
-Nach Herausstreichen der wesentlichen Primimplikanten und Kürzen der so abgedeckten Minterme bleiben übrig:
+Nach Herausstreichen wesentlicher Primimplikanten und Kürzen abgedeckter Minterme bleibt:
 \begin{center}
 \begin{tabular}{>{$}l<{$}|cccccccc}
 \text{Primimpl.}        &11   \\ \hline
@@ -120,13 +120,14 @@ $\left\{\genfrac{}{}{}{}{a\comp b d}{a c d}\right\}$
 %
 %\smallskip
 
-Gesamt: $f(a,b,c,d) = \comp a \comp c \comp d + bcd + \comp b \comp d + acd$
+$f(a,b,c,d) = \comp a \comp c \comp d + bcd + \comp b \comp d + acd$
 
+\subex{KV Visualisierung}
+ToDo
 
-
-\ex{Quine-McCluskey mit Petrick}{20 + 10 = 30}
+\ex{Quine-McCluskey mit Petrick}{21}
 \begin{align*}
-f(a,b,c,d) = \sum\limits^{15}_{i=0} \text{\bf Min}^{4}_i \cdot r_i, &\text{ mit } r_i=1 \text{ für } i = \left\{0,1,2,4,6,7,8,9,10,11,15\right\}\\
+f(a,b,c,d) = \sum\limits^{15}_{i=0} \text{\bf Min}^{4}_i \cdot r_i, &\text{ mit } r_i=1 \text{ für } i = \left\{0,1,2,4,6,7,8,9,10,11,15\right\}
 \end{align*}
 %
 %\begin{center}
@@ -174,35 +175,74 @@ $f = \comp a \comp b \comp c \comp d
 Klasse & \# & \text{Minterme} & \# & \text{Verschm. MinT} & \# & \text{Verschm. MinT}\\\hline
 \multirow{1}{*}{$K_0$} & 0  & \comp a \comp b \comp c \comp d & 0,1   & \comp a \comp b \comp c         & 0,1,8,9 & \comp b \comp c \\
                        &    &                                 & 0,2   & \comp a \comp b         \comp d & 0,2,4,6 & \comp a \comp d \\
-                       &    &                                 & 0,4   & \comp a         \comp c \comp d & 0,1,2,6 & \comp a \comp d \\
-                       &    &                                 & 0,8   &         \comp b \comp c \comp d &&\\
+                       &    &                                 &       &                                 & 0,2,8,10& \comp b \comp d \\
+                       &    &                                 & 0,4   & \comp a         \comp c \comp d & 0,4,2,6 & \comp a \comp d \\
+                       &    &                                 & 0,8   &         \comp b \comp c \comp d & 0,8,1,9 & \comp b \comp c\\
+                       &    &                                 & 0,8   &         \comp b \comp c \comp d & 0,8,2,10& \comp b \comp d\\
 
-\multirow{1}{*}{$K_1$} & 1  & \comp a \comp b \comp c       d &       &                                 &&\\
-                       & 2  & \comp a \comp b       c \comp d & 2,6   & \comp a               c \comp d &&\\
-                       & 4  & \comp a       b \comp c \comp d & 4,6   & \comp a       b         \comp d &&\\
-                       & 8  &       a \comp b \comp c \comp d & 8,9   &       a \comp b \comp c         &&\\
+\multirow{1}{*}{$K_1$} & 1  & \comp a \comp b \comp c       d & 1,9   &         \comp b \comp c       d & &\\
+                       & 2  & \comp a \comp b       c \comp d & 2,6   & \comp a               c \comp d & &\\
+                       &    &                                 & 2,10  &         \comp b       c \comp d & &\\
+                       & 4  & \comp a       b \comp c \comp d & 4,6   & \comp a       b         \comp d & &\\
+                       & 8  &       a \comp b \comp c \comp d & 8,9   &       a \comp b \comp c         & 8,9,10,11 & a \comp b\\
+                       &    &                                 & 8,10  &       a \comp b         \comp d & 8,10,9,11 & a \comp b \\
                       
-\multirow{1}{*}{$K_2$} & 6  & \comp a       b       c \comp d &       &                                 &&\\
-                       & 9  &       a \comp b \comp c       d & 9,11  &       a \comp b               d &&\\
+\multirow{1}{*}{$K_2$} & 6  & \comp a       b       c \comp d & 6,7   & \comp a       b       c         & &\\
+                       & 9  &       a \comp b \comp c       d & 9,11  &       a \comp b               d & &\\
+                       & 10 &       a \comp b       c \comp d & 10,11 &       a \comp b       c         & &\\
                       
-\multirow{1}{*}{$K_3$} & 11 &       a \comp b       c       d & 11,15 &       a               c       d &&\\
+\multirow{1}{*}{$K_3$} & 7  & \comp a       b       c       d & 7,15  &               b       c       d & &\\
+                       & 11 &       a \comp b       c       d & 11,15 &       a               c       d & &\\
                       
-\multirow{1}{*}{$K_4$} & 15 &       a       b       c       d &       &                                 &&\\
+\multirow{1}{*}{$K_4$} & 15 &       a       b       c       d &       &                                 & &
 \end{tabular}
 \end{center}
 
 \textbf{3. wesentliche Primimplikanten}
 \begin{center}
-\begin{tabular}{>{$}l<{$}|cccccccc|c}
-\text{Primimpl.}        & 0 & 1 & 2 & 4 & 6 & 8 & 9 &11 &15 & WP \\ \hline
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
-                        &   &   &   &   &   &   &   &   &   &    \\
+\begin{tabular}{>{$}l<{$}|ccccccccccc|c}
+\text{Primimpl.}        & 0 & 1 & 2 & 4 & 6 & 7 & 8 & 9 &10 &11 &15 & WP   \\ \hline
+\comp b \comp c         & x & x &   &   &   &   & x & x &   &   &   & x(1) \\
+\comp a \comp d         & x &   & x & x & x &   &   &   &   &   &   & x(4) \\
+\comp b \comp d         & x &   & x &   &   &   & x &   & x &   &   &      \\
+      a \comp b         &   &   &   &   &   &   & x & x & x & x &   &      \\
+\comp a b c             &   &   &   &   & x & x &   &   &   &   &   &      \\
+bcd                     &   &   &   &   &   & x &   &   &   &   & x &      \\
+acd                     &   &   &   &   &   &   &   &   &   & x & x &      
 \end{tabular}
 \end{center}
+
+\textbf{4. Restüberdeckung}
+\begin{center}
+\begin{tabular}{>{$}l<{$}>{$}l<{$}|cccc|}
+    &                         & 7 &10 &11 &15 \\ \hline
+P_1 & \comp b \comp d         &   & x &   &   \\
+P_2 &       a \comp b         &   & x & x &   \\
+P_3 & \comp a b c             & x &   &   &   \\
+P_4 & bcd                     & x &   &   & x \\
+P_5 & acd                     &   &   & x & x 
+\end{tabular}
+\end{center}
+
+\begin{align*}
+ &(P_3+P_4)(P_1+P_2)(P_2+P_5)(P_4+P_5) \\
+=&(P_3P_1+P_3P_2+P_4P_1+P_4P_2)(P_2+P_5)(P_4+P_5) \\
+=&(P_3P_1P_2+P_3P_2P_2+P_4P_1P_2+P_4P_2P_2+P_3P_1P_5+P_3P_2P_5+P_4P_1P_5+P_4P_2P_5)(P_4+P_5) \\
+=&(P_3P_1P_2+P_3P_2+P_4P_1P_2+P_4P_2+P_3P_1P_5+P_3P_2P_5+P_4P_1P_5+P_4P_2P_5)(P_4+P_5) \\
+=&P_3P_1P_2P_4+P_3P_2P_4+P_4P_1P_2P_4+P_4P_2P_4+P_3P_1P_5P_4+P_3P_2P_5P_4+P_4P_1P_5P_4\\
++&P_4P_2P_5P_4+P_3P_1P_2P_5+P_3P_2P_5+P_4P_1P_2P_5+P_4P_2P_5+P_3P_1P_5P_5+P_3P_2P_5P_5\\
++&P_4P_1P_5P_5+P_4P_2P_5P_5 \\
+=&P_1P_2P_3P_4+P_2P_3P_4+P_1P_2P_4+P_2P_4+P_1P_3P_4P_5+P_2P_3P_4P_5+P_1P_4P_5+P_2P_4P_5 \\
++&P_1P_3P_5+P_2P_3P_5+P_1P_2P_4P_5+P_2P_4P_5+P_1P_3P_5+P_2P_3P_5+P_1P_4P_5+P_2P_4P_5 \\
+\Rightarrow&P_2P_4
+\end{align*}
+$P_2P_4\rightarrow a\comp b + bcd$
+
+\bigskip
+
+\textbf{5. Lösung}
+
+$f(a,b,c,d)=\comp b \comp c + \comp a \comp d + a \comp b + bcd$.
+
 
 \end{document}
