@@ -349,6 +349,136 @@ $g = x_1 + x_2$ & & \\
 \end{tabular}
 \end{center}
 
+\subex{Koppelterme}
 
+\begin{tabular}{>{$}l<{$} >{$}l<{$} r}
+\text{\bf Funktionen} & \text{\bf Koppelterme} \\
+a\times d & x_1+x_0x_2+\comp x_0 \comp x_2 \\
+a\times e & \comp x_0 \comp x_2 \\
+a\times g & x_1 \\
+d\times e & \comp x_0 \comp x_2 \\
+d\times g & x_1 \\
+f\times g & x_2 \\
+\end{tabular}
+
+\begin{tabular}{>{$}l<{$} >{$}l<{$}}
+\text{\bf Funktionen} & \text{\bf Koppelterme} \\
+(a\times d) \times (a\times e) & \comp x_0 \comp x_2 \\
+(a\times d) \times (a\times g) & x_1 \\
+(a\times d) \times (d\times e) & \comp x_0 \comp x_2 \\
+(a\times d) \times (d\times g) & x_1 \\
+(a\times e) \times (d\times e) & \comp x_0 \comp x_2 \\
+(a\times g) \times (d\times g) & x_1 \\
+\end{tabular}
+
+\subex{Schaltung}
+\begin{center}
+\begin{tikzpicture}
+  \def\xOffset{.45}
+  \def\circSize{1.7pt}
+  \newcommand{\module}[5][]{ % \module[<name>]{<text>}{<(x,y)>}{<width>}{<height>}
+    \draw #3 rectangle node (#1) {#2}  ++(#4,-#5);
+    \node[anchor=south west] at($#3 + (0,-.25*#5)$) (#1_top) {};
+    \node[anchor=west]       at($#3 + (0,-.5*#5)$)  (#1_middle) {};
+    \node[anchor=north west] at($#3 + (0,-.75*#5)$) (#1_bottom) {};
+    \node[anchor=east]       at($(#1_middle) + (.85*#4, 0)$)(#1_out) {};
+  }
+  \def\solder#1#2#3{    % \solder{<line>}{<module>}{<position>}
+    \draw[-] (#2_#3 -| #1) -- (#2_#3);
+    \fill[black] (#2_#3 -| #1) circle (\circSize);
+  }
+  \def\solderNeg#1#2#3{ % \solderNeg{<line>}{<module>}{<position>}
+    \draw[-o] (#2_#3 -| #1) -- (#2_#3);
+    \fill[black] (#2_#3 -| #1) circle (\circSize);
+  }
+  \newcommand{\solderSplit}[2][]{
+    \node[coordinate] at#2 (#1_) {};
+    \node[coordinate] at#2 (#1) {};
+    \fill[black] ($(#1)+(\xOffset,0)$) circle (\circSize);
+    %\draw[-] (#1 -| #2) -- (#2);
+    %\fill[black] (#1 -| #2) circle (\circSize);
+  }
+  \def\connectOut#1#2#3{
+    \draw[-] (#1_out) -| ++(\xOffset,0) |- (#2_#3);
+  }
+  \def\connect#1#2{
+    \draw[-] (#1) -| ++(\xOffset,0) |- (#2);
+  }
+  
+  \def\width{.7}
+  \def\height{.8}
+  
+  % leading lines
+  \draw (0,   14) node[above] (x0) {$x_0$} -- (0,   0);
+  \draw (0.5, 14) node[above] (x1) {$x_1$} -- (0.5, 0);
+  \draw (1,   14) node[above] (x2) {$x_2$} -- (1,   0);
+  
+  % end nodes
+  \foreach \l/\y in {f/6,g/5,a/4,d/3,e/2,b/1,c/0}
+    \node[anchor=west] at(7, 0.5+2*\y) (\l) {\l};
+  
+  % f
+  \module[and-f]{\&}{(1.5,13.5)}{\width}{\height}
+  \module[or-f]{$\ge$}{(3.5,13.5)}{\width}{2*\height}
+  \solderNeg{x0}{and-f}{top}
+  \solderNeg{x1}{and-f}{bottom}
+  \connectOut{and-f}{or-f}{top}
+  \connect{or-f_out}{f}
+
+  % g
+  \module[or-g]{$\ge$}{(3.5,10.5)}{\width}{\height}
+  \connect{or-g_out}{g}
+  
+  % f/g
+  \solderSplit[split-f-g]{(2.5, 11.5)}
+  \solder{x2}{split-f-g}{}
+  \connect{split-f-g}{or-g_top}
+  \connect{split-f-g}{or-f_bottom}
+  
+  % a
+  \module[or-a]{$\ge$}{(4.5, 9.5)}{\width}{4*\height}
+  \module[and-a1]{\&}{(2.5, 8.5)}{\width}{\height}
+  \module[and-a2]{\&}{(2.5, 7.5)}{\width}{\height}
+  
+  \solder{x0}{and-a1}{top}
+  \solder{x2}{and-a1}{bottom}
+  \solderNeg{x0}{and-a2}{top}
+  \solderNeg{x2}{and-a2}{bottom}
+  \connectOut{and-a1}{or-a}{middle}
+  
+  % e/a
+  %\connectOut{and-a2}{or-a}{bottom}
+  \solderSplit[split-a-e]{(3.5,5.5)}
+  \connectOut{and-a2}{split-a-e}{}
+  \connect{split-a-e}{or-a_bottom}
+  \connect{split-a-e}{e}
+  
+  % a/d
+  \solderSplit[split-a-d]{(5.5,7.5)}
+  \connect{split-a-d}{a}
+  \connect{split-a-d}{d}
+  \connect{or-a_out}{split-a-d}
+  
+  % g/a
+  \solderSplit[split-g-a]{(2.5, 9.5)}
+  \solder{x1}{split-g-a}{}
+  \connect{split-g-a}{or-g_bottom}
+  \connect{split-g-a}{or-a_top}
+  
+  % b
+  \module[or-b]{$\ge$}{(2.5,3)}{\width}{\height}
+  \solderNeg{x0}{or-b}{top}
+  \solderNeg{x2}{or-b}{bottom}
+  \connect{or-b}{b}
+  
+  % c
+  \module[or-c]{$\ge$}{(2.5,1)}{\width}{\height}
+  \solder{x0}{or-c}{top}
+  \solder{x2}{or-c}{bottom}
+  \connect{or-c}{c}
+  
+  
+\end{tikzpicture}
+\end{center}
 
 \end{document}
