@@ -49,7 +49,7 @@
   citecolor          = lightgray
   ]{hyperref}
 
-\RequirePackage{xstring}
+\RequirePackage{xstring, ifthen}
 
 % not used yet
 % subcaption, microtype, textcomp 
@@ -148,7 +148,7 @@
     \textbf{\Large Informatik C} \\
     Grundlagen der Technischen Informatik \\
     \@author \\
-    \textbf{Tutor:} Konstantin Obermann\\[.5\baselineskip]
+    \textbf{Tutor:} Ralph Buß\\[.5\baselineskip]
     
     \textbf{ \LARGE{\"Ubung \@sheet} \large{-- \@title} }
     

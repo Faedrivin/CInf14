@@ -1,0 +1,137 @@
+\documentclass{CInf_practice}
+
+\sheet{5}{Programmierbare Bausteine, Hazards und Flipflops}
+\begin{document}
+\cinftitle
+
+\ex{Bit-Slice-ALU}{6 + 8 + 16 + 4 = 34}
+\newlength{\vlinedist}
+\newlength{\hlinedist}
+\newlength{\hcablelength}
+\newlength{\vcablelength}
+
+\setlength{\vlinedist}{.3cm}
+\setlength{\hlinedist}{.2cm}
+\setlength{\hcablelength}{33\vlinedist}
+\setlength{\vcablelength}{11\hlinedist}
+
+\usetikzlibrary{intersections,calc,positioning}
+\tikzstyle{inverter}=[font=\tiny,minimum height=.3cm,
+   text width=.3cm,rectangle,anchor=center,
+   align=center,
+   inner sep=0,
+draw ]
+\tikzstyle{and gate}=[rectangle,font=\tiny,align=center,draw,fill=white,inner
+sep=1pt,minimum height=.7em]
+\begin{center}
+   \begin{tikzpicture}
+      \foreach \x in {1,...,10}
+      {
+         \draw[name path global/.expanded=h \x] (0,\hlinedist*\x) --
+         ++(\hcablelength,0);
+      }
+      \foreach \x in {0,...,31} {
+         \draw[name path global/.expanded=v \x] (\vlinedist*\x, \vcablelength)
+         node[name=v \x start] {} -- ++(0,-\vcablelength-5*\hlinedist);
+         \node[and gate] at ($(v \x start) + (0,-\vcablelength-\hlinedist)$) {\&};
+      }
+      \foreach \x / \y in {1/s_1,2/s_0,3/c_{i-1},4/a_i,5/b_i}
+      {
+         \node[anchor=east] (\y) at ($(0,\vcablelength+\hlinedist-2\hlinedist*\x) + (-1cm,0)$) {$\y$};
+         \node[inverter,below right=\hlinedist-.15cm-.5\pgflinewidth and 15pt of \y.east] (inv-\y) {1};
+         \draw (\y) -- ++(5cm,0);
+         \node[draw,shape=circle,inner sep=.5pt,right=0pt-\pgflinewidth of inv-\y] (inv-\y-circle) {};
+         \draw (inv-\y-circle) -- ++(1cm,0);
+         \draw (inv-\y.west) -| ($(\y.east) + (10pt,0)$);
+      }
+      \draw (0,-2.5\hlinedist) -- ++(\hcablelength,0) node[and gate] {$\ge$} -- +(1em,0) ++(2em,0) node {$y_i$};
+      \draw (0,-4\hlinedist) -- ++(\hcablelength,0) node[and gate] {$\ge$} -- +(1em,0) ++(2em,0) node {$c_i$};
+      \node[rectangle,draw,very thick,below=2\hlinedist of b_i] {\textbf{PROM}};
+      % \foreach \x [evaluate=\x as \i using int(\x+16)]in {0,...,15}{
+      %    \fill[name intersections={of={h 9} and {v \x}}] (intersection-1) circle (1pt);
+      %    \fill[name intersections={of={h 10} and {v \i}}] (intersection-1) circle (1pt);
+      % }
+      % \foreach \x in {0,...,31}{
+      %    \ifthenelse{\x<8 \OR \(\x<24 \AND \x>15\)}{
+      %       \fill[name intersections={of={h 7} and {v \x}}] (intersection-1) circle (1pt);
+      %    }{}
+      %    \ifthenelse{\x>7 \AND \x<16 \OR \x>23}{
+      %       \fill[name intersections={of={h 8} and {v \x}}] (intersection-1) circle (1pt);
+      %    }{}
+      % }
+      \newcounter{num}
+      \foreach \line[count=\x,evaluate=\line as \l using int(\line-1),
+         evaluate=\line as \t using int(\line+1),
+      ] in {1,3,5,...,10}{
+         %% ODD ROWS %%%%%%%%%%%%%%%%
+         \pgfmathsetmacro{\numdots}{pow(2,\x-1)}
+         \ifthenelse{\line=1}{
+            \foreach \c in {0,2,...,30}{
+               \fill[name intersections={of={h \line} and {v \c}}] (intersection-1) circle (1pt);
+            }
+         }{
+            \setcounter{num}{0}
+            \whiledo{\value{num}<32}{
+               \foreach \n in {1,...,\numdots}{
+                  \ifthenelse{\value{num}<32}{\fill[name intersections={of={h \line} and {v \arabic{num}}}] (intersection-1) circle (1pt);
+                     \stepcounter{num}
+                  }{}
+               }
+               \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+            }
+         }
+         %% END ODD ROWS %%%%%%%%%%%%
+
+         %% EVEN ROWS %%%%%%%%%%%%%%%%
+         \ifthenelse{\line=1}{
+            \foreach \c in {0,2,...,30}{
+               \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\c)}
+               \fill[name intersections={of={h \t} and {v \index}}] (intersection-1) circle (1pt);
+            }
+         }{
+            \setcounter{num}{0}
+            \whiledo{\value{num}<32}{
+               \foreach \n in {1,...,\numdots}{
+                  \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\value{num})}
+                  \ifthenelse{\index<32 \AND \value{num}<32}{\fill[name
+                     intersections={of={h \t} and {v \index}}] (intersection-1) circle (1pt);
+                     \stepcounter{num}
+                  }{}
+               }
+               \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+            }
+         }
+         %% END EVEN ROWS %%%%%%%%%%%%
+      }
+   \end{tikzpicture}
+\end{center}
+
+\setlength{\hcablelength}{17\vlinedist}
+\begin{center}
+   \begin{tikzpicture}
+      \foreach \x in {1,...,10}
+      {
+         \draw[name path global/.expanded=h \x] (0,\hlinedist*\x) --
+         ++(\hcablelength,0);
+      }
+      \foreach \x in {0,...,15} {
+         \draw[name path global/.expanded=v \x] (\vlinedist*\x, \vcablelength)
+         node[name=v \x start] {} -- ++(0,-\vcablelength-5*\hlinedist);
+         \node[and gate] at ($(v \x start) + (0,-\vcablelength-\hlinedist)$) {\&};
+      }
+      \foreach \x / \y in {1/s_1,2/s_0,3/c_{i-1},4/a_i,5/b_i}
+      {
+         \node[anchor=east] (\y) at ($(0,\vcablelength+\hlinedist-2\hlinedist*\x) + (-1cm,0)$) {$\y$};
+         \node[inverter,below right=\hlinedist-.15cm-.5\pgflinewidth and 15pt of \y.east] (inv-\y) {1};
+         \draw (\y) -- ++(5cm,0);
+         \node[draw,shape=circle,inner sep=.5pt,right=0pt-\pgflinewidth of inv-\y] (inv-\y-circle) {};
+         \draw (inv-\y-circle) -- ++(1cm,0);
+         \draw (inv-\y.west) -| ($(\y.east) + (10pt,0)$);
+      }
+      \draw (0,-2.5\hlinedist) -- ++(\hcablelength,0) node[and gate] {$\ge$} -- +(1em,0) ++(2em,0) node {$y_i$};
+      \draw (0,-4\hlinedist) -- ++(\hcablelength,0) node[and gate] {$\ge$} -- +(1em,0) ++(2em,0) node {$c_i$};
+      \node[rectangle,draw,very thick,below=2\hlinedist of b_i] {\textbf{PAL}};
+
+   \end{tikzpicture}
+\end{center}
+\end{document}
