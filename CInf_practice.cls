@@ -84,7 +84,10 @@
 }
 
 % choose tikz libraries
-\usetikzlibrary{shapes, automata, positioning, arrows, calc, intersections}
+\usetikzlibrary{shapes, automata, positioning, arrows, calc, intersections, matrix}
+\tikzstyle{highlight}=[densely dotted,line width=.8pt,draw,rounded corners=5pt]
+\tikzstyle{matrix node}=[anchor=center,draw,shape=rectangle,text width=3em,minimum height=3em,text centered]
+
 
 \tikzstyle{typewriter} = [font=\small\ttfamily]
 % define styles for program flow charts
