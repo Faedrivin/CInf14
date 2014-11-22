@@ -10,120 +10,122 @@
 
 \ex{Bit-Slice-ALU}{6 + 8 + 16 + 4 = 34}
 \subex{}
-\begin{tabular}{cc|ccc||cc}
-   $s_1$ & $s_0$ & $a_i$ & $b_i$ & $c_{i-1}$ & $y_i$ & $c_i$ \\\hline
-0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 & 1 & 0 \\
-0 & 0 & 0 & 1 & 0 & 1 & 0 \\
-0 & 0 & 0 & 1 & 1 & 0 & 1 \\
-0 & 0 & 1 & 0 & 0 & 1 & 0 \\
-0 & 0 & 1 & 0 & 1 & 0 & 1 \\
-0 & 0 & 1 & 1 & 0 & 0 & 1 \\
-0 & 0 & 1 & 1 & 1 & 1 & 1 \\
-0 & 1 & 0 & 0 & 0 & 0 & 0 \\
-0 & 1 & 0 & 0 & 1 & 1 & 1 \\
-0 & 1 & 0 & 1 & 0 & 1 & 1 \\
-0 & 1 & 0 & 1 & 1 & 0 & 1 \\
-0 & 1 & 1 & 0 & 0 & 1 & 0 \\
-0 & 1 & 1 & 0 & 1 & 0 & 0 \\
-0 & 1 & 1 & 1 & 0 & 0 & 0 \\
-0 & 1 & 1 & 1 & 1 & 1 & 1 \\
-1 & 0 & 0 & 0 & 0 & 0 & X \\
-1 & 0 & 0 & 0 & 1 & 0 & X \\
-1 & 0 & 0 & 1 & 0 & 0 & X \\
-1 & 0 & 0 & 1 & 1 & 0 & X \\
-1 & 0 & 1 & 0 & 0 & 0 & X \\
-1 & 0 & 1 & 0 & 1 & 0 & X \\
-1 & 0 & 1 & 1 & 0 & 1 & X \\
-1 & 0 & 1 & 1 & 1 & 1 & X \\
-1 & 1 & 0 & 0 & 0 & 1 & X \\
-1 & 1 & 0 & 0 & 1 & 1 & X \\
-1 & 1 & 0 & 1 & 0 & 1 & X \\
-1 & 1 & 0 & 1 & 1 & 1 & X \\
-1 & 1 & 1 & 0 & 0 & 0 & X \\
-1 & 1 & 1 & 0 & 1 & 0 & X \\
-1 & 1 & 1 & 1 & 0 & 0 & X \\
-1 & 1 & 1 & 1 & 1 & 0 & X 
-\end{tabular}
+\begin{center}
+   \begin{tabular}{cc|ccc||cc}
+      $s_1$ & $s_0$ & $a_i$ & $b_i$ & $c_{i-1}$ & $y_i$ & $c_i$ \\\hline
+      0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 1 & 1 & 0 \\
+      0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+      0 & 0 & 0 & 1 & 1 & 0 & 1 \\
+      0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      0 & 0 & 1 & 0 & 1 & 0 & 1 \\
+      0 & 0 & 1 & 1 & 0 & 0 & 1 \\
+      0 & 0 & 1 & 1 & 1 & 1 & 1 \\
+      0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 1 & 0 & 0 & 1 & 1 & 1 \\
+      0 & 1 & 0 & 1 & 0 & 1 & 1 \\
+      0 & 1 & 0 & 1 & 1 & 0 & 1 \\
+      0 & 1 & 1 & 0 & 0 & 1 & 0 \\
+      0 & 1 & 1 & 0 & 1 & 0 & 0 \\
+      0 & 1 & 1 & 1 & 0 & 0 & 0 \\
+      0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+      1 & 0 & 0 & 0 & 0 & 0 & X \\
+      1 & 0 & 0 & 0 & 1 & 0 & X \\
+      1 & 0 & 0 & 1 & 0 & 0 & X \\
+      1 & 0 & 0 & 1 & 1 & 0 & X \\
+      1 & 0 & 1 & 0 & 0 & 0 & X \\
+      1 & 0 & 1 & 0 & 1 & 0 & X \\
+      1 & 0 & 1 & 1 & 0 & 1 & X \\
+      1 & 0 & 1 & 1 & 1 & 1 & X \\
+      1 & 1 & 0 & 0 & 0 & 1 & X \\
+      1 & 1 & 0 & 0 & 1 & 1 & X \\
+      1 & 1 & 0 & 1 & 0 & 1 & X \\
+      1 & 1 & 0 & 1 & 1 & 1 & X \\
+      1 & 1 & 1 & 0 & 0 & 0 & X \\
+      1 & 1 & 1 & 0 & 1 & 0 & X \\
+      1 & 1 & 1 & 1 & 0 & 0 & X \\
+      1 & 1 & 1 & 1 & 1 & 0 & X 
+   \end{tabular}
+\end{center}
 
 \subex{}
 $y_i$:
 \begin{center}
-\begin{tikzpicture}
-   \matrix (m)[
-      nodes={matrix node},
-      matrix of nodes,
-      inner sep=0pt,
-      outer sep=0pt,
-      row sep=-.5pt,
-      column sep=-.5pt
-   ]  {
-      0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
-      1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 \\
-      1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 \\
-      0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 \\
-   };
-  
-   \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$s_1$} ($(m-1-8.north east) + (0,2.2cm)$);
-   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$a_i$} ($(m-1-6.north east) + (0,+1.4cm)$);
-   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-3.north east) + (0,0.6cm)$);
-   \draw[|-|] ($(m-1-6.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-7.north east) + (0,0.6cm)$);
-   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$b_i$} ($(m-3-1.south west) + (-.6cm,0)$);
-   \draw[|-|] ($(m-3-1.north west) + (-1.2cm,0)$) -- node[left] () {$s_0$} ($(m-4-1.south west) + (-1.2cm,0)$);
+   \begin{tikzpicture}
+      \matrix (m)[
+         nodes={matrix node},
+         matrix of nodes,
+         inner sep=0pt,
+         outer sep=0pt,
+         row sep=-.5pt,
+         column sep=-.5pt
+      ]  {
+         0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+         1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 \\
+         1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 \\
+         0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 \\
+      };
 
-   \clip ($(m.north west) + (-8pt,8pt)$) rectangle ($(m.south east) + (8pt,-8pt)$);
-   \draw[highlight,draw=red] ($(m-2-1.north west) + (3pt,-3pt)$) rectangle ($(m-3-1.south east) + (-3pt,3pt)$);
-   \draw[highlight] ($(m-2-3.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=olive,dashed] ($(m-4-2.north west) + (3pt,-3pt)$) rectangle ($(m-4-2.south east) + (-3pt,-1cm)$);
-   \draw[highlight,draw=olive,dashed] ($(m-1-2.south east) + (-3pt,3pt)$) rectangle ($(m-1-2.north west) + (3pt,1cm)$);
-   \draw[highlight,loosely dashed] ($(m-4-4.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (-3pt,-1cm)$);
-   \draw[highlight,loosely dashed] ($(m-1-4.south east) + (-3pt,3pt)$) rectangle ($(m-1-4.north west) + (3pt,1cm)$);
-   \draw[highlight] ($(m-2-5.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
-   \draw[highlight] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-4-8.south east) + (-3pt,3pt)$);
-\end{tikzpicture}
-$y_i = \comp s_1\comp a_i \comp b_i c_{i-1} + \comp s_1 \comp a_i b_i \comp
-c_{i-1} + \comp s_1 a_i \comp b_i \comp c_{i-1} + \comp s_1 a_i b_i c_{i-1} + s_1
-\comp s_0 a_i b_i + s_1 s_0 \comp a_i$
+      \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$s_1$} ($(m-1-8.north east) + (0,2.2cm)$);
+      \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$a_i$} ($(m-1-6.north east) + (0,+1.4cm)$);
+      \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-3.north east) + (0,0.6cm)$);
+      \draw[|-|] ($(m-1-6.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-7.north east) + (0,0.6cm)$);
+      \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$b_i$} ($(m-3-1.south west) + (-.6cm,0)$);
+      \draw[|-|] ($(m-3-1.north west) + (-1.2cm,0)$) -- node[left] () {$s_0$} ($(m-4-1.south west) + (-1.2cm,0)$);
+
+      \clip ($(m.north west) + (-8pt,8pt)$) rectangle ($(m.south east) + (8pt,-8pt)$);
+      \draw[highlight,draw=red] ($(m-2-1.north west) + (3pt,-3pt)$) rectangle ($(m-3-1.south east) + (-3pt,3pt)$);
+      \draw[highlight] ($(m-2-3.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=olive,dashed] ($(m-4-2.north west) + (3pt,-3pt)$) rectangle ($(m-4-2.south east) + (-3pt,-1cm)$);
+      \draw[highlight,draw=olive,dashed] ($(m-1-2.south east) + (-3pt,3pt)$) rectangle ($(m-1-2.north west) + (3pt,1cm)$);
+      \draw[highlight,loosely dashed] ($(m-4-4.north west) + (3pt,-3pt)$) rectangle ($(m-4-4.south east) + (-3pt,-1cm)$);
+      \draw[highlight,loosely dashed] ($(m-1-4.south east) + (-3pt,3pt)$) rectangle ($(m-1-4.north west) + (3pt,1cm)$);
+      \draw[highlight] ($(m-2-5.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
+      \draw[highlight] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-4-8.south east) + (-3pt,3pt)$);
+   \end{tikzpicture}
+   $y_i = \comp s_1\comp a_i \comp b_i c_{i-1} + \comp s_1 \comp a_i b_i \comp
+   c_{i-1} + \comp s_1 a_i \comp b_i \comp c_{i-1} + \comp s_1 a_i b_i c_{i-1} + s_1
+   \comp s_0 a_i b_i + s_1 s_0 \comp a_i$
 \end{center}
 
 $c_i$:
 \begin{center}
-\begin{tikzpicture}
-   \matrix (m)[
-      nodes={matrix node},
-      matrix of nodes,
-      inner sep=0pt,
-      outer sep=0pt,
-      row sep=-.5pt,
-      column sep=-.5pt
-   ]  {
-      0 & 0 & 1 & 0 & X & X & X & X \\
-      0 & 1 & 1 & 1 & X & X & X & X \\
-      1 & 1 & 1 & 0 & X & X & X & X \\
-      0 & 1 & 0 & 0 & X & X & X & X \\
-   };
-  
-   \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$s_1$} ($(m-1-8.north east) + (0,2.2cm)$);
-   \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$a_i$} ($(m-1-6.north east) + (0,+1.4cm)$);
-   \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-3.north east) + (0,0.6cm)$);
-   \draw[|-|] ($(m-1-6.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-7.north east) + (0,0.6cm)$);
-   \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$b_i$} ($(m-3-1.south west) + (-.6cm,0)$);
-   \draw[|-|] ($(m-3-1.north west) + (-1.2cm,0)$) -- node[left] () {$s_0$} ($(m-4-1.south west) + (-1.2cm,0)$);
+   \begin{tikzpicture}
+      \matrix (m)[
+         nodes={matrix node},
+         matrix of nodes,
+         inner sep=0pt,
+         outer sep=0pt,
+         row sep=-.5pt,
+         column sep=-.5pt
+      ]  {
+         0 & 0 & 1 & 0 & X & X & X & X \\
+         0 & 1 & 1 & 1 & X & X & X & X \\
+         1 & 1 & 1 & 0 & X & X & X & X \\
+         0 & 1 & 0 & 0 & X & X & X & X \\
+      };
 
-   \clip ($(m.north west) + (-8pt,8pt)$) rectangle ($(m.south east) + (8pt,-8pt)$);
-   \draw[highlight,draw=red] ($(m-3-2.north east) + (-3pt,-3pt)$) rectangle ($(m-3-1.south east) + (-3cm,3pt)$);
-   \draw[highlight,draw=red] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-3-8.south east) + (3cm,3pt)$);
-   \draw[highlight,dashed] ($(m-3-2.north west) + (3pt,-3pt)$) rectangle ($(m-4-2.south east) + (-3pt,3pt)$);
-   \draw[highlight,dashed] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-4-7.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=blue,dash dot] ($(m-2-2.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=blue,dash dot] ($(m-2-6.north west) + (3pt,-3pt)$) rectangle ($(m-3-7.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=olive] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-2-3.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=olive] ($(m-1-6.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
-   \draw[highlight,draw=teal,dashed] ($(m-2-3.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
-\end{tikzpicture}
+      \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$s_1$} ($(m-1-8.north east) + (0,2.2cm)$);
+      \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$a_i$} ($(m-1-6.north east) + (0,+1.4cm)$);
+      \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-3.north east) + (0,0.6cm)$);
+      \draw[|-|] ($(m-1-6.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-7.north east) + (0,0.6cm)$);
+      \draw[|-|] ($(m-2-1.north west) + (-.6cm,0)$) -- node[left] () {$b_i$} ($(m-3-1.south west) + (-.6cm,0)$);
+      \draw[|-|] ($(m-3-1.north west) + (-1.2cm,0)$) -- node[left] () {$s_0$} ($(m-4-1.south west) + (-1.2cm,0)$);
 
-$c_i = b_i c_{i-1} + \comp s_0 a_i b_i + s_0 \comp a_i c_{i-1} + s_o \comp a_i
-b_i + \comp s_0 a_i c_{i-1}$
+      \clip ($(m.north west) + (-8pt,8pt)$) rectangle ($(m.south east) + (8pt,-8pt)$);
+      \draw[highlight,draw=red] ($(m-3-2.north east) + (-3pt,-3pt)$) rectangle ($(m-3-1.south east) + (-3cm,3pt)$);
+      \draw[highlight,draw=red] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-3-8.south east) + (3cm,3pt)$);
+      \draw[highlight,dashed] ($(m-3-2.north west) + (3pt,-3pt)$) rectangle ($(m-4-2.south east) + (-3pt,3pt)$);
+      \draw[highlight,dashed] ($(m-3-7.north west) + (3pt,-3pt)$) rectangle ($(m-4-7.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=blue,dash dot] ($(m-2-2.north west) + (3pt,-3pt)$) rectangle ($(m-3-3.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=blue,dash dot] ($(m-2-6.north west) + (3pt,-3pt)$) rectangle ($(m-3-7.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=olive] ($(m-1-3.north west) + (3pt,-3pt)$) rectangle ($(m-2-3.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=olive] ($(m-1-6.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
+      \draw[highlight,draw=teal,dashed] ($(m-2-3.north west) + (3pt,-3pt)$) rectangle ($(m-2-6.south east) + (-3pt,3pt)$);
+   \end{tikzpicture}
+
+   $c_i = b_i c_{i-1} + \comp s_0 a_i b_i + s_0 \comp a_i c_{i-1} + s_o \comp a_i
+   b_i + \comp s_0 a_i c_{i-1}$
 \end{center}
 
 \subex{}
@@ -176,59 +178,59 @@ sep=1pt,minimum height=.7em]
 
       %% DRAW THE DOTS
       \ifthenelse{\value{QUICK}<1}{}{
-      \newcounter{num}
-      \foreach \line[count=\x,evaluate=\line as \l using int(\line-1),
-         evaluate=\line as \t using int(\line+1),
-      ] in {1,3,5,...,10}{
-         %% ODD ROWS %%%%%%%%%%%%%%%%
-         \pgfmathsetmacro{\numdots}{pow(2,\x-1)}
-         \ifthenelse{\line=1}{
-            \foreach \c in {0,2,...,30}{
-               \fill[name intersections={of={h \line} and {v \c}}] (intersection-1) circle (\radius);
-            }
-         }{
-            \setcounter{num}{0}
-            \whiledo{\value{num}<32}{
-               \foreach \n in {1,...,\numdots}{
-                  \ifthenelse{\value{num}<32}{\fill[name intersections={of={h \line} and {v \arabic{num}}}] (intersection-1) circle (\radius);
-                     \stepcounter{num}
-                  }{}
+         \newcounter{num}
+         \foreach \line[count=\x,evaluate=\line as \l using int(\line-1),
+            evaluate=\line as \t using int(\line+1),
+         ] in {1,3,5,...,10}{
+            %% ODD ROWS %%%%%%%%%%%%%%%%
+            \pgfmathsetmacro{\numdots}{pow(2,\x-1)}
+            \ifthenelse{\line=1}{
+               \foreach \c in {0,2,...,30}{
+                  \fill[name intersections={of={h \line} and {v \c}}] (intersection-1) circle (\radius);
                }
-               \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+            }{
+               \setcounter{num}{0}
+               \whiledo{\value{num}<32}{
+                  \foreach \n in {1,...,\numdots}{
+                     \ifthenelse{\value{num}<32}{\fill[name intersections={of={h \line} and {v \arabic{num}}}] (intersection-1) circle (\radius);
+                        \stepcounter{num}
+                     }{}
+                  }
+                  \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+               }
             }
-         }
-         %% END ODD ROWS %%%%%%%%%%%%
+            %% END ODD ROWS %%%%%%%%%%%%
 
-         %% EVEN ROWS %%%%%%%%%%%%%%%%
-         \ifthenelse{\line=1}{
-            \foreach \c in {0,2,...,30}{
-               \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\c)}
-               \fill[name intersections={of={h \t} and {v \index}}] (intersection-1) circle (\radius);
-            }
-         }{
-            \setcounter{num}{0}
-            \whiledo{\value{num}<32}{
-               \foreach \n in {1,...,\numdots}{
-                  \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\value{num})}
-                  \ifthenelse{\index<32 \AND \value{num}<32}{\fill[name
-                     intersections={of={h \t} and {v \index}}] (intersection-1) circle (\radius);
-                     \stepcounter{num}
-                  }{}
+            %% EVEN ROWS %%%%%%%%%%%%%%%%
+            \ifthenelse{\line=1}{
+               \foreach \c in {0,2,...,30}{
+                  \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\c)}
+                  \fill[name intersections={of={h \t} and {v \index}}] (intersection-1) circle (\radius);
                }
-               \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+            }{
+               \setcounter{num}{0}
+               \whiledo{\value{num}<32}{
+                  \foreach \n in {1,...,\numdots}{
+                     \pgfmathsetmacro{\index}{int(pow(2,\x-1)+\value{num})}
+                     \ifthenelse{\index<32 \AND \value{num}<32}{\fill[name
+                        intersections={of={h \t} and {v \index}}] (intersection-1) circle (\radius);
+                        \stepcounter{num}
+                     }{}
+                  }
+                  \foreach \n in {1,...,\numdots}{\stepcounter{num}}
+               }
             }
+            %% END EVEN ROWS %%%%%%%%%%%%
          }
-         %% END EVEN ROWS %%%%%%%%%%%%
+         %% DOTS IN OR MATRIX
+         \foreach \x in {1,2,4,7,9,10,12,15,19,23,26,27,30,31}{
+            \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
+         }
+         %% DOTS IN OR MATRIX
+         \foreach \x in {3,5,6,7,9,12,13,15,19,21,22,23,25,28,29,31}{
+            \fill[name intersections={of=ci and {v \x}}] (intersection-1) circle (\radius);
+         }
       }
-      %% DOTS IN OR MATRIX
-      \foreach \x in {1,2,4,7,9,10,12,15,19,23,26,27,30,31}{
-      \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
-      }
-      %% DOTS IN OR MATRIX
-      \foreach \x in {3,5,6,7,9,12,13,15,19,21,22,23,25,28,29,31}{
-      \fill[name intersections={of=ci and {v \x}}] (intersection-1) circle (\radius);
-      }
-   }
    \end{tikzpicture}
 \end{center}
 
@@ -260,16 +262,16 @@ sep=1pt,minimum height=.7em]
       \node[rectangle,draw,very thick,below=2\hlinedist of b_i] {\textbf{PAL}};
 
       \ifthenelse{\value{QUICK}<1}{}{
-      %% DRAW THE DOTS
-      \foreach \x / \y in
-      {1/0,1/2,2/1,2/3,2/4,2/6,2/7,2/9,3/0,3/1,3/5,3/8,3/9,4/2,4/3,4/4,4/7,4/10,5/1,5/2,6/0,6/3,6/6,6/8,6/10,7/4,7/7,7/10,8/5,8/8,8/9,9/0,9/1,9/2,9/3,10/4,10/5}{
-         \fill[name intersections={of={h \x} and {v \y}}] (intersection-1) circle (\radius);
+         %% DRAW THE DOTS
+         \foreach \x / \y in
+         {1/0,1/2,2/1,2/3,2/4,2/6,2/7,2/9,3/0,3/1,3/5,3/8,3/9,4/2,4/3,4/4,4/7,4/10,5/1,5/2,6/0,6/3,6/6,6/8,6/10,7/4,7/7,7/10,8/5,8/8,8/9,9/0,9/1,9/2,9/3,10/4,10/5}{
+            \fill[name intersections={of={h \x} and {v \y}}] (intersection-1) circle (\radius);
+         }
+         \foreach \x[evaluate=\x as \y using int(\x+6)] in {0,...,5} {
+            \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
+            \fill[name intersections={of=ci and {v \y}}] (intersection-1) circle (\radius);
+         }
       }
-      \foreach \x[evaluate=\x as \y using int(\x+6)] in {0,...,5} {
-         \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
-         \fill[name intersections={of=ci and {v \y}}] (intersection-1) circle (\radius);
-      }
-   }
    \end{tikzpicture}
    \begin{tikzpicture}
       \foreach \x in {1,...,10}
@@ -297,17 +299,17 @@ sep=1pt,minimum height=.7em]
       \node[rectangle,draw,very thick,below=2\hlinedist of b_i] {\textbf{PLA}};
 
       \ifthenelse{\value{QUICK}<1}{}{
-      %% DRAW THE DOTS
-      \foreach \x / \y in
-      {1/0,1/2,2/1,2/3,2/4,2/6,2/7,2/9,3/0,3/1,3/5,3/8,3/9,4/2,4/3,4/4,4/7,4/10,5/1,5/2,6/0,6/3,6/6,6/8,6/10,7/4,7/7,7/10,8/5,8/8,8/9,9/0,9/1,9/2,9/3,10/4,10/5}{
-         \fill[name intersections={of={h \x} and {v \y}}] (intersection-1) circle (\radius);
-      }
-      \foreach \x[evaluate=\x as \y using int(\x+6)] in {0,...,5} {
-         \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
-         \ifthenelse{\y=11}{}{\fill[name intersections={of=ci and {v \y}}] (intersection-1) circle (\radius);
+         %% DRAW THE DOTS
+         \foreach \x / \y in
+         {1/0,1/2,2/1,2/3,2/4,2/6,2/7,2/9,3/0,3/1,3/5,3/8,3/9,4/2,4/3,4/4,4/7,4/10,5/1,5/2,6/0,6/3,6/6,6/8,6/10,7/4,7/7,7/10,8/5,8/8,8/9,9/0,9/1,9/2,9/3,10/4,10/5}{
+            \fill[name intersections={of={h \x} and {v \y}}] (intersection-1) circle (\radius);
+         }
+         \foreach \x[evaluate=\x as \y using int(\x+6)] in {0,...,5} {
+            \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
+            \ifthenelse{\y=11}{}{\fill[name intersections={of=ci and {v \y}}] (intersection-1) circle (\radius);
+            }
          }
       }
-   }
    \end{tikzpicture}
 \end{center}
 \subex{}
@@ -405,52 +407,52 @@ Die Schaltfuntkion ist
 %       \draw (f.south east) -- +(3\pulsewidth,0) |- +(\colwidth,\plotheight);
 %       \draw (g.south east) -- +(\colwidth,0);
 %    \end{tikzpicture}
-   % \begin{tikzpicture}[node distance=1.2em,very thick]
-   %    \node[align=right] (A) {A};
-   %    \node[align=right,below=of A] (B) {B};
-   %    \node[align=right,below=of B] (C) {C};
-   %    \node[align=right,below=of C] (NOTA) {$\bar{A}$};
-   %    \node[align=right,below=of NOTA] (NOTB) {$\bar{B}$};
-   %    \node[align=right,below=of NOTB] (c) {c};
-   %    \node[align=right,below=of c] (d) {d};
-   %    \node[align=right,below=of d] (e) {e};
-   %    \node[align=right,below=of e] (f) {f};
-   %    \node[align=right,below=of f] (g) {g};
+% \begin{tikzpicture}[node distance=1.2em,very thick]
+%    \node[align=right] (A) {A};
+%    \node[align=right,below=of A] (B) {B};
+%    \node[align=right,below=of B] (C) {C};
+%    \node[align=right,below=of C] (NOTA) {$\bar{A}$};
+%    \node[align=right,below=of NOTA] (NOTB) {$\bar{B}$};
+%    \node[align=right,below=of NOTB] (c) {c};
+%    \node[align=right,below=of c] (d) {d};
+%    \node[align=right,below=of d] (e) {e};
+%    \node[align=right,below=of e] (f) {f};
+%    \node[align=right,below=of f] (g) {g};
 
-   %    \draw (A.south east) -- +(1\pulsewidth,0) |- +(\colwidth,\plotheight);
-   %    \draw (B.south east) -- +(1\pulsewidth,0) |- +(\colwidth,\plotheight);
-   %    \draw (C.south east) -- +(1\pulsewidth,0) |- +(2\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (NOTA.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(\colwidth,-\plotheight);
-   %    \draw (NOTB.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(\colwidth,-\plotheight);
-   %    \draw[dash dot,red] (c.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw[dash dot,red] (d.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw[dash dot,red] (e.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw[dash dot,red] (f.south east) -- +(3\pulsewidth,0) |- +(4\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (g.south east) -- +(\colwidth,0);
-   % \end{tikzpicture}
-   % \begin{tikzpicture}[node distance=1.2em,very thick]
-   %    \node[align=right] (A) {A};
-   %    \node[align=right,below=of A] (B) {B};
-   %    \node[align=right,below=of B] (C) {C};
-   %    \node[align=right,below=of C] (NOTA) {$\bar{A}$};
-   %    \node[align=right,below=of NOTA] (NOTB) {$\bar{B}$};
-   %    \node[align=right,below=of NOTB] (c) {c};
-   %    \node[align=right,below=of c] (d) {d};
-   %    \node[align=right,below=of d] (e) {e};
-   %    \node[align=right,below=of e] (f) {f};
-   %    \node[align=right,below=of f] (g) {g};
+%    \draw (A.south east) -- +(1\pulsewidth,0) |- +(\colwidth,\plotheight);
+%    \draw (B.south east) -- +(1\pulsewidth,0) |- +(\colwidth,\plotheight);
+%    \draw (C.south east) -- +(1\pulsewidth,0) |- +(2\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (NOTA.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(\colwidth,-\plotheight);
+%    \draw (NOTB.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(\colwidth,-\plotheight);
+%    \draw[dash dot,red] (c.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw[dash dot,red] (d.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw[dash dot,red] (e.south east) -- +(2\pulsewidth,0) |- +(3\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw[dash dot,red] (f.south east) -- +(3\pulsewidth,0) |- +(4\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (g.south east) -- +(\colwidth,0);
+% \end{tikzpicture}
+% \begin{tikzpicture}[node distance=1.2em,very thick]
+%    \node[align=right] (A) {A};
+%    \node[align=right,below=of A] (B) {B};
+%    \node[align=right,below=of B] (C) {C};
+%    \node[align=right,below=of C] (NOTA) {$\bar{A}$};
+%    \node[align=right,below=of NOTA] (NOTB) {$\bar{B}$};
+%    \node[align=right,below=of NOTB] (c) {c};
+%    \node[align=right,below=of c] (d) {d};
+%    \node[align=right,below=of d] (e) {e};
+%    \node[align=right,below=of e] (f) {f};
+%    \node[align=right,below=of f] (g) {g};
 
-   %    \draw (A.south east) ++(0,\plotheight) -- +(1\pulsewidth,0) |- +(2\pulsewidth,-\plotheight) |- +(\colwidth,0);
-   %    \draw (B.south east) ++(0,\plotheight) -- +(1\pulsewidth,0) |- +(2\pulsewidth,-\plotheight) |- +(\colwidth,0);
-   %    \draw (C.south east) ++(0,\plotheight) -- +(\colwidth,0);
-   %    \draw (NOTA.south east) -- +(2\pulsewidth,0) |- + (3\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (NOTB.south east) -- +(2\pulsewidth,0) |- + (3\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (c.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (d.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
-   %    \draw (e.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(3\pulsewidth,-\plotheight) |- +(\colwidth,0);
-   %    \draw (f.south east) ++(0,\plotheight) -- +(3\pulsewidth,0) |- +(4\pulsewidth,-\plotheight) |- +(\colwidth,0);
-   %    \draw (g.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
-   % \end{tikzpicture}
+%    \draw (A.south east) ++(0,\plotheight) -- +(1\pulsewidth,0) |- +(2\pulsewidth,-\plotheight) |- +(\colwidth,0);
+%    \draw (B.south east) ++(0,\plotheight) -- +(1\pulsewidth,0) |- +(2\pulsewidth,-\plotheight) |- +(\colwidth,0);
+%    \draw (C.south east) ++(0,\plotheight) -- +(\colwidth,0);
+%    \draw (NOTA.south east) -- +(2\pulsewidth,0) |- + (3\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (NOTB.south east) -- +(2\pulsewidth,0) |- + (3\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (c.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (d.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
+%    \draw (e.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(3\pulsewidth,-\plotheight) |- +(\colwidth,0);
+%    \draw (f.south east) ++(0,\plotheight) -- +(3\pulsewidth,0) |- +(4\pulsewidth,-\plotheight) |- +(\colwidth,0);
+%    \draw (g.south east) -- +(3\pulsewidth,0) |- + (4\pulsewidth,\plotheight) |- +(\colwidth,0);
+% \end{tikzpicture}
 %    \begin{tikzpicture}[node distance=1.2em,very thick]
 %       \node[align=right] (A) {A};
 %       \node[align=right,below=of A] (B) {B};
@@ -500,9 +502,9 @@ markiertden Gruppen ($AC$ und $\comp A C$).
 
       \foreach \node in {A,B,C,NOTA,NOTB,c,d,e,f,g}{
          \draw[step=.5\plotheight,thin,gray] (\node.south east) rectangle ++(1\colwidth,2\plotheight);
-      \foreach \x in {0,...,8}{
-         \draw[thin,dotted] ($(\node.south east) + (\x\pulsewidth,0)$) -- +(0,2\plotheight);
-      }
+         \foreach \x in {0,...,8}{
+            \draw[thin,dotted] ($(\node.south east) + (\x\pulsewidth,0)$) -- +(0,2\plotheight);
+         }
       }
 
       \draw (A.south east) ++(0,\plotheight) -- +(2\pulsewidth,0) |- +(\colwidth,-\plotheight);
@@ -529,36 +531,40 @@ Brückenterm ableitet. Die neue DNF lautet
 
 Das remodellierte Schaltnetz ist
 
-\begin{tikzpicture}
-   \node (A) {$A$};
-   \node[below=of A] (B) {$B$};
-   \node[below=of B] (C) {$C$};
-   \node[draw,right=of A] (inv-A) {1};
-   % \clip (inv-A.south east) rectangle ++(1cm,1cm);
-   \node[inner sep=0,minimum size=4pt,outer sep=0,draw,shape=circle] (c) at ($(inv-A.east) + (2pt,0)$) {};
-   \node[and port,right=3cm of A] (and-1) {};
-   \node[and port,right=3cm of B] (and-2) {};
-   \node[and port,right=3cm of C] (and-3) {};
-   \node[or port,right=1cm of and-2] (or-1) {};
-   \node[and port,right=4cm of and-1] (and-4) {};
-   \node[below right=.5em and .5em of or-1] {f};
+\vspace{1cm}
 
-   \draw (A) -- (inv-A);
-   \draw (c) -- (and-1);
-   \fill (A) ++(2em,0) coordinate (c1) circle (2pt);
-   \draw (c1) |- (and-3.155);
-   \draw (B) -- (and-2);
-   \draw (C) -- (and-3);
-   \draw (C) -- ($(and-3.west) - (1em,0)$) coordinate (c2) [fill] circle (2pt) -- ($(and-2.200) - (1em,0)$) circle (2pt) -- (and-2.200);
-   \draw (c2) |- (and-1.200);
+\begin{center}
+   \begin{tikzpicture}
+      \node (A) {$A$};
+      \node[below=of A] (B) {$B$};
+      \node[below=of B] (C) {$C$};
+      \node[draw,right=of A] (inv-A) {1};
+      % \clip (inv-A.south east) rectangle ++(1cm,1cm);
+      \node[inner sep=0,minimum size=4pt,outer sep=0,draw,shape=circle] (c) at ($(inv-A.east) + (2pt,0)$) {};
+      \node[and port,right=3cm of A] (and-1) {};
+      \node[and port,right=3cm of B] (and-2) {};
+      \node[and port,right=3cm of C] (and-3) {};
+      \node[or port,right=1cm of and-2] (or-1) {};
+      \node[and port,right=4cm of and-1] (and-4) {};
+      \node[below right=.5em and .5em of or-1] {f};
 
-   \draw (and-1.east) -- ++(1em,0) |- (or-1.160);
-   \draw (and-2.east) -- (or-1);
-   \draw (and-3.east) -- ++(1em,0) |- (or-1.200);
+      \draw (A) -- (inv-A);
+      \draw (c) -- (and-1);
+      \fill (A) ++(2em,0) coordinate (c1) circle (2pt);
+      \draw (c1) |- (and-3.155);
+      \draw (B) -- (and-2);
+      \draw (C) -- (and-3);
+      \draw (C) -- ($(and-3.west) - (1em,0)$) coordinate (c2) [fill] circle (2pt) -- ($(and-2.200) - (1em,0)$) circle (2pt) -- (and-2.200);
+      \draw (c2) |- (and-1.200);
 
-   \draw ($(inv-A) + (1cm,0)$) coordinate (c3) |- ($(and-1.north) + (0,1em)$) -| ($(and-4.west) - (2em,0)$) -- (and-4);
-   \fill (c3) circle (2pt);
-   \draw (or-1.east) -- ++(1cm,0) |- (and-4.200);
-   \draw (and-4.east) -- ++(1em,0) ++(1em,0) node {g};
-\end{tikzpicture}
+      \draw (and-1.east) -- ++(1em,0) |- (or-1.160);
+      \draw (and-2.east) -- (or-1);
+      \draw (and-3.east) -- ++(1em,0) |- (or-1.200);
+
+      \draw ($(inv-A) + (1cm,0)$) coordinate (c3) |- ($(and-1.north) + (0,1em)$) -| ($(and-4.west) - (2em,0)$) -- (and-4);
+      \fill (c3) circle (2pt);
+      \draw (or-1.east) -- ++(1cm,0) |- (and-4.200);
+      \draw (and-4.east) -- ++(1em,0) ++(1em,0) node {g};
+   \end{tikzpicture}
+\end{center}
 \end{document}
