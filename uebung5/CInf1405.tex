@@ -66,6 +66,7 @@ $y_i$:
          0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 \\
       };
 
+      
       \draw[|-|] ($(m-1-5.north west) + (0,2.2cm)$) -- node[above] () {$s_1$} ($(m-1-8.north east) + (0,2.2cm)$);
       \draw[|-|] ($(m-1-3.north west) + (0,1.4cm)$) -- node[above] () {$a_i$} ($(m-1-6.north east) + (0,+1.4cm)$);
       \draw[|-|] ($(m-1-2.north west) + (0,.6cm)$) -- node[above] () {$c_{i-1}$} ($(m-1-3.north east) + (0,0.6cm)$);
@@ -565,6 +566,92 @@ Das remodellierte Schaltnetz ist
       \fill (c3) circle (2pt);
       \draw (or-1.east) -- ++(1cm,0) |- (and-4.200);
       \draw (and-4.east) -- ++(1em,0) ++(1em,0) node {g};
+   \end{tikzpicture}
+\end{center}
+
+\ex{Erzeugung von Hazards}
+
+\subex{}
+
+\begin{center}
+   \begin{tikzpicture}
+      \tikzset{inverter/.style={or port,font={1}}}
+      \node (x) {$x$};
+      \node[inverter,below right=of x] (inv-x) {};
+      \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x] (inv-x-circle) {};
+      \node[or port,right=3cm of x] (or-1) {};
+      \node[right=of or-1] (y) {$y$};
+
+      \draw (x.east) -- (or-1);
+      \draw (or-1.east) -- (y.west);
+      \fill (x.east) ++(2em,0) coordinate (c1) circle (2pt);
+      \draw (c1) |- (inv-x.west);
+      \draw (inv-x-circle.east) -| ++(1em,2em) |- (or-1.200);
+   \end{tikzpicture}
+\end{center}
+
+\subex{}
+
+Vermutlich falsch.
+
+\begin{center}
+   \begin{tikzpicture}
+      \tikzset{inverter/.style={or port,font={1}}}
+      \node (x2) {$x$};
+      \node[and port,below right=of x2] (and-12) {};
+      \node[inverter,right=of and-12] (inv-x2) {};
+      \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x2] (inv-x2-circle) {};
+      \node[and port,right=6cm of x2] (and-22) {};
+      \node[right=of and-22] (y) {$y$};
+      \node[left=of and-12] (12) {1};
+
+      \draw (x2.east) -- (and-22);
+      \draw (and-22.east) -- (y.west);
+      \fill (x2.east) ++(2em,0) coordinate (c12) circle (2pt);
+      \draw (c12) |- (and-12.160);
+      \draw (and-12.east) -- (inv-x2.west);
+      \draw (inv-x2-circle.east) -| ++(1em,2em) |- (and-22.200);
+      \draw (12.east) -- (and-12);
+   \end{tikzpicture}
+\end{center}
+
+\subex{}
+
+\begin{center}
+   \begin{tikzpicture}
+      \tikzset{inverter/.style={or port,font={1}}}
+      \node (actual-x) {$x$};
+      \node[above right=of actual-x] (x) {};
+      \node[inverter,below right=of x] (inv-x) {};
+      \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x] (inv-x-circle) {};
+      \node[or port,right=3cm of x] (or-1) {};
+      \node[right=9cm of actual-x] (y) {$y$};
+
+      \draw (x.east) -- (or-1);
+      \fill (x.east) ++(2em,0) coordinate (c1) circle (2pt);
+      \draw (c1) |- (inv-x.west);
+      \draw (inv-x-circle.east) -| ++(1em,2em) |- (or-1.200);
+
+      \node[below right=of actual-x] (x2) {};
+      \node[and port,below right=of x2] (and-12) {};
+      \node[inverter,right=of and-12] (inv-x2) {};
+      \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x2] (inv-x2-circle) {};
+      \node[and port,right=6cm of x2] (and-22) {};
+      \node[left=of and-12] (12) {1};
+
+      \draw (x2.east) -- (and-22);
+      \fill (x2.east) ++(2em,0) coordinate (c12) circle (2pt);
+      \draw (c12) |- (and-12.160);
+      \draw (and-12.east) -- (inv-x2.west);
+      \draw (inv-x2-circle.east) -| ++(1em,2em) |- (and-22.200);
+      \draw (12.east) -- (and-12);
+
+      \draw (actual-x.east) -- ++(1em,0) coordinate (c3) |- (x.east);
+      \draw (actual-x.east) -- ++(1em,0) |- (x2.east);
+      \fill (c3) circle (2pt);
+
+      \draw (y.west) -- ++(-1em,0) coordinate (c4) |- (and-22.east);
+      \draw (c4) |- (or-1.east);
    \end{tikzpicture}
 \end{center}
 \end{document}
