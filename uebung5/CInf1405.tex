@@ -309,4 +309,101 @@ so angepasst, dass fast genau die benötigte Anzahl Terme realisiert werden kann
 PAL spart gegenüber dem PROM 20 Verknüpfungen in der OR-Matrix. Das PLA-Netz
 kann eine weitere Verknüpfung einsparen, da ein Draht tatsächlich redundant ist
 und damit auch nicht in der OR-Matrix verbunden werden muss.
+
+
+
+
+\ex{Taktsteuerung von D-Flipflops}{8+8+8=24}
+\begin{center}
+\noindent\begin{tikzpicture}[scale=.9]
+
+% helpers
+\def\hAzero{2.4}  \def\hAone{2.8}
+\def\hBzero{1.4}  \def\hBone{1.8}
+\def\hCzero{0.4}  \def\hCone{0.8}
+\def\hCyzero{4.4} \def\hCyone{4.8}
+\def\hDzero{3.4}  \def\hDone{3.8}
+
+\def\diff{.4}
+
+% undefs
+\def\drawundef#1#2{\fill[gray!40] (0, #1) rectangle ++(#2, -\diff);}
+\drawundef{\hAone}{1}
+\drawundef{\hBone}{2}
+\drawundef{\hCone}{1}
+
+% grid
+\foreach \name/\y in {C/5,D/4,a)/3,b)/2,c)/1}{
+  \draw[<-] (0,\y) -- ++(0,-.7) node[anchor=south east] {\name};
+}
+\foreach \y in {.3,1.3,2.3,3.3,4.3}{
+  \draw[->] (0,\y) -- ++(16,0) node[anchor=west] {t};
+}
+\foreach \x in {1,...,16}{
+  \draw[dotted] (\x, 0) -- ++(0,5);
+}
+
+% draw helpers
+\def\drawAt#1#2{\draw (#1,#2) -- ++(1,0);}
+\def\connect#1#2{\draw (#2,#1) -- ++(0,\diff);}
+
+% draw cycle
+\foreach \x in {0,2,...,15}{
+  \drawAt{\x}{\hCyzero}
+  \connect{\hCyzero}{\x}
+}
+\foreach \x in {1,3,...,15}{
+  \drawAt{\x}{\hCyone}
+  \connect{\hCyzero}{\x}
+}
+
+% draw D
+\def\up{, \hDzero) -- ++(0, \diff) -- (}
+\def\dn{, \hDone)  -- ++(0, -\diff) -- (}
+\draw (0, \hDone) -- (.7 \dn 2.1 \up 2.5 \dn 2.7 \up 3.5 \dn 5.1 \up 5.4 \dn 
+                     6.8 \up 7.3 \dn 7.4 \up 7.6 \dn 7.9 \up 9.3 \dn 10.2 \up
+                     12.3 \dn 12.5 \up 13.5 \dn 15.1 \up 16, \hDone);
+
+% draw A
+\def\up{, \hAzero) |- ++(0, \diff) -- (}
+\def\dn{, \hAone)  -- ++(0, -\diff) -- (}
+\draw (1, \hAzero) -- (3 \up 3.5 \dn 5.1 \up 5.4 \dn 7 \up 7.3 \dn 7.4 \up 7.6 \dn 7.9 \up 9.3 \dn 11 \up
+ 13.5 \dn 16, \hAzero);
+
+% draw B
+\def\up{, \hBzero) -- ++(0, \diff) -- (}
+\def\dn{, \hBone)  -- ++(0, -\diff) -- (}
+\draw (2, \hBzero) -- (8 \up 10 \dn 12 \up 14 \dn 16, \hBzero);
+
+% draw C
+\def\up{, \hCzero) -- ++(0, \diff) -- (}
+\def\dn{, \hCone)  -- ++(0, -\diff) -- (}
+\draw (1, \hCzero) -- (3 \up 5 \dn 7 \up 13 \dn 16, \hCzero);
+
+
+\end{tikzpicture}
+\end{center}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
