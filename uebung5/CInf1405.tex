@@ -224,7 +224,7 @@ sep=1pt,minimum height=.7em]
             %% END EVEN ROWS %%%%%%%%%%%%
          }
          %% DOTS IN OR MATRIX
-         \foreach \x in {1,2,4,7,9,10,12,15,19,23,26,27,30,31}{
+         \foreach \x in {1,2,4,7,9,10,12,15,19,23,24,25,28,29}{
             \fill[name intersections={of=yi and {v \x}}] (intersection-1) circle (\radius);
          }
          %% DOTS IN OR MATRIX
@@ -574,9 +574,10 @@ Das remodellierte Schaltnetz ist
 
 \subex{}
 
+\tikzset{inverter/.style={or port,font={1}}}
+
 \begin{center}
    \begin{tikzpicture}
-      \tikzset{inverter/.style={or port,font={1}}}
       \node (x) {$x$};
       \node[inverter,below right=of x] (inv-x) {};
       \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x] (inv-x-circle) {};
@@ -597,7 +598,6 @@ Das remodellierte Schaltnetz ist
 
 \begin{center}
    \begin{tikzpicture}
-      \tikzset{inverter/.style={or port,font={1}}}
       \node (x2) {$x$};
       \node[and port,below right=of x2] (and-12) {};
       \node[inverter,right=of and-12] (inv-x2) {};
@@ -620,13 +620,13 @@ Das remodellierte Schaltnetz ist
 
 \begin{center}
    \begin{tikzpicture}
-      \tikzset{inverter/.style={or port,font={1}}}
       \node (actual-x) {$x$};
       \node[above right=of actual-x] (x) {};
       \node[inverter,below right=of x] (inv-x) {};
       \node[draw,shape=circle,inner sep=2pt,right=0pt-\pgflinewidth of inv-x] (inv-x-circle) {};
       \node[or port,right=3cm of x] (or-1) {};
-      \node[right=9cm of actual-x] (y) {$y$};
+      \node[or port,right=9cm of actual-x] (or-2) {};
+      \node[right=of or-2] (y) {$y$};
 
       \draw (x.east) -- (or-1);
       \fill (x.east) ++(2em,0) coordinate (c1) circle (2pt);
@@ -651,8 +651,9 @@ Das remodellierte Schaltnetz ist
       \draw (actual-x.east) -- ++(1em,0) |- (x2.east);
       \fill (c3) circle (2pt);
 
-      \draw (y.west) -- ++(-1em,0) coordinate (c4) |- (and-22.east);
-      \draw (c4) |- (or-1.east);
+      \draw (or-2.200) -- ++(-1em,0) |- (and-22.east);
+      \draw (or-2.160) -- ++(-1em,0) |- (or-1.east);
+      \draw (or-2.east) -- (y.west);
    \end{tikzpicture}
 \end{center}
 
