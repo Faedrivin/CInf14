@@ -339,4 +339,89 @@ Multiplexern nichts ändern.
 Zur Erhöhung der Breite genügt es, die gewünschte Anzahl von
 Muxer-Flipflop-Bausteinen hintereinanderzuschalten. Wichtig ist bloß, dass der
 erste mit dem letzten und umgekehrt verbunden ist, so wie oben zu sehen.
+
+
+
+
+
+\ex{Analyse eines Registerbausteins}{1 + 4 + 6 + 6 + 8 + 9 = 34 P}
+Im Folgenden sind folgende Symbole gültig:
+
+DATA A = A, DATA B = B, DATA C = C, DATA D = D, ENPENT = E, LOAD = L
+
+\subex{Taktsteuerung}
+CLK wird invertiert. Die JK-Flipflops sind normale JK-Flipflops mit Flankensteuerung (siehe Schaltsymbol). Somit negativ einflankengesteuert.
+
+\subex{Einfluss ENT/ENP}
+Der Einfluss ist synchron. ENT und ENP sorgen dafür, dass bei der aktiven Zyklusphase die Ergebnisse vom Zeitschritt vorher weiterverarbeitet werden, sofern kein LOAD gesetzt ist.
+
+\bigskip
+
+\textbf{Ansteuergleichungen Allgemein}
+\begin{center}
+\begin{tabular}{>{$}c<{=$}>{$}l<{$}>{$}l<{$}>{$}l<{$}}
+J_A^n & L^n       A^n &+&  \comp L^n              E^n \\
+K_A^n & L^n \comp A^n &+& (\comp L^n + \comp A^n) E^n \\
+J_B^n & L^n       B^n &+&  \comp L^n              E^n Q_A^{n-1} \comp{Q_D}^{n-1} \\
+K_B^n & L^n \comp B^n &+& (\comp L^n + \comp A^n) E^n Q_A^{n-1} \comp{Q_D}^{n-1} \\
+J_C^n & L^n       C^n &+&  \comp L^n              E^n Q_A^{n-1} Q_B^{n-1} \\
+K_C^n & L^n \comp C^n &+& (\comp L^n + \comp A^n) E^n Q_A^{n-1} Q_B^{n-1} \\
+J_D^n & L^n       D^n &+&  \comp L^n              E^n Q_A^{n-1} (Q_B^{n-1} Q_C^{n-1} + Q_D^{n-1})\\
+K_D^n & L^n \comp D^n &+& (\comp L^n + \comp A^n) E^n Q_A^{n-1} (Q_B^{n-1} Q_C^{n-1} + Q_D^{n-1})\\
+\end{tabular}
+\end{center}
+
+\subex{Ansteuergleichungen $\comp {LOAD} = 0$}
+\begin{center}
+\begin{tabular}{>{$}l<{=$}>{$}l<{$}>{$}l<{$}>{$}l<{$}}
+J_A^n & A^n & & \\
+K_A^n & \comp A^n & & \\
+J_B^n & B^n & & \\
+K_B^n & \comp B^n & & \\
+J_C^n & C^n & & \\
+K_C^n & \comp C^n & & \\
+J_D^n & D^n & & \\
+K_D^n & \comp D^n & & \\
+\end{tabular}
+\end{center}
+
+\subex{Ansteuergleichungen $\comp {LOAD} = 1$}
+\begin{center}
+\begin{tabular}{>{$}l<{=$}>{$}l<{$}>{$}l<{$}>{$}l<{$}}
+J_A^n & & & E^n \\
+K_A^n & & & E^n \\
+J_B^n & & & E^n Q_A^{n-1} \comp {Q_D}^{n-1} \\
+K_B^n & & & E^n Q_A^{n-1} \comp {Q_D}^{n-1} \\
+J_C^n & & & E^n Q_A^{n-1} Q_B^{n-1} \\
+K_C^n & & & E^n Q_A^{n-1} Q_B^{n-1} \\
+J_D^n & & & E^n Q_A^{n-1} (Q_B^{n-1} Q_C^{n-1} + Q_D^{n-1})\\
+K_D^n & & & E^n Q_A^{n-1} (Q_B^{n-1} Q_C^{n-1} + Q_D^{n-1})\\
+\end{tabular}
+\end{center}
+
+\subex{Ausgabe Flipflops}
+\begin{center}
+\begin{tabular}{>{$}l<{$}|c|c|c|c|c|c|c|c|c|c|c|c}
+    t & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10& 11\\\hline                                   
+J_A^t & u & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+K_A^t & u & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+Q_A^t & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\\hline                              
+J_B^t & u & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+K_B^t & u & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+Q_B^t & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\\hline                                    
+J_C^t & u & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+K_C^t & u & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+Q_C^t & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\\hline
+J_D^t & u & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+K_D^t & u & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+Q_D^t & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\\hline
+\end{tabular}
+\end{center}
+Wir sehen, dass die Binärzahlen von 0 bis 9 zyklisch ausgegeben werden.
+
+\subex{RCO}
+RCO ist der Übertrag wenn auf 10 gewechselt werden würde, bzw. wenn reseted wird.
+Das ermöglicht es, dieses Registermodul für eine 1er Stelle des altbekannten BCD-Counters zu nutzen, immer wenn RCO gesetzt wird kann dann die 10er Stelle verändert werden.
+
+
 \end{document}
