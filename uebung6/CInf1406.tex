@@ -61,8 +61,8 @@
     % draw B
     \def\up{, \hBzero) -- ++(0, \diff) -- (}
     \def\dn{, \hBone)  -- ++(0, -\diff) -- (}
-    \drawundef{\hBone}{5}
-    \draw (5, \hBzero) -- (7 \up 11 \dn 13 \up 15 \dn 17, \hBzero);
+    \drawundef{\hBone}{1}
+    \draw (1, \hBone) -- (3 \dn 9 \up 11 \dn 13 \up 15 \dn 17, \hBzero);
 
   \end{tikzpicture}
 \end{center}
@@ -125,20 +125,20 @@
     % draw A
     \def\up{, \hAzero) |- ++(0, \diff) -- (}
     \def\dn{, \hAone)  -- ++(0, -\diff) -- (}
-    \drawundef{\hAone}{1}
-    \draw (1, \hAone) -- (5 \dn 7 \up 9 \dn 17, \hAzero);
+    \drawundef{\hAone}{5}
+    \draw (5, \hAone) -- (7 \dn 13 \up 15 \dn 17, \hAzero);
 
     % draw B
     \def\up{, \hBzero) -- ++(0, \diff) -- (}
     \def\dn{, \hBone)  -- ++(0, -\diff) -- (}
     \drawundef{\hBone}{2}
-    \draw (2, \hBone) -- (10 \dn 17, \hBzero);
+    \draw (2, \hBone) -- (10 \dn 14 \up 16 \dn 17, \hBzero);
     
     % draw C
     \def\up{, \hCzero) |- ++(0, \diff) -- (}
     \def\dn{, \hCone)  -- ++(0, -\diff) -- (}
     \drawundef{\hCone}{5}
-    \draw (5, \hCone) -- (17, \hCone);
+    \draw (5, \hCone) -- (7 \dn 13 \up 15 \dn 17 \up 17, \hCone);
     
   \end{tikzpicture}
 \end{center}
