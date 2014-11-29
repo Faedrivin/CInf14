@@ -258,7 +258,10 @@
 
    \draw (mux-0-out) -- ++(1em,0) |- (fl-0-D);
 
-   \draw (fl-1-out) -- ++(1em,0) |- (mux-0-2);
+   \draw (fl-1-out) -- ++(1em,0) coordinate (c) |- (mux-0-2);
+   \fill (c) circle (1pt);
+   \draw (c) -- ++(0,2em) -- ++(-2.5cm,0) coordinate (c);
+   \draw[dotted] (c) -- ++(-1cm,0);
 
    \connectbackwards{fl-0}{mux-1}{-10pt}
 
