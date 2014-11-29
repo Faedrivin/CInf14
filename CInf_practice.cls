@@ -107,6 +107,13 @@
    width=\portsize,minimum height=1.3*\portsize] % :D why the fuck do I need to scale the length for minimum height to get a friggin square?
 \tikzstyle{or port}=[font={$\ge 1$},draw,shape=rectangle,text centered,text
    width=\portsize,minimum height=1.3*\portsize] 
+   \tikzstyle{inverter}=[font=\tiny{1},minimum height=.3cm,
+   text width=.3cm,rectangle,anchor=center,
+   align=center,
+   inner sep=0,
+draw ]
+\tikzstyle{and gate}=[rectangle,font=\small,align=center,draw,fill=white,inner
+sep=1pt,minimum height=.7em]
 
    \usetikzlibrary{intersections}
 %%%%%%%%%%%%%%%%%%%%%%%
