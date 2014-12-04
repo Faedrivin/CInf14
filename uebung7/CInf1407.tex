@@ -1,6 +1,7 @@
 \documentclass{CInf_practice}
 
 \sheet{7}{Schaltwerke}
+\usepackage[gen]{eurosym}
 
 \begin{document}
 \cinftitle
@@ -26,7 +27,21 @@ Ausgangszustand geht, sollte man es irgendwie hinbekommen, gleichzeitig ein
 50-Cent-Münze und ein 1-Euro-Stück in den Schlitz zu quetschen. Aber wer den
 Automaten so misshandelt, verdient ohnehin keine Limo.
 
-\usetikzlibrary{automata,positioning,arrows.meta}
+\usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line above the tikzpicture, I dare you.
+
+Die Semantik der Zustände ist folgendermaßen:
+\begin{center}
+   \begin{tabular}{l@{:\hspace{1em}}l}
+   \hline
+   A & Initial, wartend \\
+   B & 1\euro{} fehlt \\
+   C & 50 Cent fehlen \\
+   D & Getränk ausgeben, kein Rückgeld\\
+   E & Getränk ausgeben, Rückgeld ausgeben\\
+   \hline
+\end{tabular}
+\end{center}
+
 \begin{center}
    \hspace{-2cm}\begin{tikzpicture}[node distance=2cm,very thick,yscale=.7]
       \node[scale=.8,draw,rounded corners=5pt,fill=lightgray!50,text width=4cm] (legend) {
