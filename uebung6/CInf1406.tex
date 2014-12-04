@@ -21,12 +21,6 @@
     \def\drawundef#1#2{\fill[gray!40] (0, #1) rectangle ++(#2, -\diff);}
 
     % grid
-    \foreach \name/\y in {C/4,D/3,a)/2,b)/1}{
-      \draw[<-] (0,\y) -- ++(0,-.7) node[anchor=south east] {\name};
-    }
-    \foreach \y in {.3,1.3,2.3,3.3}{
-      \draw[->] (0,\y) -- ++(17,0) node[anchor=north west] {t};
-    }
     \foreach \x in {1,...,16}{
       \draw[dotted] (\x, 0) -- ++(0,4);
     }
@@ -64,6 +58,13 @@
     \drawundef{\hBone}{1}
     \draw (1, \hBone) -- (3 \dn 9 \up 11 \dn 13 \up 15 \dn 17, \hBzero);
 
+    % axes
+    \foreach \name/\y in {C/4,D/3,a)/2,b)/1}{
+      \draw[<-] (0,\y) -- ++(0,-.7) node[anchor=south east] {\name};
+    }
+    \foreach \y in {.3,1.3,2.3,3.3}{
+      \draw[->] (0,\y) -- ++(17,0) node[anchor=north west] {t};
+    }
   \end{tikzpicture}
 \end{center}
 
@@ -86,12 +87,6 @@
     
 
     % grid
-    \foreach \name/\y in {C/6,J/5,K/4,a)/3,b)/2,c)/1}{
-      \draw[<-] (0,\y) -- ++(0,-.7) node[anchor=south east] {\name};
-    }
-    \foreach \y in {.3,1.3,2.3,3.3,4.3,5.3}{
-      \draw[->] (0,\y) -- ++(17,0) node[anchor=north west] {t};
-    }
     \foreach \x in {1,...,16}{
       \draw[dotted] (\x, 0) -- ++(0,6);
     }
@@ -125,8 +120,9 @@
     % draw A
     \def\up{, \hAzero) |- ++(0, \diff) -- (}
     \def\dn{, \hAone)  -- ++(0, -\diff) -- (}
-    \drawundef{\hAone}{5}
-    \draw (5, \hAone) -- (7 \dn 13 \up 15 \dn 17, \hAzero);
+    \drawundef{\hAone}{1}
+    \draw (1, \hAone) -- (5 \dn 7 \up 9 \dn 11 \up 13 \dn 15 \up 17, \hAone);
+    
 
     % draw B
     \def\up{, \hBzero) -- ++(0, \diff) -- (}
@@ -138,11 +134,20 @@
     \def\up{, \hCzero) |- ++(0, \diff) -- (}
     \def\dn{, \hCone)  -- ++(0, -\diff) -- (}
     \drawundef{\hCone}{5}
-    \draw (5, \hCone) -- (7 \dn 13 \up 15 \dn 17 \up 17, \hCone);
+    \draw (5, \hCone) -- (7 \dn 13 \up 15 \dn 17, \hCzero);
+    
+    % axes
+    \foreach \name/\y in {C/6,J/5,K/4,a)/3,b)/2,c)/1}{
+      \draw[<-] (0,\y) -- ++(0,-.7) node[anchor=south east] {\name};
+    }
+    \foreach \y in {.3,1.3,2.3,3.3,4.3,5.3}{
+      \draw[->] (0,\y) -- ++(17,0) node[anchor=north west] {t};
+    }
     
   \end{tikzpicture}
 \end{center}
 
+\newpage
 \ex{Multifunktions-Schieberegister}{10 + 5 +2 = 17}
 
 \subex{}
@@ -337,6 +342,7 @@ werden:
 Man ersetzt also alle D-Flipflops durch obige Konstruktion und muss an den
 Multiplexern nichts ändern.
 
+\newpage
 \subex{}
 
 Zur Erhöhung der Breite genügt es, die gewünschte Anzahl von
@@ -369,7 +375,7 @@ erste mit dem letzten und umgekehrt verbunden ist, so wie oben zu sehen.
          \draw[->] (0,\y) -- ++(\plotlength,0) node[anchor=north west] {t};
       }
       \foreach \x in {1,...,32}{
-         \draw[dotted] (\x*\pulsewidth,0) -- ++(0,4);
+         \draw[dotted] (\x*\pulsewidth,0) -- ++(0,3);
       }
 
       \foreach \x in {0,2,...,31}{
@@ -427,6 +433,7 @@ erste mit dem letzten und umgekehrt verbunden ist, so wie oben zu sehen.
    \end{tikzpicture}
 \end{center}
 
+\newpage
 \subex{}
 
 Der Zustandsgraph ist
