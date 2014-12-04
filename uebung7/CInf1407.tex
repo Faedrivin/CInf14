@@ -1,0 +1,67 @@
+\documentclass{CInf_practice}
+
+\sheet{7}{Schaltwerke}
+
+\begin{document}
+\cinftitle
+
+\ex{Schaltwerksentwurf}{4 + 16 + 8 + 2 + 6 = 36}
+
+\subex{Ein- \& Ausgaben}
+\noindent Eingaben:
+\begin{enumerate}[align=left,leftmargin=\marginparwidth]
+   \item[$X_C$] 50 Cent einwerfen oder nicht
+   \item[$X_E$] Euromünze einwerfen oder nicht
+\end{enumerate}
+Ausgaben:
+\begin{enumerate}[align=left,leftmargin=\marginparwidth]
+   \item[$Y_R$] 50 Cent auswerfen oder nicht
+   \item[$X_G$] Getränk auswerfen oder nicht
+\end{enumerate}
+
+\subex{Zustandsgraph}
+
+Unser Automat ist insofern etwas kundenunfreundlich, als er immer in den
+Ausgangszustand geht, sollte man es irgendwie hinbekommen, gleichzeitig ein
+50-Cent-Münze und ein 1-Euro-Stück in den Schlitz zu quetschen. Aber wer den
+Automaten so misshandelt, verdient ohnehin keine Limo.
+
+\usetikzlibrary{automata,positioning,arrows.meta}
+\begin{center}
+   \hspace{-2cm}\begin{tikzpicture}[node distance=2cm,very thick,yscale=.7]
+      \node[scale=.8,draw,rounded corners=5pt,fill=lightgray!50,text width=4cm] (legend) {
+         \makebox[4cm]{Legende}\\
+         \hrulefill \\
+         An Zuständen: \makebox[4cm]{$Z/Y_R Y_G$} \\ An Übergängen: \makebox[4cm]{ $X_CX_E$ }
+      };
+
+      \tikzset{state/.append style={execute at begin node=$, execute at end node=$}}
+      \begin{scope}[xshift=5cm,yshift=-7cm]
+         \foreach \n[count=\x] in {A,B,D,C,E}{
+            \node[state] at (\x*360/5:4cm) (\n) {\n/00};
+         }
+         \tikzset{every loop/.style={looseness=5}}
+         \path[-{Latex}] (A) edge[loop above] node {11,00} ();
+         \path[-{Latex}] (A) edge[bend right] node[above] {10} (B);
+         \path[-{Latex}] (A) edge[bend right] node[left] {01} (C);
+         \path[-{Latex}] (B) edge[loop left] node[above left] {00} ();
+         \path[-{Latex}] (B) edge node[above] {11} (A);
+         \path[-{Latex}] (B) edge[bend left,out=0] node[left] {01} (D);
+         \path[-{Latex}] (B) edge[bend right=10] node[above right] {10} (C);
+         \path[-{Latex}] (D) edge[loop below] node[below] {00} ();
+         \path[-{Latex}] (D) edge[bend left] node[left] {10} (B);
+         \path[-{Latex}] (D) edge[bend left,in=180] node[above] {01} (C);
+         \path[-{Latex}] (C) edge[loop below] node[below] {00} ();
+         \path[-{Latex}] (C) edge[bend left] node[above] {10} (D);
+         \path[-{Latex}] (C) edge node[above left,pos=.8] {01} (E);
+         \path[-{Latex}] (E) edge[loop right] node[right] {00} ();
+         \path[-{Latex}] (E) edge[bend left] node[above left] {01} (C);
+         \path[-{Latex}] (E) edge[bend right=5] node[pos=.8,above right] {10} (B);
+         \path[-{Latex}] (E) edge[bend right] node[right] {11} (A);
+
+         \path[-{Latex}] (D) edge[bend left,looseness=2,out=120,in=90] node[left] {11} (A);
+         \path[-{Latex}] (C) edge[bend right,looseness=2,out=230,in=270] node[right] {11} (A);
+      \end{scope}
+   \end{tikzpicture}
+\end{center}
+\end{document}
