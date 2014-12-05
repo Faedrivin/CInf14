@@ -27,19 +27,20 @@ Ausgangszustand geht, sollte man es irgendwie hinbekommen, gleichzeitig ein
 50-Cent-Münze und ein 1-Euro-Stück in den Schlitz zu quetschen. Aber wer den
 Automaten so misshandelt, verdient ohnehin keine Limo.
 
-\usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line above the tikzpicture, I dare you.
+\usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line right above the tikzpicture, I dare you.
 
 Die Semantik der Zustände ist folgendermaßen:
 \begin{center}
-   \begin{tabular}{l@{:\hspace{1em}}l}
-   \hline
-   A & Initial, wartend \\
-   B & 1\euro{} fehlt \\
-   C & 50 Cent fehlen \\
-   D & Getränk ausgeben, kein Rückgeld\\
-   E & Getränk ausgeben, Rückgeld ausgeben\\
-   \hline
-\end{tabular}
+   \begin{tabular}{ll}
+      \hline
+      Zustand & Semantik \\\hline
+      A & Initial, wartend \\
+      B & 1\euro{} fehlt \\
+      C & 50 Cent fehlen \\
+      D & Getränk ausgeben, kein Rückgeld\\
+      E & Getränk ausgeben, Rückgeld ausgeben\\
+      \hline
+   \end{tabular}
 \end{center}
 
 \begin{center}
@@ -52,8 +53,8 @@ Die Semantik der Zustände ist folgendermaßen:
 
       \tikzset{state/.append style={execute at begin node=$, execute at end node=$}}
       \begin{scope}[xshift=5cm,yshift=-7cm]
-         \foreach \n[count=\x] in {A,B,D,C,E}{
-            \node[state] at (\x*360/5:4cm) (\n) {\n/00};
+         \foreach \n[count=\x] / \ausgabe in {A/00,B/00,D/01,C/00,E/11}{
+            \node[state] at (\x*360/5:4cm) (\n) {\n/\ausgabe};
          }
          \tikzset{every loop/.style={looseness=5}}
          \path[-{Latex}] (A) edge[loop above] node {11,00} ();
@@ -78,5 +79,111 @@ Die Semantik der Zustände ist folgendermaßen:
          \path[-{Latex}] (C) edge[bend right,looseness=2,out=230,in=270] node[right] {11} (A);
       \end{scope}
    \end{tikzpicture}
+\end{center}
+
+Der Graph ist offensichtlich konsistent und ``vollständig'', da für jede Eingabe
+genau ein Ausgang pro Knoten existiert.
+
+\subex{}
+
+Wir haben 5 Zustände, weshalb 3 Bit zur Kodierung nötig sind.
+
+\begin{center}
+   \begin{tabular}{ll}
+      \hline
+      Zustand & Kodierung \\\hline
+      A & 000 \\
+      B & 001 \\
+      C & 010 \\
+      D & 011 \\
+      E & 100 \\
+      \hline
+   \end{tabular}
+\end{center}
+
+Die Zustandsübergangstabelle ist damit
+\begin{center}
+   \addtolength{\tabcolsep}{-3pt}
+   \begin{tabular}{cccc|cc|cc|ccc}
+      \hline
+      Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
+      $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$\\
+      \hline\hline
+      A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+      A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+      A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 \\
+      A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+
+      B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+      B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 \\
+      B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+      B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+
+      C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+      C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+      C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 \\
+      C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+
+      D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\
+      D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+      D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+      D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X \\\hline
+
+      E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+      E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+      E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 \\
+      E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X \\\hline
+
+        & 1 & 0 & 1 & X & X & X & X & X & X & X \\
+        & 1 & 1 & 0 & X & X & X & X & X & X & X \\
+        & 1 & 1 & 1 & X & X & X & X & X & X & X \\\hline
+   \end{tabular}
+\end{center}
+
+Unter Ausnutzung der Don't-Cares minimieren sich die Ausgänge zu
+\begin{eqnarray*}
+   Y_R & = & Z_2^n \\
+   Y_G & = & Z_2^n + Z_1^nZ_0^n
+\end{eqnarray*}
+
+Da für D-Flipflops gilt $Q^{n+1} = D^n$, sind die Ansteuersignale genau die
+Bits, die den Folgezustand codieren.
+
+\begin{center}
+   \addtolength{\tabcolsep}{-3pt}
+   \begin{tabular}{cccc|cc|cc|ccc>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c}
+      \hline
+      Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
+      $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$ & $D_2^n$ & $D_1^n$ & $D_0^n$ \\
+      \hline\hline
+      A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+      A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+      A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+
+      B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+      B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\
+      B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+
+      C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+      C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 \\
+      C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+
+      D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+      D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+      D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X & X & X & X \\\hline
+
+      E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
+      E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+      E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+      E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X & X & X & X \\\hline
+
+        & 1 & 0 & 1 & X & X & X & X & X & X & X & X & X & X \\
+        & 1 & 1 & 0 & X & X & X & X & X & X & X & X & X & X \\
+        & 1 & 1 & 1 & X & X & X & X & X & X & X & X & X & X \\\hline
+   \end{tabular}
 \end{center}
 \end{document}
