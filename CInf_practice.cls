@@ -251,3 +251,14 @@ sep=1pt,minimum height=.7em]
 \overline{\vphantom{b}#1}
 \fi
 }
+
+%% Centered Tabular. I *always* end up manually centering these. Who woul want a
+%% n uncencentered tabular?
+\newenvironment{ctabular}[1]{
+   \begin{center}
+      \begin{tabular}{#1}
+      }
+      {
+      \end{tabular}
+   \end{center}
+}
