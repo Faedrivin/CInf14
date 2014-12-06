@@ -133,6 +133,7 @@ Die Zustandsübergangstabelle ist damit
      & 1 & 1 & 0 & X & X & X & X & X & X & X \\
      & 1 & 1 & 1 & X & X & X & X & X & X & X \\\hline
 \end{ctabular}
+\addtolength{\tabcolsep}{3pt}
 
 \subex{Minimierung}
 Unter Ausnutzung der Don't-Cares minimieren sich die Ausgänge zu
@@ -183,7 +184,7 @@ Bits, die den Folgezustand codieren.
 
 \ex{Schaltwerksminimierung}{2 + 4 + 9 + 9 + 4 = 28}
 \subex{Automatentyp}
-Da die Ausgaben allein von den Zuständen abhängig sind (Notation in den Zustandsknoten), handelt es sich um einen MOORE-Automaten.
+Da die Ausgaben allein von den Zuständen abhängig sind (Notation in den Zustandsknoten), handelt es sich um einen Moore-Automaten.
 
 \subex{Zustandstabelle}
 Wir verwenden X als Eingabe und Y als Ausgabe. 
@@ -209,9 +210,9 @@ Gruppen A-B-C und D-E-F
 \noindent\bigskip\textbf{Folgezustände}
 
 \begin{ctabular}{ll}
-   Folgezustände Gruppe A-B-C & D-B-D (für X = 0) \\
+   Folgezustände Gruppe A-B-C: & D-B-D (für X = 0) \\
                                & B-D-B (für X = 1) \\
-   Folgezustände Gruppe D-E-F & B-F-E (für X = 0) \\
+   Folgezustände Gruppe D-E-F: & B-F-E (für X = 0) \\
                                & F-A-C (für X = 1) \\
 \end{ctabular}
 
@@ -226,13 +227,13 @@ Verbleibende Gruppen gleicher Ausgabe: A-C, B, D, E-F.
 \noindent\bigskip\textbf{Folgezustände}
 
 \begin{ctabular}{ll}
-   Folgezustände Gruppe A-C   & D-D (für X = 0) \\
+   Folgezustände Gruppe A-C:   & D-D (für X = 0) \\
                                & B-B (für X = 1) \\
-   Folgezustände Gruppe B     & B   (für X = 0) \\
+   Folgezustände Gruppe B:     & B   (für X = 0) \\
                                & D   (für X = 1) \\
-   Folgezustände Gruppe E-F   & F-E (für X = 0) \\
+   Folgezustände Gruppe E-F:   & F-E (für X = 0) \\
                                & A-C (für X = 1) \\
-   Folgezustände Gruppe D     & B   (für X = 0) \\
+   Folgezustände Gruppe D:     & B   (für X = 0) \\
                                & F   (für X = 1) \\
 \end{ctabular}
 
