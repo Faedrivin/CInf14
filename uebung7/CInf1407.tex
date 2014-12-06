@@ -30,18 +30,16 @@ Automaten so misshandelt, verdient ohnehin keine Limo.
 \usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line right above the tikzpicture, I dare you.
 
 Die Semantik der Zustände ist folgendermaßen:
-\begin{center}
-   \begin{tabular}{ll}
-      \hline
-      Zustand & Semantik \\\hline
-      A & Initial, wartend \\
-      B & 1\euro{} fehlt \\
-      C & 50 Cent fehlen \\
-      D & Getränk ausgeben, kein Rückgeld\\
-      E & Getränk ausgeben, Rückgeld ausgeben\\
-      \hline
-   \end{tabular}
-\end{center}
+\begin{ctabular}{ll}
+   \hline
+   Zustand & Semantik \\\hline
+   A & Initial, wartend \\
+   B & 1\euro{} fehlt \\
+   C & 50 Cent fehlen \\
+   D & Getränk ausgeben, kein Rückgeld\\
+   E & Getränk ausgeben, Rückgeld ausgeben\\
+   \hline
+\end{ctabular}
 
 \begin{center}
    \hspace{-2cm}\begin{tikzpicture}[node distance=2cm,very thick,yscale=.7]
@@ -88,57 +86,53 @@ genau ein Ausgang pro Knoten existiert.
 
 Wir haben 5 Zustände, weshalb 3 Bit zur Kodierung nötig sind.
 
-\begin{center}
-   \begin{tabular}{ll}
-      \hline
-      Zustand & Kodierung \\\hline
-      A & 000 \\
-      B & 001 \\
-      C & 010 \\
-      D & 011 \\
-      E & 100 \\
-      \hline
-   \end{tabular}
-\end{center}
+\begin{ctabular}{ll}
+   \hline
+   Zustand & Kodierung \\\hline
+   A & 000 \\
+   B & 001 \\
+   C & 010 \\
+   D & 011 \\
+   E & 100 \\
+   \hline
+\end{ctabular}
 
 Die Zustandsübergangstabelle ist damit
-\begin{center}
-   \addtolength{\tabcolsep}{-3pt}
-   \begin{tabular}{cccc|cc|cc|ccc}
-      \hline
-      Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
-      $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$\\
-      \hline\hline
-      A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-      A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
-      A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 \\
-      A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+\addtolength{\tabcolsep}{-3pt}
+\begin{ctabular}{cccc|cc|cc|ccc}
+   \hline
+   Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
+   $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$\\
+   \hline\hline
+   A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+   A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 \\
+   A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
 
-      B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
-      B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 \\
-      B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
-      B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+   B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+   B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 \\
+   B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+   B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X \\\hline
 
-      C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
-      C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
-      C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 \\
-      C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
+   C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+   C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+   C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 \\
+   C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X \\\hline
 
-      D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\
-      D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
-      D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
-      D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X \\\hline
+   D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\
+   D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+   D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+   D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X \\\hline
 
-      E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
-      E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\
-      E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 \\
-      E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X \\\hline
+   E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+   E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+   E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 \\
+   E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X \\\hline
 
-        & 1 & 0 & 1 & X & X & X & X & X & X & X \\
-        & 1 & 1 & 0 & X & X & X & X & X & X & X \\
-        & 1 & 1 & 1 & X & X & X & X & X & X & X \\\hline
-   \end{tabular}
-\end{center}
+     & 1 & 0 & 1 & X & X & X & X & X & X & X \\
+     & 1 & 1 & 0 & X & X & X & X & X & X & X \\
+     & 1 & 1 & 1 & X & X & X & X & X & X & X \\\hline
+\end{ctabular}
 
 \subex{Minimierung}
 Unter Ausnutzung der Don't-Cares minimieren sich die Ausgänge zu
@@ -151,43 +145,41 @@ Unter Ausnutzung der Don't-Cares minimieren sich die Ausgänge zu
 Da für D-Flipflops gilt $Q^{n+1} = D^n$, sind die Ansteuersignale genau die
 Bits, die den Folgezustand codieren.
 
-\begin{center}
-   \addtolength{\tabcolsep}{-3pt}
-   \begin{tabular}{cccc|cc|cc|ccc>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c}
-      \hline
-      Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
-      $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$ & $D_2^n$ & $D_1^n$ & $D_0^n$ \\
-      \hline\hline
-      A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-      A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
-      A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
-      A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+\addtolength{\tabcolsep}{-3pt}
+\begin{ctabular}{cccc|cc|cc|ccc>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c>{\columncolor{lightgray!50}}c}
+   \hline
+   Zustand & $Z_2^n$ & $Z_1^n$ & $Z_0^n$ & $X_C$ & $X_E$ & $Y_R$ & $Y_G$ &
+   $Z_2^{n+1}$ & $Z_1^{n+1}$ & $Z_0^{n+1}$ & $D_2^n$ & $D_1^n$ & $D_0^n$ \\
+   \hline\hline
+   A & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   A & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+   A & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+   A & 0 & 0 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
 
-      B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
-      B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\
-      B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
-      B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+   B & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 \\
+   B & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\
+   B & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+   B & 0 & 0 & 1 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
 
-      C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
-      C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
-      C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 \\
-      C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
+   C & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+   C & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+   C & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 \\
+   C & 0 & 1 & 0 & 1 & 1 & 0 & 0 & X & X & X & X & X & X \\\hline
 
-      D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
-      D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
-      D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
-      D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X & X & X & X \\\hline
+   D & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+   D & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+   D & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+   D & 0 & 1 & 1 & 1 & 1 & 0 & 1 & X & X & X & X & X & X \\\hline
 
-      E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
-      E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
-      E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
-      E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X & X & X & X \\\hline
+   E & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
+   E & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+   E & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\
+   E & 1 & 0 & 0 & 1 & 1 & 1 & 1 & X & X & X & X & X & X \\\hline
 
-        & 1 & 0 & 1 & X & X & X & X & X & X & X & X & X & X \\
-        & 1 & 1 & 0 & X & X & X & X & X & X & X & X & X & X \\
-        & 1 & 1 & 1 & X & X & X & X & X & X & X & X & X & X \\\hline
-   \end{tabular}
-\end{center}
+     & 1 & 0 & 1 & X & X & X & X & X & X & X & X & X & X \\
+     & 1 & 1 & 0 & X & X & X & X & X & X & X & X & X & X \\
+     & 1 & 1 & 1 & X & X & X & X & X & X & X & X & X & X \\\hline
+\end{ctabular}
 
 \ex{Schaltwerksminimierung}{2 + 4 + 9 + 9 + 4 = 28}
 \subex{Automatentyp}
@@ -196,183 +188,183 @@ Da die Ausgaben allein von den Zuständen abhängig sind (Notation in den Zustan
 \subex{Zustandstabelle}
 Wir verwenden X als Eingabe und Y als Ausgabe. 
 
-\begin{tabular}{c|c|ccc}
-\hline
-aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
-                  & Y                & X = & 0 & 1 \\ \hline
-               A  & 0                &     & D & B \\
-               B  & 0                &     & B & D \\
-               C  & 0                &     & D & B \\
-               D  & 1                &     & B & F \\
-               E  & 1                &     & F & A \\
-               F  & 1                &     & E & C \\
-\end{tabular}
+\begin{ctabular}{c|c|ccc}
+   \hline
+   aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
+                     & Y                & X = & 0 & 1 \\ \hline
+   A  & 0                &     & D & B \\
+   B  & 0                &     & B & D \\
+   C  & 0                &     & D & B \\
+   D  & 1                &     & B & F \\
+   E  & 1                &     & F & A \\
+   F  & 1                &     & E & C \\
+\end{ctabular}
 
 \subex{Äquivalente Zustände: Tabelle}
 
-\textbf{Gleiche Ausgabe}
+\noindent\textbf{Gleiche Ausgabe}
 
 Gruppen A-B-C und D-E-F
 
-\bigskip\textbf{Folgezustände}
+\noindent\bigskip\textbf{Folgezustände}
 
-\begin{tabular}{ll}
-Folgezustände Gruppe A-B-C & D-B-D (für X = 0) \\
-                           & B-D-B (für X = 1) \\
-Folgezustände Gruppe D-E-F & B-F-E (für X = 0) \\
-                           & F-A-C (für X = 1) \\
-\end{tabular}
+\begin{ctabular}{ll}
+   Folgezustände Gruppe A-B-C & D-B-D (für X = 0) \\
+                               & B-D-B (für X = 1) \\
+   Folgezustände Gruppe D-E-F & B-F-E (für X = 0) \\
+                               & F-A-C (für X = 1) \\
+\end{ctabular}
 
-\bigskip\textbf{Split}
+\noindent\bigskip\textbf{Split}
 
-Nach D-B-D bzw. B-D-B, aus denen D nicht in A-B-C vorkommt, muss A-B-C aufgeteilt werden in A-C und B. Nach B-F-E muss D-E-F in D und E-F geteilt werden.
+Nach D-B-D bzw. B-D-B, aus denen D nicht in A-B-C vorkommt, muss A-B-C
+aufgeteilt werden in A-C und B. Nach B-F-E muss D-E-F in D und E-F geteilt
+werden.
 
 Verbleibende Gruppen gleicher Ausgabe: A-C, B, D, E-F.
 
-\bigskip\textbf{Folgezustände}
+\noindent\bigskip\textbf{Folgezustände}
 
-\begin{tabular}{ll}
-Folgezustände Gruppe A-C   & D-D (für X = 0) \\
-                           & B-B (für X = 1) \\
-Folgezustände Gruppe B     & B   (für X = 0) \\
-                           & D   (für X = 1) \\
-Folgezustände Gruppe E-F   & F-E (für X = 0) \\
-                           & A-C (für X = 1) \\
-Folgezustände Gruppe D     & B   (für X = 0) \\
-                           & F   (für X = 1) \\
-\end{tabular}
+\begin{ctabular}{ll}
+   Folgezustände Gruppe A-C   & D-D (für X = 0) \\
+                               & B-B (für X = 1) \\
+   Folgezustände Gruppe B     & B   (für X = 0) \\
+                               & D   (für X = 1) \\
+   Folgezustände Gruppe E-F   & F-E (für X = 0) \\
+                               & A-C (für X = 1) \\
+   Folgezustände Gruppe D     & B   (für X = 0) \\
+                               & F   (für X = 1) \\
+\end{ctabular}
 
-\bigskip\textbf{Split}
+\noindent\bigskip\textbf{Split}
 
 Nach A-C (Folgezustand) muss E-F gesplittet werden. Da A-C (aktueller Zustand) erhalten bleibt, ergibt sich als Endergebnis:
 
-\begin{tabular}{c|c|ccc}
-\hline
-aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
-                  & Y                & X = & 0 & 1 \\ \hline
-             A-C  & 0                &     & D & B \\
-               B  & 0                &     & B & D \\
-               D  & 1                &     & B & F \\
-               E  & 1                &     & F & A-C \\
-               F  & 1                &     & E & A-C \\
-\end{tabular}
+\begin{ctabular}{c|c|ccc}
+   \hline
+   aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
+                     & Y                & X = & 0 & 1 \\ \hline
+   A-C  & 0                &     & D & B \\
+   B  & 0                &     & B & D \\
+   D  & 1                &     & B & F \\
+   E  & 1                &     & F & A-C \\
+   F  & 1                &     & E & A-C \\
+\end{ctabular}
 
 \subex{Äquivalente Zustände: Implikationstafel}
 
 \def\cell#1{\multicolumn{1}{|c|}{\begin{tabular}{c}#1\end{tabular}}}
-\newcommand{\cancel}[1]{%
-    \tikz[baseline=(tocancel.base)]{
-        \node[inner sep=0pt,outer sep=0pt] (tocancel) {#1};
-        \draw[red,thick] (tocancel.south west) -- (tocancel.north east);
-    }%
-}%
-\newcommand{\Xout}{\cell{\huge X}% placeholder in case I am motivated to figure out
-% how to draw a cross (see: 
-% http://tex.stackexchange.com/questions/156162/strike-out-a-table-cell )
-}
+   \newcommand{\cancel}[1]{%
+      \tikz[baseline=(tocancel.base)]{
+         \node[inner sep=0pt,outer sep=0pt] (tocancel) {#1};
+         \draw[red,thick] (tocancel.south west) -- (tocancel.north east);
+      }%
+   }%
+   \newcommand{\Xout}{\cell{\huge X}% placeholder in case I am motivated to figure out
+      % how to draw a cross (see: 
+      % http://tex.stackexchange.com/questions/156162/strike-out-a-table-cell )
+   }
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \cell{D-B\\B-D} &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \cell{B-D\\D-B}  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+   \begin{center}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \cell{D-B\\B-D} &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \cell{B-D\\D-B}  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \cell{\cancel{D-B}\\\cancel{B-D}} &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \cell{B-D\\D-B}  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \cell{\cancel{D-B}\\\cancel{B-D}} &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \cell{B-D\\D-B}  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \Xout &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \cell{\cancel{B-D}\\\cancel{D-B}}  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \Xout &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \cell{\cancel{B-D}\\\cancel{D-B}}  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \cell{B-F\\F-A} &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \cell{B-E\\F-C} & \cell{F-E\\A-C} \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \Xout &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \cell{\cancel{B-F}\\\cancel{F-A}} &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \cell{\cancel{B-E}\\\cancel{F-C}} & \cell{F-E\\A-C} \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \Xout &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \cell{\cancel{B-F}\\\cancel{F-A}} &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \cell{\cancel{B-E}\\\cancel{F-C}} & \cell{F-E\\A-C} \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \Xout &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \Xout & \cell{\cancel{F-E}\\\cancel{A-C}} \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \Xout &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \Xout & \cell{\cancel{F-E}\\\cancel{A-C}} \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
 
-\begin{tabular}{cccccc}
-\cline{2-2}
-B & \Xout &                  &         &                 &                 \\\cline{2-3}
-C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
-D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
-F & \Xout           & \Xout            & \Xout   & \Xout & \Xout \\\cline{2-6}
-  & A               & B                & C       & D               & E \\
-\end{tabular}
+      \begin{tabular}{cccccc}
+         \cline{2-2}
+         B & \Xout &                  &         &                 &                 \\\cline{2-3}
+         C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
+         D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
+         E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
+         F & \Xout           & \Xout            & \Xout   & \Xout & \Xout \\\cline{2-6}
+           & A               & B                & C       & D               & E \\
+      \end{tabular}
+   \end{center}
 
-Da D$\equiv$D und B$\equiv$B ist, ist auch A$\equiv$C. Wir erhalten erneut
+   Da D$\equiv$D und B$\equiv$B ist, ist auch A$\equiv$C. Wir erhalten erneut
 
-\smallskip
+   \smallskip
 
-\begin{tabular}{c|c|ccc}
-\hline
-aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
-                  & Y                & X = & 0 & 1 \\ \hline
-             A-C  & 0                &     & D & B \\
-               B  & 0                &     & B & D \\
-               D  & 1                &     & B & F \\
-               E  & 1                &     & F & A-C \\
-               F  & 1                &     & E & A-C \\
-\end{tabular}
+   \begin{ctabular}{c|c|ccc}
+      \hline
+      aktueller Zustand & aktuelle Ausgabe & \multicolumn{3}{c}{Folgezustand} \\
+                        & Y                & X = & 0 & 1 \\ \hline
+      A-C  & 0                &     & D & B \\
+      B  & 0                &     & B & D \\
+      D  & 1                &     & B & F \\
+      E  & 1                &     & F & A-C \\
+      F  & 1                &     & E & A-C \\
+   \end{ctabular}
 
-\subex{Minimierter Zustandsgraph}
-A-C wird nur als A bezeichnet!
+   \subex{Minimierter Zustandsgraph}
+   A-C wird nur als A bezeichnet!
 
-\begin{center}
-\begin{tikzpicture}[node distance=3cm]
-\node[state] (A)              {A/0};
-\node[state] (B) [right of=A] {B/0};
-\node[state] (D) [below of=B] {D/1};
-\node[state] (F) [below of=A] {E/1};
-\node[state] (E) [left of=F]  {F/1};
+   \begin{center}
+      \begin{tikzpicture}[node distance=3cm]
+         \node[state] (A)              {A/0};
+         \node[state] (B) [right of=A] {B/0};
+         \node[state] (D) [below of=B] {D/1};
+         \node[state] (F) [below of=A] {E/1};
+         \node[state] (E) [left of=F]  {F/1};
 
-\path[->] (A) edge             node[above right] {0} (D)
-          (A) edge             node[above]       {1} (B)
-          (B) edge[loop right] node[right]       {0} (B)
-          (B) edge[bend right] node[right]       {1} (D)
-          (D) edge[bend right] node[left]        {0} (B)
-          (D) edge             node[below]       {1} (F)
-          (E) edge[bend right] node[above]       {0} (F)
-          (E) edge             node[above left]  {1} (A)
-          (F) edge[bend right] node[below]       {0} (E)
-          (F) edge             node[left]        {1} (A)
-      ;
-\end{tikzpicture}
-\end{center}
+         \path[->] (A) edge             node[above right] {0} (D)
+         (A) edge             node[above]       {1} (B)
+         (B) edge[loop right] node[right]       {0} (B)
+         (B) edge[bend right] node[right]       {1} (D)
+         (D) edge[bend right] node[left]        {0} (B)
+         (D) edge             node[below]       {1} (F)
+         (E) edge[bend right] node[above]       {0} (F)
+         (E) edge             node[above left]  {1} (A)
+         (F) edge[bend right] node[below]       {0} (E)
+         (F) edge             node[left]        {1} (A)
+         ;
+      \end{tikzpicture}
+   \end{center}
 
-
-
-
-
-\end{document}
+   \end{document}
