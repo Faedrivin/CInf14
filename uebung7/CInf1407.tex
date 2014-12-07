@@ -396,7 +396,7 @@ Die Ansteuersgleichungen sind
 Für die Ausgänge gilt
 \begin{IEEEeqnarray*}{rCl}
    Y_R & = & X^n \\
-   Y_M & = & X^n\comp{Z_0^n} + \comp{Z_1^n}Z_0^n + \comp{X^n}Z_1^n
+   Y_M & = & X^n\comp{Z_0^n} + \comp{Z_1^n}Z_0^n + \comp{X^n}Z_1^n = T_0
 \end{IEEEeqnarray*}
 
 \subex{}
@@ -411,14 +411,14 @@ Für die Ausgänge gilt
 
    1 & 0 & 0 & 0 & 1 & 0 & 1 &   &   & 0 & 1 \\
    1 & 0 & 1 & 0 & 1 & 1 & 1 &   &   & 1 & 1 \\
-   1 & 1 & 0 & 0 & 0 & 1 & 1 &   &   & 0 & 0 \\
-   1 & 1 & 1 & 0 & 1 & 1 & 0 &   &   & 1 & 1 \\
+   1 & 1 & 0 & 0 & 1 & 1 & 0 &   &   & 0 & 1 \\
+   1 & 1 & 1 & 0 & 0 & 1 & 1 &   &   & 1 & 0 \\
 \end{ctabular}
 
 Es folgen die Übergangsgleichungen 
 \begin{IEEEeqnarray*}{rCl}
    Z_1^{n+1} & = & Z_1^n Z_0^n + X^n Z_0^n + X^n Z_1^n \\
-   Z_0^{n+1} & = & Z_1^n + \comp{Z_0^n} + X\comp{Z_1^n}
+Z_0^{n+1} & = & Z_1^n \comp{Z_0^n} + X^n\comp{Z_0^n} + X\comp{Z_1^n}
 \end{IEEEeqnarray*}
 
 \begin{center}
@@ -445,8 +445,8 @@ Es folgen die Übergangsgleichungen
          (A) edge[bend right] node[below] {1/11} (B)
          (B) edge[bend right] node[below] {1/11} (C)
          (C) edge[bend right] node[below] {1/11} (D)
-         (D) edge[loop right] node[right] {0/00} ()
-         (D) edge[bend right] node[above] {1/11} (C)
+         (D) edge[loop right] node[right] {1/10} ()
+         (D) edge[bend right] node[above] {0/01} (C)
          (C) edge[bend right] node[above] {0/01} (B)
          (B) edge[bend right] node[above] {0/01} (A)
          ;
@@ -454,7 +454,9 @@ Es folgen die Übergangsgleichungen
    \end{tikzpicture}
 \end{center}
 
-\textcolor{red}{Keine Ahnung, was die Funktion sein soll. Vielleicht geht es bei
-den Ausgängen um Motorzustand und Fahrtrichtung und beim Zustand um das
-Stockwerk oder so? Ergibt aber keinen Sinn.}
+Das Schaltwerk steuert einen Aufzug, also is $X$ vermutlich die Fahrtrichtung
+und $Y_R$ gibt an, in welche Richtung sich die Maschinerie entsprechend dreht,
+währen $Y_M$ angibt, \emph{ob} sie sich dreht (man kann ganz oben nicht weiter
+hoch fahren und ganz unten nicht weiter runter). Die Zustände repräsentieren
+Stockwerke.
 \end{document}
