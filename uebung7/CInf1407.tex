@@ -2,6 +2,7 @@
 
 \sheet{7}{Schaltwerke}
 \usepackage[gen]{eurosym}
+\usetikzlibrary{automata,positioning,arrows.meta} 
 
 \begin{document}
 \cinftitle
@@ -22,12 +23,8 @@ Ausgaben:
 
 \subex{Zustandsgraph}
 
-Unser Automat ist insofern etwas kundenunfreundlich, als er immer in den
-Ausgangszustand geht, sollte man es irgendwie hinbekommen, gleichzeitig ein
-50-Cent-Münze und ein 1-Euro-Stück in den Schlitz zu quetschen. Aber wer den
-Automaten so misshandelt, verdient ohnehin keine Limo.
-
-\usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line right above the tikzpicture, I dare you.
+Es können nicht 2 Münzen gleichzeitig eingeworfen werden, die entsprechenden
+Übergänge sind für Kongruenz mit der Tabelle dennoch aufgeführt.
 
 Die Semantik der Zustände ist folgendermaßen:
 \begin{ctabular}{ll}
@@ -59,11 +56,11 @@ Die Semantik der Zustände ist folgendermaßen:
 
          \tikzset{every loop/.style={looseness=5}}
 
-         \path[-{Latex}] (A) edge[loop above] node {11,00} ()
+         \path[-{Latex}] (A) edge[loop above] node {\textcolor{red}{11},00} ()
                          (A) edge[bend right] node[above] {10} (B)
                          (A) edge[bend right] node[left] {01} (C)
                          (B) edge[loop left] node[above left] {00} ()
-                         (B) edge node[above] {11} (A)
+                         (B) edge[draw=red,dashed] node[above] {\textcolor{red}{11}} (A)
                          (B) edge[bend left,out=0] node[left] {01} (D)
                          (B) edge[bend right=10] node[above right] {10} (C)
                          (D) edge[loop below] node[below] {00} ()
@@ -75,11 +72,15 @@ Die Semantik der Zustände ist folgendermaßen:
                          (E) edge[loop right] node[right] {00} ()
                          (E) edge[bend left] node[above left] {01} (C)
                          (E) edge[bend right=5] node[pos=.8,above right] {10} (B)
-                         (E) edge[bend right] node[right] {11} (A)
+                         (E) edge[bend right,draw=red,dashed] node[right=5pt] {\textcolor{red}{11}} (A)
 
                          % long edges back to A
-                         (D) edge[bend left,looseness=2,out=120,in=90] node[left] {11} (A);
-                         (C) edge[bend right,looseness=2,out=230,in=270] node[right] {11} (A);
+                         (D) edge[bend
+                         left,draw=red,dashed,looseness=2,out=120,in=90]
+                         node[left=5pt] {\textcolor{red}{11}} (A)
+                         (C) edge[bend
+                         right,draw=red,dashed,looseness=2,out=230,in=270]
+                         node[right] {\textcolor{red}{11}} (A);
       \end{scope}
    \end{tikzpicture}
 \end{center}
