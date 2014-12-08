@@ -2,6 +2,7 @@
 
 \sheet{7}{Schaltwerke}
 \usepackage[gen]{eurosym}
+\usetikzlibrary{automata,positioning,arrows.meta} 
 
 \begin{document}
 \cinftitle
@@ -22,12 +23,8 @@ Ausgaben:
 
 \subex{Zustandsgraph}
 
-Unser Automat ist insofern etwas kundenunfreundlich, als er immer in den
-Ausgangszustand geht, sollte man es irgendwie hinbekommen, gleichzeitig ein
-50-Cent-Münze und ein 1-Euro-Stück in den Schlitz zu quetschen. Aber wer den
-Automaten so misshandelt, verdient ohnehin keine Limo.
-
-\usetikzlibrary{automata,positioning,arrows.meta} % Try putting this line right above the tikzpicture, I dare you.
+Es können nicht 2 Münzen gleichzeitig eingeworfen werden, die entsprechenden
+Übergänge sind für Kongruenz mit der Tabelle dennoch aufgeführt.
 
 Die Semantik der Zustände ist folgendermaßen:
 \begin{ctabular}{ll}
@@ -59,11 +56,11 @@ Die Semantik der Zustände ist folgendermaßen:
 
          \tikzset{every loop/.style={looseness=5}}
 
-         \path[-{Latex}] (A) edge[loop above] node {11,00} ()
+         \path[-{Latex}] (A) edge[loop above] node {\textcolor{red}{11},00} ()
                          (A) edge[bend right] node[above] {10} (B)
                          (A) edge[bend right] node[left] {01} (C)
                          (B) edge[loop left] node[above left] {00} ()
-                         (B) edge node[above] {11} (A)
+                         (B) edge[draw=red,dashed] node[above] {\textcolor{red}{11}} (A)
                          (B) edge[bend left,out=0] node[left] {01} (D)
                          (B) edge[bend right=10] node[above right] {10} (C)
                          (D) edge[loop below] node[below] {00} ()
@@ -75,11 +72,15 @@ Die Semantik der Zustände ist folgendermaßen:
                          (E) edge[loop right] node[right] {00} ()
                          (E) edge[bend left] node[above left] {01} (C)
                          (E) edge[bend right=5] node[pos=.8,above right] {10} (B)
-                         (E) edge[bend right] node[right] {11} (A)
+                         (E) edge[bend right,draw=red,dashed] node[right=5pt] {\textcolor{red}{11}} (A)
 
                          % long edges back to A
-                         (D) edge[bend left,looseness=2,out=120,in=90] node[left] {11} (A);
-                         (C) edge[bend right,looseness=2,out=230,in=270] node[right] {11} (A);
+                         (D) edge[bend
+                         left,draw=red,dashed,looseness=2,out=120,in=90]
+                         node[left=5pt] {\textcolor{red}{11}} (A)
+                         (C) edge[bend
+                         right,draw=red,dashed,looseness=2,out=230,in=270]
+                         node[right] {\textcolor{red}{11}} (A);
       \end{scope}
    \end{tikzpicture}
 \end{center}
@@ -374,36 +375,36 @@ eher sinnlos bis gefährlich.
 
 Die Ansteuersgleichungen sind
 \begin{IEEEeqnarray*}{rCl}
-   T_1 & = & X^n\comp{Z_1^n}Z_0^n \\
+   T_1 & = & X^n\comp{Z_1^n}Z_0^n + \comp{X^n}Z_1^n\comp{Z_0^n} \\
    T_0 & = & X^n\comp{Z_0^n} + \comp{Z_1^n}Z_0^n + \comp{X^n} Z_1^n
 \end{IEEEeqnarray*}
 
 Für die Ausgänge gilt
 \begin{IEEEeqnarray*}{rCl}
    Y_R & = & X^n \\
-   Y_M & = & X^n\comp{Z_0^n} + \comp{Z_1^n}Z_0^n + \comp{X^n}Z_1^n
+   Y_M & = & X^n\comp{Z_0^n} + \comp{Z_1^n}Z_0^n + \comp{X^n}Z_1^n = T_0
 \end{IEEEeqnarray*}
 
 \subex{}
 
 \begin{ctabular}{ccc|cc|cc|cc|cc}
-   $Z_0^n$ & $Z_1^n$ & $X$ & $T_1$ & $T_0$ & $Z_1^{n+1}$ & $Z_0^{n+1}$ & $D_1$ &
+   $Z_1^n$ & $Z_0^n$ & $X$ & $T_1$ & $T_0$ & $Z_1^{n+1}$ & $Z_0^{n+1}$ & $D_1$ &
    $D_0$ & $Y_R$ & $Y_M$ \\\hline\hline
-   0 & 0 & 0 & 0 & 0 & 0 & 0 &   &   & 0 & 0 \\
-   0 & 0 & 1 & 0 & 1 & 0 & 1 &   &   & 1 & 1 \\
-   0 & 1 & 0 & 1 & 1 & 0 & 0 &   &   & 0 & 1 \\
-   0 & 1 & 1 & 1 & 1 & 1 & 0 &   &   & 1 & 1 \\
+   0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+   0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 1 \\
+   0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 1 \\
+   0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 & 1 \\
 
-   1 & 0 & 0 & 0 & 1 & 0 & 1 &   &   & 0 & 1 \\
-   1 & 0 & 1 & 0 & 1 & 1 & 1 &   &   & 1 & 1 \\
-   1 & 1 & 0 & 0 & 0 & 1 & 1 &   &   & 0 & 0 \\
-   1 & 1 & 1 & 0 & 1 & 1 & 0 &   &   & 1 & 1 \\
+   1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\
+   1 & 0 & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+   1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 1 \\
+   1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
 \end{ctabular}
 
 Es folgen die Übergangsgleichungen 
 \begin{IEEEeqnarray*}{rCl}
    Z_1^{n+1} & = & Z_1^n Z_0^n + X^n Z_0^n + X^n Z_1^n \\
-   Z_0^{n+1} & = & Z_1^n + \comp{Z_0^n} + X\comp{Z_1^n}
+Z_0^{n+1} & = & Z_1^n \comp{Z_0^n} + X^n\comp{Z_0^n} + X\comp{Z_1^n}
 \end{IEEEeqnarray*}
 
 \begin{center}
@@ -430,8 +431,8 @@ Es folgen die Übergangsgleichungen
          (A) edge[bend right] node[below] {1/11} (B)
          (B) edge[bend right] node[below] {1/11} (C)
          (C) edge[bend right] node[below] {1/11} (D)
-         (D) edge[loop right] node[right] {0/00} ()
-         (D) edge[bend right] node[above] {1/11} (C)
+         (D) edge[loop right] node[right] {1/10} ()
+         (D) edge[bend right] node[above] {0/01} (C)
          (C) edge[bend right] node[above] {0/01} (B)
          (B) edge[bend right] node[above] {0/01} (A)
          ;
@@ -439,9 +440,109 @@ Es folgen die Übergangsgleichungen
    \end{tikzpicture}
 \end{center}
 
-\textcolor{red}{Keine Ahnung, was die Funktion sein soll. Vielleicht geht es bei
-den Ausgängen um Motorzustand und Fahrtrichtung und beim Zustand um das
-Stockwerk oder so? Ergibt aber keinen Sinn.}
+Das Schaltwerk steuert einen Aufzug, also is $X$ vermutlich die Fahrtrichtung
+und $Y_R$ gibt an, in welche Richtung sich die Maschinerie entsprechend dreht,
+währen $Y_M$ angibt, \emph{ob} sie sich dreht (man kann ganz oben nicht weiter
+hoch fahren und ganz unten nicht weiter runter). Die Zustände repräsentieren
+Stockwerke.
 
 \subex{}
+
+\begin{align*}
+D_0^{n+1} &= XZ_1^n+X\comp{Z_0^n}+Z_1^n\comp{Z_0^n}\\
+D_1^{n+1} &= XZ_0 + Z_1Z_0 + XZ_1
+\end{align*}
+
+\subex{}
+
+\noindent\begin{tikzpicture}
+  \def\yMin{-.5} \def\yMax{11}
+  \def\xMin{-.5} \def\xMax{15.5}
+  
+  % draw all standard lanes
+	\foreach \name/\lbl/\x in {$X$/X/0,$Z_1$/Z1/1,$\comp{Z_1}$/nZ1/1.5,$Z_0$/Z0/2,$\comp{Z_0}$/nZ0/2.5}{
+    \draw (\x, \yMin) -- (\x, \yMax) node[above] (\lbl) {\name};
+  }
+  
+  % draw not X
+  \draw (.5, \yMax) node[above] (nX) {$\comp X$};
+  \draw ($(.25, \yMax) + (0, -1.5)$) rectangle node {1} +(.5,.5);
+  \draw[o-] ($(.5, \yMax) + (0, -1.5)$) -- (.5, \yMin);
+  \draw[*-] ($(-.05, \yMax) + (0,-.5)$) -| ($(.5, \yMax) + (0, -1)$);
+  
+  \def\andGate#1#2{
+    \draw (#1,#2) rectangle node {\&} +(1,-1);
+  }
+  \andGate{3.5}{7.5}
+  \andGate{3.5}{6}
+  \andGate{3.5}{4.5}
+  \andGate{3.5}{3}
+  \andGate{3.5}{1.5}
+  
+  \def\orGate#1#2{
+    \draw (#1,#2) rectangle node {$\ge1$} +(1,-2);
+  }
+  \orGate{7}{7.1}
+  \orGate{7}{4}
+  
+  \def\TFlipFlop#1#2{
+    \draw (#1,#2) rectangle +(2,-2);
+    \draw ($(#1,#2) + (.3,-.3)$) node {$T$};
+    \draw ($(#1,#2) + (1.7,-.3)$) node {$Q$};
+    \draw ($(#1,#2) + (1.7,-1.7)$) node {$\comp Q$};
+    \draw ($(#1,#2) + (0,-.8)$) -- ($(#1,#2) + (.3,-1)$) -- ($(#1,#2) + (0,-1.2)$);
+    \draw ($(#1,#2) + (0,-1)$) -- ($(#1,#2) + (-.5,-1)$) node[left] {CLK};
+  }
+  \TFlipFlop{11}{6.5}
+  \TFlipFlop{11}{3.5}
+  
+  % ors to flipflops
+  \draw (8,6.2) -- (11,6.2);
+  \draw (8,3.2) -- (11,3.2);
+  
+  % to YM
+  \draw[*-] (8.5,3.3) |- (15.5,1) node[right] {$Y_M$};
+  % to YR
+  \draw[*-] (-.1,0) -- (15.5,0) node[right] {$Y_R$};
+  
+  % to ands
+  \def\toAnd#1#2{
+    \draw[*-] ($(#1,#2)+(-.1,0)$) -- (3.5,#2);
+  }
+  \toAnd{0}{7.3}
+  \toAnd{1.5}{7.0}
+  \toAnd{2}{6.7}
+  
+  \toAnd{0.5}{5.8}
+  \toAnd{1}{5.5}
+  \toAnd{2.5}{5.2}
+  
+  \toAnd{0}{4.3}
+  \toAnd{2.5}{3.7}
+  
+  \toAnd{1.5}{2.8}
+  \toAnd{2}{2.2}
+  
+  \toAnd{0.5}{1.3}
+  \toAnd{1}{0.7}
+  
+  % And to Or
+  \draw (4.5, 6.75) -- (7,6.75);
+  \draw (4.5, 5.5) -- (7,5.5);
+  
+  \draw (4.5, 3.75) -- (7,3.75);
+  \draw (4.5, 1) -| ++(1.5,1.25) -- (7,2.25);
+  \draw (4.5, 2.7) -- (7,2.7);
+  
+  % flipflops to Zs
+  \draw[-*] (13, 6.2) -| (13.5, 8) -- (.9,8);
+  \draw[-*] (13, 4.8) -| (14, 8.5) -- (1.4,8.5);
+  \draw[-*] (13, 3.2) -| (14.5, 9) -- (1.9,9);
+  \draw[-*] (13, 1.8) -| (15, 9.5) -- (2.4,9.5);
+  %\draw (13, 4.8
+  
+\end{tikzpicture}
+
+
+
 \end{document}
