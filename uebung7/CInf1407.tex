@@ -244,7 +244,7 @@ Verbleibende Gruppen gleicher Ausgabe: A-C, B, D, E-F.
 
 \noindent\bigskip\textbf{Split}
 
-Nach A-C (Folgezustand) muss E-F gesplittet werden. Da A-C (aktueller Zustand) erhalten bleibt, ergibt sich als Endergebnis:
+Es muss nichts weiter gesplittet werden, somit ergibt sich als Endergebnis:
 
 \begin{ctabular}{c|c|ccc}
    \hline
@@ -253,8 +253,7 @@ Nach A-C (Folgezustand) muss E-F gesplittet werden. Da A-C (aktueller Zustand) e
    A-C  & 0                &     & D & B \\
    B  & 0                &     & B & D \\
    D  & 1                &     & B & F \\
-   E  & 1                &     & F & A-C \\
-   F  & 1                &     & E & A-C \\
+   E-F  & 1                &     & E-F & A-C \\
 \end{ctabular}
 
 \subex{Äquivalente Zustände: Implikationstafel}
@@ -319,22 +318,12 @@ Nach A-C (Folgezustand) muss E-F gesplittet werden. Da A-C (aktueller Zustand) e
       C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
       D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
       E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
-      F & \Xout           & \Xout            & \Xout   & \Xout & \cell{\cancel{F-E}\\\cancel{A-C}} \\\cline{2-6}
-        & A               & B                & C       & D               & E \\
-   \end{tabular}
-
-   \begin{tabular}{cccccc}
-      \cline{2-2}
-      B & \Xout &                  &         &                 &                 \\\cline{2-3}
-      C & \cell{D-D\\B-B} & \Xout  &         &                 &                 \\\cline{2-4}
-      D & \Xout           & \Xout            & \Xout   &                 &                 \\\cline{2-5}
-      E & \Xout           & \Xout            & \Xout   & \Xout &                 \\\cline{2-6}
-      F & \Xout           & \Xout            & \Xout   & \Xout & \Xout \\\cline{2-6}
+      F & \Xout           & \Xout            & \Xout   & \Xout & \cell{F-E\\A-C} \\\cline{2-6}
         & A               & B                & C       & D               & E \\
    \end{tabular}
 \end{center}
 
-Da D$\equiv$D und B$\equiv$B ist, ist auch A$\equiv$C. Wir erhalten erneut
+Da D$\equiv$D und B$\equiv$B ist (also kein Kreuz), ist auch A$\equiv$C. Da F-E ebenfalls kein Kreuz hat, gilt auch F$\equiv$E. Wir erhalten erneut
 
 \smallskip
 
@@ -345,31 +334,27 @@ Da D$\equiv$D und B$\equiv$B ist, ist auch A$\equiv$C. Wir erhalten erneut
    A-C  & 0                &     & D & B \\
    B  & 0                &     & B & D \\
    D  & 1                &     & B & F \\
-   E  & 1                &     & F & A-C \\
-   F  & 1                &     & E & A-C \\
+   E-F  & 1                &     & E-F & A-C \\
 \end{ctabular}
 
 \subex{Minimierter Zustandsgraph}
-A-C wird nur als A bezeichnet!
+A-C wird nur als A bezeichnet, ebenso wird E-F als E bezeichnet.
 
 \begin{center}
    \begin{tikzpicture}[node distance=3cm,thick]
       \node[state] (A)              {A/0};
       \node[state] (B) [right of=A] {B/0};
       \node[state] (D) [below of=B] {D/1};
-      \node[state] (F) [below of=A] {E/1};
-      \node[state] (E) [left of=F]  {F/1};
+      \node[state] (E) [below of=A] {E/1};
 
       \path[-{Latex}] (A) edge             node[above right] {0} (D)
-      (A) edge             node[above]       {1} (B)
-      (B) edge[loop right] node[right]       {0} (B)
-      (B) edge[bend right] node[right]       {1} (D)
-      (D) edge[bend right] node[left]        {0} (B)
-      (D) edge             node[below]       {1} (F)
-      (E) edge[bend right] node[above]       {0} (F)
-      (E) edge             node[above left]  {1} (A)
-      (F) edge[bend right] node[below]       {0} (E)
-      (F) edge             node[left]        {1} (A)
+                      (A) edge             node[above]       {1} (B)
+                      (B) edge[loop right] node[right]       {0} (B)
+                      (B) edge[bend right] node[right]       {1} (D)
+                      (D) edge[bend right] node[left]        {0} (B)
+                      (D) edge             node[below]       {1} (E)
+                      (E) edge[loop left]  node[left]        {0} (E)
+                      (E) edge             node[left]        {1} (A)
       ;
    \end{tikzpicture}
 \end{center}
@@ -457,4 +442,6 @@ Es folgen die Übergangsgleichungen
 \textcolor{red}{Keine Ahnung, was die Funktion sein soll. Vielleicht geht es bei
 den Ausgängen um Motorzustand und Fahrtrichtung und beim Zustand um das
 Stockwerk oder so? Ergibt aber keinen Sinn.}
+
+\subex{}
 \end{document}
