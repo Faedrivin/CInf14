@@ -148,6 +148,7 @@ Unter Ausnutzung der Don't-Cares minimieren sich die Ausgänge zu
    Y_G & = & Z_2^n + Z_1^nZ_0^n
 \end{eqnarray*}
 
+\newpage
 \subex{Zustandstabelle D-Flipflops}
 Da für D-Flipflops gilt $Q^{n+1} = D^n$, sind die Ansteuersignale genau die
 Bits, die den Folgezustand codieren.
@@ -338,6 +339,7 @@ Da D$\equiv$D und B$\equiv$B ist (also kein Kreuz), ist auch A$\equiv$C. Da F-E 
    E-F  & 1                &     & E-F & A-C \\
 \end{ctabular}
 
+\newpage
 \subex{Minimierter Zustandsgraph}
 A-C wird nur als A bezeichnet, ebenso wird E-F als E bezeichnet.
 
@@ -453,7 +455,11 @@ D_0^{n+1} &= XZ_1^n+X\comp{Z_0^n}+Z_1^n\comp{Z_0^n}\\
 D_1^{n+1} &= XZ_0 + Z_1Z_0 + XZ_1
 \end{align*}
 
+\newpage
 \subex{}
+Inputs: $X$
+
+Outputs: $Z_0, Z_1, \comp { Z_0 }, \comp {Z_1}, Y_R, Y_M$
 
 \noindent\begin{tikzpicture}
   \def\yMin{-.5} \def\yMax{11}
