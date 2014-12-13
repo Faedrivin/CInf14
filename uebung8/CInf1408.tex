@@ -18,6 +18,7 @@
 Ausgaben:
 \begin{enumerate}[align=left,leftmargin=\marginparwidth]
    \item[$Y$] Abflusssteuerung, 1 = öffnen, 0 = schließen
+   \item[$E$] Errorsignal, 1 = Error, 0 = kein Error
 \end{enumerate}
 
 \begin{center}
@@ -44,24 +45,24 @@ Ausgaben:
     \node[state,left of=C] (D) {D};
     
     \path[->] % inlet
-              (A) edge[loop above] node[above] {000/0, 001/0, 011/0} (A) % valid
-              (A) edge[loop left]  node[left]  {010/1, 100/1, 101/1, 110/1} (A) % error
-              (A) edge             node[above] {111/1} (B) % next
+              (A) edge[loop above] node[above] {000/00, 001/00, 011/00} (A) % valid
+              (A) edge[loop left]  node[left]  {010/11, 100/11, 101/11, 110/11} (A) % error
+              (A) edge             node[above] {111/10} (B) % next
   
               % hold it
-              (B) edge[loop above] node[above] {000/0, 001/0, 011/1}(B) % valid
-              (B) edge[loop right] node[right] {010/1, 100/1, 101/1, 110/1}(B) % error
+              (B) edge[loop above] node[above] {000/00, 001/00, 011/10}(B) % valid
+              (B) edge[loop right] node[right] {010/11, 100/11, 101/11, 110/11}(B) % error
               (B) edge             node[right] {111/1}(C) % next
               
               % outlet
-              (C) edge[loop below] node[below] {001/1, 011/1, 111/1}(C) % valid
-              (C) edge[loop right] node[right] {010/1, 100/1, 101/1, 110/1}(C) % error
-              (C) edge             node[below] {000/0}(D) % next
+              (C) edge[loop below] node[below] {001/10, 011/10, 111/10}(C) % valid
+              (C) edge[loop right] node[right] {010/11, 100/11, 101/11, 110/11}(C) % error
+              (C) edge             node[below] {000/00}(D) % next
               
               % hold it
-              (D) edge[loop below] node[below] {001/0, 011/1, 111/0}(D) % valid
-              (D) edge[loop left]  node[left]  {010/1, 100/1, 101/1, 110/1}(D) % error
-              (D) edge             node[left] {000/0}(A) % next
+              (D) edge[loop below] node[below] {001/00, 011/10, 111/10}(D) % valid
+              (D) edge[loop left]  node[left]  {010/11, 100/11, 101/11, 110/11}(D) % error
+              (D) edge             node[left]  {000/00}(A) % next
               ;
               
   \end{tikzpicture}
@@ -72,7 +73,7 @@ Ausgaben:
        \makebox[4cm]{Legende}\\
        \hrulefill \\
        %An Zuständen: \makebox[4cm]{$$} \\ 
-       An Übergängen: \makebox[4cm]{ $X_tX_mX_b/Y$ }
+       An Übergängen: \makebox[4cm]{ $X_tX_mX_b/YE$ }
     };
   \end{tikzpicture}
 \end{center}
@@ -93,41 +94,41 @@ D & 01 \\
 
 Für die Realisierung mit JK-Flipflops wird das linke Bit durch das $JK_1$-FF, das recht durch das $JK_0$-FF kodiert. Dabei stehen in der Tabelle $JK_1^{n+1} = Q_1^{n+1}$ bzw. $JK_0^{n+1} = Q_0^{n+1}$ für die jeweiligen Ausgänge, d.h. $1 = Q$ und $0 = \comp Q$.
 
-\begin{tabular}{cc|mmm|m|c|mmm|mmm}
-$Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & $(Q_1Q_0)^{n+1}$
+\begin{tabular}{cc|mmm|mm|c|mmm|mmm}
+$Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & E & $(Q_1Q_0)^{n+1}$
       & J_1^n & K_1^n & Q_1^{n+1} & J_0^n & K_0^n & Q_0^{n+1} \\ \hline % do the JK's make sense?
-A & 00 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 0 & 1 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 1 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 1 & 1 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 0 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 1 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 1 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
-B & 01 & 0 & 0 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 0 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 1 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 1 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 0 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 1 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
-C & 11 & 0 & 0 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-C & 11 & 0 & 0 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 0 & 1 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 0 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 0 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 0 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 1 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
-D & 10 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-D & 10 & 0 & 0 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 0 & 1 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 0 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 0 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 1 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
+A & 00 & 0 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 0 & 1 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 1 & 1 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 0 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 0 & 1 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 1 & 1 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+B & 01 & 0 & 0 & 0 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 0 & 1 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 1 & 1 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 0 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 0 & 1 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
+C & 11 & 0 & 0 & 0 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+C & 11 & 0 & 0 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 0 & 1 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 0 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 0 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 0 & 1 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 1 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
+D & 10 & 0 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+D & 10 & 0 & 0 & 1 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 0 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 0 & 1 & 1 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 0 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 0 & 1 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
 \end{tabular}
 
 
@@ -174,7 +175,10 @@ Q_1^{n+1} = Q_1^{n} \comp{Q_0^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}
 
 
 \subex{Zustände, Kontrollsignale und Kriterien}
+
 Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
+
+\bigskip
 
 \textbf{Zustände:}
 
@@ -182,19 +186,25 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
 	\item \texttt{WAITLOAD}: Wartet auf \texttt{VALID=1} und lädt bei Erfolg.
   \item \texttt{OUTx}: geben jeweils \texttt{NUM[x]} aus.
 \end{itemize}
+
 Die Anzahl Zustände kann durch eine Zählvariable auf zwei reduziert werden.
+
+\bigskip
 
 \textbf{Kontrollsignale:}
 
-Die beiden Kontrollsignale sind jeweils \texttt{goto BEGIN}.
+Die beiden Kontrollsignale sind jeweils \texttt{goto BEGIN}. Wir bezeichnen sie unten mit \emph{back}.
+
+\bigskip
 
 \textbf{Kriterien:}
 
-Das einzige Kriterium ist \texttt{VALID=1}.
+Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild mit \emph{load}.
 
 
 \subex{Blockschaltbild}
-% TODO!
+
+
 
 \ex{Minimumsuche in RTeasy}{4 + 10 + 11 + 7 + 3 + 5 = 40}
 \subex{Blockschaltbild}
