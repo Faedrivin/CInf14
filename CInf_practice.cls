@@ -92,13 +92,12 @@
 \tikzstyle{typewriter} = [font=\small\ttfamily]
 % define styles for program flow charts
 \tikzstyle{decision} = [diamond, draw, fill=blue!20, typewriter,
-                        text width=4.5em, text badly centered, 
-                        node distance=3cm, inner sep=0pt]
+                        text width=4.5em, text badly centered, inner sep=0pt]
 \tikzstyle{block}    = [rectangle, draw, fill=blue!10, typewriter,
-                        text width=8em, text centered, minimum height=4em]
+                        text width=7em, text centered, minimum height=2em]
 \tikzstyle{line}     = [draw, -latex', typewriter]
 \tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
-                        minimum height=2em, typewriter]
+                        minimum height=1em, typewriter]
 
 % styles for circuit diagrams
 \newlength{\portsize}
