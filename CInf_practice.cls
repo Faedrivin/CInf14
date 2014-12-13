@@ -135,6 +135,9 @@ sep=1pt,minimum height=.7em]
 % bold left
 \newcolumntype{B}{>{\bf}l}
 
+% mathcolumn
+\newcolumntype{m}{>{$}c<{$}}
+
 % helper for headers/individual rows
 % define columns with a special row type with extra columns e.g.
 % e.g. Hchchc for three centered columns
