@@ -21,16 +21,25 @@ Ausgaben:
    \item[$E$] Errorsignal, 1 = Error, 0 = kein Error
 \end{enumerate}
 
+\usetikzlibrary{shapes.misc}
+\tikzset{bus/.style={strike out,
+                     draw,
+                     -,
+                     append after command={
+                        node[above=.5ex of \tikzlastnode] {\tiny #1}
+                     }
+                     }
+        }
 \begin{center}
   \begin{tikzpicture}
     % module
     \draw (2,3) rectangle node {Sicherheitsfüllstandregler (SFR)} +(6,-2);
     % in
-    \draw[<-] (2,2.5) -- node{\tiny /} node[above]{\tiny 1} ++(-1,0) node[left] {$X_t$};
-    \draw[<-] (2,2) -- node{\tiny /} node[above]{\tiny 1} ++(-1,0) node[left] {$X_m$};
-    \draw[<-] (2,1.5) -- node{\tiny /} node[above]{\tiny 1} ++(-1,0) node[left] {$X_b$};
+    \draw[<-] (2,2.5) -- node[bus={1}] {} ++(-1,0) node[left] {$X_t$};
+    \draw[<-] (2,2) -- node[bus={1}] {} ++(-1,0) node[left] {$X_m$};
+    \draw[<-] (2,1.5) -- node[bus={1}] {} ++(-1,0) node[left] {$X_b$};
     % out
-    \draw[->] (8,2) -- node{\tiny /} node[above]{\tiny 1} ++(1,0) node[right] {$Y$};
+    \draw[->] (8,2) -- node[bus={1}] {} ++(1,0) node[right] {$Y$};
   \end{tikzpicture}
 \end{center}
 
@@ -84,17 +93,17 @@ Der Graph ist konsistent und vollständig.
 \subex{Zustandsübergangstabelle \& -codierung}
 Vier Zustände erlauben eine Codierung mit $\log_2{4}=2$ Bits. Es scheint sinnvoll, zwischen zwei Zuständen die Hamming distance klein zu halten. Es ist möglich, Codierungen zu finden, bei der für jeden Zustandswechsel nur ein Bit geändert wird. Wir wählen deswegen:
 
-\begin{tabular}{c|m}
+\begin{ctabular}{c|m}
 Zustand & $Codierung $ = Q_1Q_0 \\\hline
 A & 00 \\
 B & 10 \\
 C & 11 \\
 D & 01 \\
-\end{tabular}
+\end{ctabular}
 
 Für die Realisierung mit JK-Flipflops wird das linke Bit durch das $JK_1$-FF, das recht durch das $JK_0$-FF kodiert. Dabei stehen in der Tabelle $JK_1^{n+1} = Q_1^{n+1}$ bzw. $JK_0^{n+1} = Q_0^{n+1}$ für die jeweiligen Ausgänge, d.h. $1 = Q$ und $0 = \comp Q$.
 
-\begin{tabular}{cc|mmm|mm|c|mmm|mmm}
+\begin{ctabular}{cc|mmm|mm|c|mmm|mmm}
 $Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & E & $(Q_1Q_0)^{n+1}$
       & J_1^n & K_1^n & Q_1^{n+1} & J_0^n & K_0^n & Q_0^{n+1} \\ \hline % do the JK's make sense?
 A & 00 & 0 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
@@ -129,7 +138,7 @@ D & 10 & 1 & 0 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
 D & 10 & 1 & 0 & 1 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
 D & 10 & 1 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
 D & 10 & 1 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
-\end{tabular}
+\end{ctabular}
 
 
 \subex{Ansteuergleichungen}
@@ -260,21 +269,58 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
 
 \subex{Flowchart}
 
+\begin{center}
+   \begin{tikzpicture}
+      \node[cloud] (begin) {Begin};
+      \node[block,below=of begin] (clrar) {AR \la 0 \\ MinAdr \la 0};
+      \node[block,below=of clrar] (lddr) {DR \la Memory[AR]};
+      \node[block,below=of lddr] (ldmin) {Min \la DR};
+      \node[decision,below=of ldmin] (areq31) {AReq31=1};
+      \node[block,below=of areq31] (incrar) {AR \la AR + 1};
+      \node[block,below=of incrar] (lddr2) {DR \la Memory[AR]};
+      \node[block,below=of lddr2] (lda) {A \la DR};
+      \node[decision,below=of lda] (minbiga) {Minbiga=1};
+      \node[block,below=of minbiga] (ldminadr) {MinAdr \la AR};
+
+      \node[block,left=of areq31] (ldar) {AR \la MinAdr};
+      \node[block,below=of ldar] (lddr3) {DR \la Mem[AR]};
+      \node[block,below=of lddr3] (ldout) {OUTBUS \la DR};
+      \node[cloud,below=of ldout] (end) {End};
+
+      \draw[->] (begin) -- (clrar);
+      \draw[->] (clrar) -- (lddr);
+      \draw[->] (lddr) -- (ldmin);
+      \draw[->] (ldmin) -- (areq31);
+      \draw[->] (areq31) -- node[right] {No} (incrar);
+      \draw[->] (incrar) -- (lddr2);
+      \draw[->] (lddr2) -- (lda);
+      \draw[->] (lda) -- (minbiga);
+      \draw[->] (minbiga) -- node[right] {Yes} (ldminadr);
+      \draw[->] (minbiga.east) -- ++(2cm,0) node[above,pos=.3] {No}  coordinate (c) |- (areq31.east);
+      \draw     (ldminadr.east) -| (c);
+      \draw[->] (areq31.west) -- node[above] {Yes} (ldar);
+      \draw[->] (ldar) -- (lddr3);
+      \draw[->] (lddr3) -- (ldout);
+      \draw[->] (ldout) -- (end);
+   \end{tikzpicture}
+\end{center}
 
 \subex{RTeasy Programm}
 
 
 \subex{Kriterien und Signale}
 
-\begin{tabularx}{.8\textwidth}{|L|X|}
-\hline
-\normalfont{\textbf{Kriterien}} & \textbf{Funktion} \\ \hline
-MinbigA   & 1, wenn $Min > A$ \\
-AReq31    & 1, wenn $AR=31$ \\ \hline
-\hline
-\normalfont{\textbf{Kontrollsignale}} & \textbf{Funktion} \\ \hline
-& \\
-\end{tabularx}
+\begin{center}
+   \begin{tabularx}{.8\textwidth}{|L|X|}
+      \hline
+      \normalfont{\textbf{Kriterien}} & \textbf{Funktion} \\ \hline
+      MinbigA   & 1, wenn $Min > A$ \\
+      AReq31    & 1, wenn $AR=31$ \\ \hline
+      \hline
+      \normalfont{\textbf{Kontrollsignale}} & \textbf{Funktion} \\ \hline
+                                            & \\
+   \end{tabularx}
+\end{center}
 
 
 \subex{Taktzahl}
