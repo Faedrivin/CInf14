@@ -18,6 +18,7 @@
 Ausgaben:
 \begin{enumerate}[align=left,leftmargin=\marginparwidth]
    \item[$Y$] Abflusssteuerung, 1 = öffnen, 0 = schließen
+   \item[$E$] Errorsignal, 1 = Error, 0 = kein Error
 \end{enumerate}
 
 \begin{center}
@@ -44,24 +45,24 @@ Ausgaben:
     \node[state,left of=C] (D) {D};
     
     \path[->] % inlet
-              (A) edge[loop above] node[above] {000/0, 001/0, 011/0} (A) % valid
-              (A) edge[loop left]  node[left]  {010/1, 100/1, 101/1, 110/1} (A) % error
-              (A) edge             node[above] {111/1} (B) % next
+              (A) edge[loop above] node[above, text width=8em] {000/00, 001/00, 011/00} (A) % valid
+              (A) edge[loop left]  node[left, text width=8em]  {010/11, 100/11, 101/11, 110/11} (A) % error
+              (A) edge             node[above]                 {111/10} (B) % next
   
               % hold it
-              (B) edge[loop above] node[above] {000/0, 001/0, 011/1}(B) % valid
-              (B) edge[loop right] node[right] {010/1, 100/1, 101/1, 110/1}(B) % error
-              (B) edge             node[right] {111/1}(C) % next
+              (B) edge[loop above] node[above, text width=8em] {000/00, 001/00, 011/10}(B) % valid
+              (B) edge[loop right] node[right, text width=8em] {010/11, 100/11, 101/11, 110/11}(B) % error
+              (B) edge             node[right]                 {111/1}(C) % next
               
               % outlet
-              (C) edge[loop below] node[below] {001/1, 011/1, 111/1}(C) % valid
-              (C) edge[loop right] node[right] {010/1, 100/1, 101/1, 110/1}(C) % error
-              (C) edge             node[below] {000/0}(D) % next
+              (C) edge[loop below] node[below, text width=8em] {001/10, 011/10, 111/10}(C) % valid
+              (C) edge[loop right] node[right, text width=8em] {010/11, 100/11, 101/11, 110/11}(C) % error
+              (C) edge             node[below]                 {000/00}(D) % next
               
               % hold it
-              (D) edge[loop below] node[below] {001/0, 011/1, 111/0}(D) % valid
-              (D) edge[loop left]  node[left]  {010/1, 100/1, 101/1, 110/1}(D) % error
-              (D) edge             node[left] {000/0}(A) % next
+              (D) edge[loop below] node[below, text width=8em] {001/00, 011/10, 111/10}(D) % valid
+              (D) edge[loop left]  node[left, text width=8em]  {010/11, 100/11, 101/11, 110/11}(D) % error
+              (D) edge             node[left]                  {000/00}(A) % next
               ;
               
   \end{tikzpicture}
@@ -72,7 +73,7 @@ Ausgaben:
        \makebox[4cm]{Legende}\\
        \hrulefill \\
        %An Zuständen: \makebox[4cm]{$$} \\ 
-       An Übergängen: \makebox[4cm]{ $X_tX_mX_b/Y$ }
+       An Übergängen: \makebox[4cm]{ $X_tX_mX_b/YE$ }
     };
   \end{tikzpicture}
 \end{center}
@@ -93,41 +94,41 @@ D & 01 \\
 
 Für die Realisierung mit JK-Flipflops wird das linke Bit durch das $JK_1$-FF, das recht durch das $JK_0$-FF kodiert. Dabei stehen in der Tabelle $JK_1^{n+1} = Q_1^{n+1}$ bzw. $JK_0^{n+1} = Q_0^{n+1}$ für die jeweiligen Ausgänge, d.h. $1 = Q$ und $0 = \comp Q$.
 
-\begin{tabular}{cc|mmm|m|c|mmm|mmm}
-$Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & $(Q_1Q_0)^{n+1}$
+\begin{tabular}{cc|mmm|mm|c|mmm|mmm}
+$Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & E & $(Q_1Q_0)^{n+1}$
       & J_1^n & K_1^n & Q_1^{n+1} & J_0^n & K_0^n & Q_0^{n+1} \\ \hline % do the JK's make sense?
-A & 00 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 0 & 1 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 1 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 0 & 1 & 1 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 0 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 1 & 0 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-A & 00 & 1 & 1 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
-B & 01 & 0 & 0 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 0 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 1 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 0 & 1 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 0 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 1 & 0 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
-B & 01 & 1 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
-C & 11 & 0 & 0 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-C & 11 & 0 & 0 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 0 & 1 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 0 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 0 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 0 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 1 & 0 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
-C & 11 & 1 & 1 & 1 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
-D & 10 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
-D & 10 & 0 & 0 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 0 & 1 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 0 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 0 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 1 & 0 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
-D & 10 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
+A & 00 & 0 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 0 & 1 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 0 & 1 & 1 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 0 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 0 & 1 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 1 & 0 & 1 & 1 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+A & 00 & 1 & 1 & 1 & 1 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\ \hline
+B & 01 & 0 & 0 & 0 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 0 & 1 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 0 & 1 & 1 & 0 & 0 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 0 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 0 & 1 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 1 & 0 & 1 & 1 & 01 & 0 & 0 & 0 & 1 & 0 & 1 \\
+B & 01 & 1 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
+C & 11 & 0 & 0 & 0 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+C & 11 & 0 & 0 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 0 & 1 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 0 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 0 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 0 & 1 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 1 & 0 & 0 & 1 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\
+C & 11 & 1 & 1 & 1 & 1 & 0 & 11 & 1 & 0 & 1 & 1 & 0 & 1 \\ \hline
+D & 10 & 0 & 0 & 0 & 0 & 0 & 00 & 0 & 1 & 0 & 0 & 1 & 0 \\
+D & 10 & 0 & 0 & 1 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 0 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 0 & 1 & 1 & 0 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 0 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 0 & 1 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 1 & 0 & 1 & 1 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\
+D & 10 & 1 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
 \end{tabular}
 
 
@@ -174,7 +175,10 @@ Q_1^{n+1} = Q_1^{n} \comp{Q_0^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}
 
 
 \subex{Zustände, Kontrollsignale und Kriterien}
+
 Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
+
+\bigskip
 
 \textbf{Zustände:}
 
@@ -182,19 +186,73 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
 	\item \texttt{WAITLOAD}: Wartet auf \texttt{VALID=1} und lädt bei Erfolg.
   \item \texttt{OUTx}: geben jeweils \texttt{NUM[x]} aus.
 \end{itemize}
+
 Die Anzahl Zustände kann durch eine Zählvariable auf zwei reduziert werden.
+
+\bigskip
 
 \textbf{Kontrollsignale:}
 
-Die beiden Kontrollsignale sind jeweils \texttt{goto BEGIN}.
+Ein Kontrollsignal ist \texttt{goto BEGIN}. Wir bezeichnen es mit \emph{back}. Hinzu kommt das Kontrollsignal, \texttt{READY} zu setzen. Wir nennen es \texttt{setReady}. 
+
+\bigskip
 
 \textbf{Kriterien:}
 
-Das einzige Kriterium ist \texttt{VALID=1}.
+Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild mit \emph{load}.
 
 
 \subex{Blockschaltbild}
-% TODO!
+% it's easy to see that I have no clue what they expect us to do here...
+\begin{center}
+  \begin{tikzpicture}
+    \draw (1.5,8) rectangle node{READY} ++(3,1);
+    \draw (5.5,8) rectangle node{VALID} ++(3,1);
+    
+    \draw (2.5,6) rectangle node{INBUS} ++(5,1);
+    
+    \draw (0,3) rectangle node{NUM[0]} ++(3,1);
+    \draw (3.5,3) rectangle node{NUM[1]} ++(3,1);
+    \draw (7,3) rectangle node{NUM[2]} ++(3,1);
+    
+    \draw (2.5,0) rectangle node{OUTBUS} ++(5,1);
+    
+    % load
+    \draw[-] (7,8) -- node{/} node[left] {1} ++(0,-1);
+    \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{load}};
+    
+    \draw[->] (2.75,6) -- node{/} node[left] {4} ++(0,-2);
+    \draw[->] (5,6) -- node{/} node[left] {4} ++(0,-2);
+    \draw[->] (7.25,6) -- node{/} node[left] {4} ++(0,-2);
+
+    % write
+    \draw[->] (2.75,3) -- node{/} node[left] {7} ++(0,-2);
+    \draw[->] (5,3) -- node{/} node[left] {7} ++(0,-2);
+    \draw[->] (7.25,3) -- node{/} node[left] {7} ++(0,-2);
+    
+    % do we need these six?
+    \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{in}};
+    \draw[o-] (5,4.5) --  ++(-.5,0) node[left]{\emph{in}};
+    \draw[o-] (7.25,4.5) --  ++(-.5,0) node[left]{\emph{in}};
+    
+    \draw[o-] (2.75,1.5) --  ++(-.5,0) node[left]{\emph{out0}};
+    \draw[o-] (5,1.5) --  ++(-.5,0) node[left]{\emph{out1}};
+    \draw[o-] (7.25,1.5) --  ++(-.5,0) node[left]{\emph{out2}};
+
+    % setReady
+    \draw[o-] (1.5,8.5) -- ++(-.5,0) node[left] {\emph{setReady}};
+   
+    % Steuerwerk
+    \draw (13,0) rectangle node[rotate=-90] {Steuerwerk} ++(1,9);
+    \draw[o-] (13,7.5) -- ++(-.5,0) node[left] {\emph{load}};
+    \draw[-o] (13,6.5) -- ++(-.5,0) node[left] {\emph{setReady}};
+    \draw[-o] (13,5.5) -- ++(-.5,0) node[left] {\emph{in}};
+    \draw[-o] (13,3.5) -- ++(-.5,0) node[left] {\emph{out0}};
+    \draw[-o] (13,2.5) -- ++(-.5,0) node[left] {\emph{out1}};
+    \draw[-o] (13,1.5) -- ++(-.5,0) node[left] {\emph{out2}};
+  \end{tikzpicture}
+\end{center}
+
 
 \ex{Minimumsuche in RTeasy}{4 + 10 + 11 + 7 + 3 + 5 = 40}
 \subex{Blockschaltbild}
