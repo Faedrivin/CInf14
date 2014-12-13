@@ -1,0 +1,21 @@
+% University of Luebeck - RTeasy Version 0.3.4% 
+# Bitte in MicroSteps ausfuehren, sonst sind die Ergebnisse falsch...
+
+declare bus INBUS(0:11), VALID, OUTBUS(0:6), READY
+declare register array NUM(0:6)[3]
+
+# Beginn Zustand WAITLOAD
+BEGIN:
+  if VALID = 1 then # Kriterium: VALID=1?
+    NUM[0] <- INBUS(0:3), NUM[1] <- INBUS(4:7), NUM[2] <- INBUS(8:11)
+  else
+    goto BEGIN # Kontrollsignal: goto BEGIN
+  fi;
+# Ende Zustand WAITLOAD
+
+# Zustand OUT0
+READY <- 1, OUTBUS <- NUM[0] + 48;
+# Zustand OUT1
+READY <- 1, OUTBUS <- NUM[1] + 48;
+# Zustand OUT2
+READY <- 1, OUTBUS <- NUM[2] + 48, goto BEGIN; # Kontrollsignal: goto BEGIN
