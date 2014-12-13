@@ -1,0 +1,32 @@
+% University of Luebeck - RTeasy Version 0.3.4% 
+declare bus OUTBUS(0:15);
+declare bus AREQ31;
+declare bus MINBIGA;
+declare register MINADR(0:4);
+declare register AR(0:4);
+declare register DR(0:15);
+declare memory MEM(AR,DR);
+declare register MIN(0:15);
+declare register A(0:15);
+
+BEGIN:
+	AR <- 0, MINADR <- 0;
+	read MEM;
+	MIN <- DR;
+LOOP:
+	if AR = 31 then
+		AREQ31 <- 1
+		goto END
+	fi;
+	AR <- AR + 1;
+	read MEM;
+	A <- DR;
+	if MIN > A then
+		MINBIGA <- 1, MINADR <- AR, goto LOOP
+	else
+		goto LOOP
+	fi;
+END:
+	AR <- MINADR;
+	read MEM;
+	OUTBUS <- DR;
