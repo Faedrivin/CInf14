@@ -1,7 +1,8 @@
 \documentclass{CInf_practice}
 
 \sheet{8}{Schaltwerke \& Register-Transfer-Ebene}
-\usetikzlibrary{automata,positioning,arrows.meta} 
+\usetikzlibrary{automata,positioning,arrows.meta,fit} 
+\lstset{xleftmargin=0pt,xrightmargin=0pt,morekeywords={fi,declare,register,array,bus,memory,goto,then,read}}
 
 \begin{document}
 \cinftitle
@@ -22,11 +23,11 @@ Ausgaben:
 \end{enumerate}
 
 \usetikzlibrary{shapes.misc}
-\tikzset{bus/.style={strike out,
+\tikzset{bus/.style 2 args={strike out,
                      draw,
                      -,
                      append after command={
-                        node[above=.5ex of \tikzlastnode] {\tiny #1}
+                        node[#2=.1ex of \tikzlastnode] {\small #1}
                      }
                      }
         }
@@ -35,9 +36,9 @@ Ausgaben:
     % module
     \draw (2,3) rectangle node {Sicherheitsfüllstandregler (SFR)} +(6,-2);
     % in
-    \draw[<-] (2,2.5) -- node[bus={1}] {} ++(-1,0) node[left] {$X_t$};
-    \draw[<-] (2,2) -- node[bus={1}] {} ++(-1,0) node[left] {$X_m$};
-    \draw[<-] (2,1.5) -- node[bus={1}] {} ++(-1,0) node[left] {$X_b$};
+    \draw[<-] (2,2.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_t$};
+    \draw[<-] (2,2) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_m$};
+    \draw[<-] (2,1.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_b$};
     % out
     \draw[->] (8,2) -- node[bus={1}] {} ++(1,0) node[right] {$Y$};
   \end{tikzpicture}
@@ -177,11 +178,8 @@ Q_1^{n+1} = Q_1^{n} \comp{Q_0^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}
 
 
 \subex{RTeasy Programm}
-{
-  \lstset{xleftmargin=0pt,xrightmargin=0pt}
-  \lstinputlisting{8.2_Konverter.rt}
-}
 
+\lstinputlisting{8.2_Konverter.rt}
 
 \subex{Zustände, Kontrollsignale und Kriterien}
 
@@ -227,17 +225,17 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
     \draw (2.5,0) rectangle node{OUTBUS} ++(5,1);
     
     % load
-    \draw[-] (7,8) -- node{/} node[left] {1} ++(0,-1);
+    \draw[-] (7,8) -- node[bus={1}{left}] {} ++(0,-1);
     \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{load}};
     
-    \draw[->] (2.75,6) -- node{/} node[left] {4} ++(0,-2);
-    \draw[->] (5,6) -- node{/} node[left] {4} ++(0,-2);
-    \draw[->] (7.25,6) -- node{/} node[left] {4} ++(0,-2);
+    \draw[->] (2.75,6) -- node[bus={4}{left}] {} ++(0,-2);
+    \draw[->] (5,6) -- node[bus={4}{left}] {} ++(0,-2);
+    \draw[->] (7.25,6) -- node[bus={4}{left}] {} ++(0,-2);
 
     % write
-    \draw[->] (2.75,3) -- node{/} node[left] {7} ++(0,-2);
-    \draw[->] (5,3) -- node{/} node[left] {7} ++(0,-2);
-    \draw[->] (7.25,3) -- node{/} node[left] {7} ++(0,-2);
+    \draw[->] (2.75,3) -- node[bus={7}{left}] {} ++(0,-2);
+    \draw[->] (5,3) -- node[bus={7}{left}] {} ++(0,-2);
+    \draw[->] (7.25,3) -- node[bus={7}{left}] {} ++(0,-2);
     
     % do we need these six?
     \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{in}};
@@ -266,7 +264,31 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
 \ex{Minimumsuche in RTeasy}{4 + 10 + 11 + 7 + 3 + 5 = 40}
 \subex{Blockschaltbild}
 
+\begin{center}
+   \begin{tikzpicture}[scale=.8,transform shape,mynode/.style={draw,inner ysep=10pt,inner xsep=0,minimum
+      width=2cm,minimum height=1cm}]
+      \node[on grid,mynode,text width=.7\linewidth,align=center,anchor=west] at (0,0) (outbus) {OUTBUS};
+      \node[on grid,mynode,minimum width=2cm,anchor=west] at (0,-2cm) (minadr) {MinAdr};
+      \node[on grid,mynode,align=center,text width=5cm,anchor=east] at (.7\textwidth,-2cm) (kompa) {Komparator};
+      \node[on grid,mynode,below=of minadr,yshift=-2cm] (ar) {AR};
+      \node[on grid,mynode,right=of ar.east] (dr) {DR};
+      \node[on grid,mynode,yshift=-3cm,fit={(ar)
+      (dr)},label=center:Memory,name path=memborder] (memory) {};
+      \node[on grid,mynode,below=of kompa.west,anchor=west,yshift=-1cm] (min) {Min};
+      \node[on grid,mynode,below=of kompa.east,anchor=east,yshift=-1cm] (a) {A};
 
+      \draw[->,transform canvas={xshift=-1em}] (minadr) -- node[bus={5}{left}] {} (ar);
+      \draw[->,transform canvas={xshift=1em}] (ar) -- node[bus={5}{left}] {} (minadr);
+
+      \path[name path=ar-to-mem] (ar) -- ++(0,-5cm);
+      \draw[->,name intersections={of=ar-to-mem and memborder}] (ar) -- (intersection-1);
+
+      \path[name path=dr-to-mem] (dr) -- ++(0,-5cm);
+      \draw[<-,name intersections={of=dr-to-mem and memborder}] (dr) -- (intersection-1);
+   \end{tikzpicture}
+\end{center}
+
+\clearpage
 \subex{Flowchart}
 
 \begin{center}
@@ -291,8 +313,8 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
       \draw[->] (clrar) -- (lddr);
       \draw[->] (lddr) -- (ldmin);
       \draw[->] (ldmin) -- (areq31);
-      \draw[->] (areq31) -- node[right] {No} (incrar);
       \draw[->] (incrar) -- (lddr2);
+      \draw[->] (areq31) -- node[right] {No} (incrar);
       \draw[->] (lddr2) -- (lda);
       \draw[->] (lda) -- (minbiga);
       \draw[->] (minbiga) -- node[right] {Yes} (ldminadr);
@@ -307,6 +329,7 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
 
 \subex{RTeasy Programm}
 
+\lstinputlisting{8.3_Maxfinder.rt}
 
 \subex{Kriterien und Signale}
 
