@@ -1,7 +1,7 @@
 \documentclass{CInf_practice}
 
 \sheet{8}{Schaltwerke \& Register-Transfer-Ebene}
-\usetikzlibrary{automata,positioning,arrows.meta,fit} 
+\usetikzlibrary{automata,positioning,arrows.meta,fit,shapes.misc}
 \lstset{xleftmargin=0pt,xrightmargin=0pt,morekeywords={fi,declare,register,array,bus,memory,goto,then,read}}
 
 \begin{document}
@@ -22,13 +22,12 @@ Ausgaben:
    \item[$E$] Errorsignal, 1 = Error, 0 = kein Error
 \end{enumerate}
 
-\usetikzlibrary{shapes.misc}
 \tikzset{bus/.style 2 args={strike out,
                      draw,
                      -,
                      append after command={
                         node[#2=.1ex of \tikzlastnode] {\small #1}
-                     }
+                        }
                      }
         }
 \begin{center}
@@ -36,11 +35,11 @@ Ausgaben:
     % module
     \draw (2,3) rectangle node {Sicherheitsfüllstandregler (SFR)} +(6,-2);
     % in
-    \draw[<-] (2,2.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_t$};
-    \draw[<-] (2,2) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_m$};
-    \draw[<-] (2,1.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_b$};
+    \draw[{Latex}-] (2,2.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_t$};
+    \draw[{Latex}-] (2,2) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_m$};
+    \draw[{Latex}-] (2,1.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_b$};
     % out
-    \draw[->] (8,2) -- node[bus={1}{above}] {} ++(1,0) node[right] {$Y$};
+    \draw[-{Latex}] (8,2) -- node[bus={1}{above}] {} ++(1,0) node[right] {$Y$};
   \end{tikzpicture}
 \end{center}
 
@@ -228,14 +227,14 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
     \draw[-] (7,8) -- node[bus={1}{left}] {} ++(0,-1);
     \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{load}};
     
-    \draw[->] (2.75,6) -- node[bus={4}{left}] {} ++(0,-2);
-    \draw[->] (5,6) -- node[bus={4}{left}] {} ++(0,-2);
-    \draw[->] (7.25,6) -- node[bus={4}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (2.75,6) -- node[bus={4}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (5,6) -- node[bus={4}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (7.25,6) -- node[bus={4}{left}] {} ++(0,-2);
 
     % write
-    \draw[->] (2.75,3) -- node[bus={7}{left}] {} ++(0,-2);
-    \draw[->] (5,3) -- node[bus={7}{left}] {} ++(0,-2);
-    \draw[->] (7.25,3) -- node[bus={7}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (2.75,3) -- node[bus={7}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (5,3) -- node[bus={7}{left}] {} ++(0,-2);
+    \draw[-{Latex}] (7.25,3) -- node[bus={7}{left}] {} ++(0,-2);
     
     % do we need these six?
     \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{in}};
@@ -266,10 +265,12 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
 
 \begin{center}
    \begin{tikzpicture}[scale=.8,transform shape,mynode/.style={draw,inner ysep=10pt,inner xsep=0,minimum
-      width=2cm,minimum height=1cm}]
-      \node[on grid,mynode,text width=.7\linewidth,align=center,anchor=west] at (0,0) (outbus) {OUTBUS};
+      width=2cm,minimum height=1cm},every node/.append style={font=\ttfamily}]
+      \node[on grid,mynode,text width=.7\linewidth,align=center,anchor=west,name
+      path=outborder] at (0,0) (outbus) {OUTBUS};
       \node[on grid,mynode,minimum width=2cm,anchor=west] at (0,-2cm) (minadr) {MinAdr};
-      \node[on grid,mynode,align=center,text width=5cm,anchor=east] at (.7\textwidth,-2cm) (kompa) {Komparator};
+      \node[on grid,mynode,align=center,text width=5cm,anchor=east,name
+      path=kompaborder] at (.7\textwidth,-2cm) (kompa) {Komparator};
       \node[on grid,mynode,below=of minadr,yshift=-2cm] (ar) {AR};
       \node[on grid,mynode,right=of ar.east] (dr) {DR};
       \node[on grid,mynode,yshift=-3cm,fit={(ar)
@@ -277,14 +278,52 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
       \node[on grid,mynode,below=of kompa.west,anchor=west,yshift=-1cm] (min) {Min};
       \node[on grid,mynode,below=of kompa.east,anchor=east,yshift=-1cm] (a) {A};
 
-      \draw[->,transform canvas={xshift=-1em}] (minadr) -- node[bus={5}{left}] {} (ar);
-      \draw[->,transform canvas={xshift=1em}] (ar) -- node[bus={5}{left}] {} (minadr);
+      \draw[-{Latex},transform canvas={xshift=-1em}] (minadr) --
+      node[name=busar,bus={5}{left}] {} (ar);
+      \draw[-{Latex},transform canvas={xshift=1em}] (ar) -- node[bus={5}{left}]
+      (busminadr) {} (minadr);
 
       \path[name path=ar-to-mem] (ar) -- ++(0,-5cm);
-      \draw[->,name intersections={of=ar-to-mem and memborder}] (ar) -- (intersection-1);
+      \draw[-{Latex},name intersections={of=ar-to-mem and memborder}] (ar) --
+      node[bus={5}{left}] {} (intersection-1);
 
       \path[name path=dr-to-mem] (dr) -- ++(0,-5cm);
-      \draw[<-,name intersections={of=dr-to-mem and memborder}] (dr) -- (intersection-1);
+      \draw[{Latex}-,name intersections={of=dr-to-mem and memborder}] (dr) --
+      node[bus={16}{left}] (busdr) {} (intersection-1);
+
+      \path[name path=dr-to-out] (dr) -- ++(0,5cm);
+      \draw[-{Latex},name intersections={of=dr-to-out and outborder}] (dr) --
+      node[bus={16}{left}] (busout) {} (intersection-1);
+
+      \draw[-{Latex}] (dr) -- ++(2cm,0) node[bus={16}{above}] {} -| (min);
+      \draw[-{Latex}] (dr) -| (a);
+
+      \path[name path=min-to-kompa] (min) -- ++(0,5cm);
+      \path[name path=a-to-kompa] (a) -- ++(0,5cm);
+      \draw[-{Latex},name intersections={of=min-to-kompa and kompaborder}] (min) --
+      node[bus={16}{left}] (buskompa1) {} (intersection-2); % why must i use intersection-2. what the actual fuck?
+      \draw[-{Latex},name intersections={of=a-to-kompa and kompaborder}] (a) --
+      node[bus={16}{left}] (buskompa2) {} (intersection-2);
+
+      % control signals and criteria
+      \draw[-{Latex}] (ar.west) ++(0,1em) -- ++(-1cm,0) node[anchor=east] {areq31};
+      \draw[-{Latex}] (kompa.east) -- ++(1cm,0) node[anchor=west] {MinbigA};
+
+      \draw[{Latex}-] (minadr.west) -- ++(-1cm,0) node[anchor=east] {clrminadr};
+      \draw[{Latex}-] (ar.west) -- ++(-1cm,0) node[anchor=east] {clrar};
+      \draw[{Latex}-] (ar.west) ++(0,-1em) -- ++(-1cm,0) node[anchor=east]
+      {incar};
+
+      \draw[o-] (busar) ++(-1.25em,1em) -- ++(-.5cm,0) node[anchor=east] {ldar};
+      \draw[o-] (busminadr) ++(1.25em,1em) -- ++(.5cm,0) node[anchor=west]
+      {ldminadr};
+
+      \draw[o-] (busdr) ++(0,1em) -- ++(.5cm,0) node [anchor=west] {lddr};
+      \draw[o-] (busout) ++(0,1em) -- ++(.5cm,0) node [anchor=west] {ldout};
+
+      \draw[o-] (min) ++(0,-2.2em) -- ++(.5cm,0) -- ++(0,-1cm) node [anchor=west] {ldmin};
+      \draw[o-] (a) ++(0,-2.2em) -- ++(.5cm,0) -- ++(0,-1cm) node [anchor=west] {lda};
+
    \end{tikzpicture}
 \end{center}
 
@@ -301,7 +340,7 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
       \node[block,below=of areq31] (incrar) {AR \la AR + 1};
       \node[block,below=of incrar] (lddr2) {DR \la Memory[AR]};
       \node[block,below=of lddr2] (lda) {A \la DR};
-      \node[decision,below=of lda] (minbiga) {Minbiga=1};
+      \node[decision,below=of lda] (minbiga) {MinbigA=1};
       \node[block,below=of minbiga] (ldminadr) {MinAdr \la AR};
 
       \node[block,left=of areq31] (ldar) {AR \la MinAdr};
@@ -309,21 +348,21 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
       \node[block,below=of lddr3] (ldout) {OUTBUS \la DR};
       \node[cloud,below=of ldout] (end) {End};
 
-      \draw[->] (begin) -- (clrar);
-      \draw[->] (clrar) -- (lddr);
-      \draw[->] (lddr) -- (ldmin);
-      \draw[->] (ldmin) -- (areq31);
-      \draw[->] (incrar) -- (lddr2);
-      \draw[->] (areq31) -- node[right] {No} (incrar);
-      \draw[->] (lddr2) -- (lda);
-      \draw[->] (lda) -- (minbiga);
-      \draw[->] (minbiga) -- node[right] {Yes} (ldminadr);
-      \draw[->] (minbiga.east) -- ++(2cm,0) node[above,pos=.3] {No}  coordinate (c) |- (areq31.east);
+      \draw[-{Latex}] (begin) -- (clrar);
+      \draw[-{Latex}] (clrar) -- (lddr);
+      \draw[-{Latex}] (lddr) -- (ldmin);
+      \draw[-{Latex}] (ldmin) -- (areq31);
+      \draw[-{Latex}] (incrar) -- (lddr2);
+      \draw[-{Latex}] (areq31) -- node[right] {No} (incrar);
+      \draw[-{Latex}] (lddr2) -- (lda);
+      \draw[-{Latex}] (lda) -- (minbiga);
+      \draw[-{Latex}] (minbiga) -- node[right] {Yes} (ldminadr);
+      \draw[-{Latex}] (minbiga.east) -- ++(2cm,0) node[above,pos=.3] {No}  coordinate (c) |- (areq31.east);
       \draw     (ldminadr.east) -| (c);
-      \draw[->] (areq31.west) -- node[above] {Yes} (ldar);
-      \draw[->] (ldar) -- (lddr3);
-      \draw[->] (lddr3) -- (ldout);
-      \draw[->] (ldout) -- (end);
+      \draw[-{Latex}] (areq31.west) -- node[above] {Yes} (ldar);
+      \draw[-{Latex}] (ldar) -- (lddr3);
+      \draw[-{Latex}] (lddr3) -- (ldout);
+      \draw[-{Latex}] (ldout) -- (end);
    \end{tikzpicture}
 \end{center}
 
@@ -341,16 +380,36 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
       AReq31    & 1, wenn $AR=31$ \\ \hline
       \hline
       \normalfont{\textbf{Kontrollsignale}} & \textbf{Funktion} \\ \hline
-                                            & \\
+      ldar                                  & Lade AR mit Wert aus MinAdr\\
+      ldminadr                              & Lade MinAdr mit Wert aus AR\\
+      clrminadr                             & Setze MinAdr auf 0\\
+      clrar                                 & Setze AR auf 0\\
+      lddr                                  & Lade Wert aus Memory in DR\\
+      ldout                                 & Schreibe Wert aus DR auf OUTBUS\\
+      ldmin                                 & Lade Min mit Wert aus DR\\
+      lda                                   & Lade A mit Wert aus DR\\
+      \hline
    \end{tabularx}
 \end{center}
 
 
 \subex{Taktzahl}
 
+Die minimale unterscheidet sich nicht von der maximalen Taktzahl und beträgt 162
+Zyklen.
 
 \subex{Technische Realisierung}
 
-
-
+\begin{itemize}
+   \item Register aus Flipflops mit vorgeschalteten Gattern zur
+      Kontrollsignalverarbeitung, ob Ein- oder Zweizustandsgesteuert, ist hier
+      egal
+   \item AR ist ein Zählregister, wobei die Verundung aller Flipflops als
+      \texttt{areq31} hinausgeführt wird und paralleles Laden durch Vernetzung
+      mit MinAdr ermöglich wird.
+   \item Memory kann irgendeine Form von Speicher mit vorgeschaltetem Decoder
+      sein, der den Ausgang für ein Register freischaltet. Zusammen mit dem
+      \texttt{lddr}-Signal kann dann gelesen werden.
+   \item Komparator als 16-Bit-Komparator, der \texttt{MinbigA} ausgibt
+\end{itemize}
 \end{document}
