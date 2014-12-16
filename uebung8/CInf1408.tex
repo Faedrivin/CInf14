@@ -43,7 +43,7 @@ Ausgaben:
   \end{tikzpicture}
 \end{center}
 
-
+\newpage
 \subex{Zustandsgraph}
 
 \begin{center}
@@ -150,7 +150,7 @@ Q_1^{n+1} = Q_1^{n} \comp{Q_0^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}
 \end{align*}
 
 
-
+\newpage
 \ex{Konverter}{6 + 12 + 6 + 6 = 30}
 \subex{Flowdiagram}
 \begin{center}
@@ -180,32 +180,34 @@ Q_1^{n+1} = Q_1^{n} \comp{Q_0^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}
 
 \lstinputlisting{8.2_Konverter.rt}
 
+\newpage
 \subex{Zustände, Kontrollsignale und Kriterien}
 
 Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
 
-\bigskip
-
-\textbf{Zustände:}
-
-\begin{itemize}
-	\item \texttt{WAITLOAD}: Wartet auf \texttt{VALID=1} und lädt bei Erfolg.
-  \item \texttt{OUTx}: geben jeweils \texttt{NUM[x]} aus.
-\end{itemize}
-
-Die Anzahl Zustände kann durch eine Zählvariable auf zwei reduziert werden.
-
-\bigskip
-
-\textbf{Kontrollsignale:}
-
-Ein Kontrollsignal ist \texttt{goto BEGIN}. Wir bezeichnen es mit \emph{back}. Hinzu kommt das Kontrollsignal, \texttt{READY} zu setzen. Wir nennen es \texttt{setReady}. 
-
-\bigskip
-
-\textbf{Kriterien:}
-
-Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild mit \emph{load}.
+\begin{center}
+   \begin{tabularx}{.8\textwidth}{|L|X|}
+      \hline
+      \normalfont{\textbf{Zustände}} & \textbf{Funktion} \\ \hline
+      WAITLOAD  & Wartet auf \texttt{VALID = 1} und lädt bei Erfolg. \\
+      OUT0      & Gibt erste ASCII-Zahl aus.\\
+      OUT1      & Gibt zweite ASCII-Zahl aus.\\
+      OUT2      & Gibt dritte ASCII-Zahl aus.\\
+      \hline
+      \normalfont{\textbf{Kriterien}} & \textbf{Funktion} \\ \hline
+      valid                           & 1 wenn \texttt{VALID = 1}; 0 sonst \\
+      \hline
+      \normalfont{\textbf{Kontrollsignale}} & \textbf{Funktion} \\ \hline
+      ldNum0                                & Lade NUM[0] mit INBUS(0:3)\\
+      ldNum1                                & Lade NUM[1] mit INBUS(4:7)\\
+      ldNum2                                & Lade NUM[2] mit INBUS(8:11)\\
+      setRdy                                & Setze READY auf 1\\
+      wrtOut0                               & Schreibe NUM[0] + $48_{10}$ in OUTBUS\\
+      wrtOut1                               & Schreibe NUM[1] + $48_{10}$ in OUTBUS\\
+      wrtOut2                               & Schreibe NUM[2] + $48_{10}$ in OUTBUS\\
+      \hline
+   \end{tabularx}
+\end{center}
 
 
 \subex{Blockschaltbild}
@@ -225,7 +227,7 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
     
     % load
     \draw[-] (7,8) -- node[bus={1}{left}] {} ++(0,-1);
-    \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{load}};
+    \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{valid}};
     
     \draw[-{Latex}] (2.75,6) -- node[bus={4}{left}] {} ++(0,-2);
     \draw[-{Latex}] (5,6) -- node[bus={4}{left}] {} ++(0,-2);
@@ -237,29 +239,31 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
     \draw[-{Latex}] (7.25,3) -- node[bus={7}{left}] {} ++(0,-2);
     
     % do we need these six?
-    \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{in}};
-    \draw[o-] (5,4.5) --  ++(-.5,0) node[left]{\emph{in}};
-    \draw[o-] (7.25,4.5) --  ++(-.5,0) node[left]{\emph{in}};
+    \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{ldNum0}};
+    \draw[o-] (5,4.5) --  ++(-.5,0) node[left]{\emph{ldNum1}};
+    \draw[o-] (7.25,4.5) --  ++(-.5,0) node[left]{\emph{ldNum2}};
     
-    \draw[o-] (2.75,1.5) --  ++(-.5,0) node[left]{\emph{out0}};
-    \draw[o-] (5,1.5) --  ++(-.5,0) node[left]{\emph{out1}};
-    \draw[o-] (7.25,1.5) --  ++(-.5,0) node[left]{\emph{out2}};
+    \draw[o-] (2.75,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut0}};
+    \draw[o-] (5,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut1}};
+    \draw[o-] (7.25,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut2}};
 
     % setReady
-    \draw[o-] (1.5,8.5) -- ++(-.5,0) node[left] {\emph{setReady}};
+    \draw[o-] (1.5,8.5) -- ++(-.5,0) node[left] {\emph{setRdy}};
    
     % Steuerwerk
     \draw (13,0) rectangle node[rotate=-90] {Steuerwerk} ++(1,9);
-    \draw[o-] (13,7.5) -- ++(-.5,0) node[left] {\emph{load}};
-    \draw[-o] (13,6.5) -- ++(-.5,0) node[left] {\emph{setReady}};
-    \draw[-o] (13,5.5) -- ++(-.5,0) node[left] {\emph{in}};
-    \draw[-o] (13,3.5) -- ++(-.5,0) node[left] {\emph{out0}};
-    \draw[-o] (13,2.5) -- ++(-.5,0) node[left] {\emph{out1}};
-    \draw[-o] (13,1.5) -- ++(-.5,0) node[left] {\emph{out2}};
+    \draw[o-] (13,8.5) -- ++(-.5,0) node[left] {\emph{valid}};
+    \draw[-o] (13,7.5) -- ++(-.5,0) node[left] {\emph{setRdy}};
+    \draw[-o] (13,6.5) -- ++(-.5,0) node[left] {\emph{ldNum0}};
+    \draw[-o] (13,5.5) -- ++(-.5,0) node[left] {\emph{ldNum1}};
+    \draw[-o] (13,4.5) -- ++(-.5,0) node[left] {\emph{ldNum2}};
+    \draw[-o] (13,3.5) -- ++(-.5,0) node[left] {\emph{wrtOut0}};
+    \draw[-o] (13,2.5) -- ++(-.5,0) node[left] {\emph{wrtOut1}};
+    \draw[-o] (13,1.5) -- ++(-.5,0) node[left] {\emph{wrtOut2}};
   \end{tikzpicture}
 \end{center}
 
-
+\newpage
 \ex{Minimumsuche in RTeasy}{4 + 10 + 11 + 7 + 3 + 5 = 40}
 \subex{Blockschaltbild}
 
@@ -333,8 +337,8 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
 \begin{center}
    \begin{tikzpicture}
       \node[cloud] (begin) {Begin};
-      \node[block,below=of begin] (clrar) {AR \la 0 \\ MinAdr \la 0};
-      \node[block,below=of clrar] (lddr) {DR \la Memory[AR]};
+      \node[block,right=of begin] (clrar) {AR \la 0 \\ MinAdr \la 0};
+      \node[block,right=of clrar] (lddr) {DR \la Memory[AR]};
       \node[block,below=of lddr] (ldmin) {Min \la DR};
       \node[decision,below=of ldmin] (areq31) {AReq31=1};
       \node[block,below=of areq31] (incrar) {AR \la AR + 1};
@@ -376,8 +380,8 @@ Das einzige Kriterium ist \texttt{VALID=1}. Wir bezeichnen es im Blockschaltbild
    \begin{tabularx}{.8\textwidth}{|L|X|}
       \hline
       \normalfont{\textbf{Kriterien}} & \textbf{Funktion} \\ \hline
-      MinbigA   & 1, wenn $Min > A$ \\
-      AReq31    & 1, wenn $AR=31$ \\ \hline
+      MinbigA   & 1, wenn $Min > A$; 0 sonst \\
+      AReq31    & 1, wenn $AR=31$; 0 sonst \\ \hline
       \hline
       \normalfont{\textbf{Kontrollsignale}} & \textbf{Funktion} \\ \hline
       ldar                                  & Lade AR mit Wert aus MinAdr\\

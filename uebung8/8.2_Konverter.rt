@@ -6,16 +6,17 @@ declare register array NUM(0:6)[3]
 
 # Beginn Zustand WAITLOAD
 BEGIN:
-  if VALID = 1 then # Kriterium: VALID=1?
+  if VALID = 1 then # Kriterium: valid (VALID=1?)
     NUM[0] <- INBUS(0:3), NUM[1] <- INBUS(4:7), NUM[2] <- INBUS(8:11)
+        # Kontrollsignale: ldNum0, ldNum1, ldNum2
   else
-    goto BEGIN # Kontrollsignal: goto BEGIN
+    goto BEGIN
   fi;
 # Ende Zustand WAITLOAD
 
 # Zustand OUT0
-READY <- 1, OUTBUS <- NUM[0] + 48;
+READY <- 1, OUTBUS <- NUM[0] + 48; # Kontrollsignale: setRdy, wrtOut0
 # Zustand OUT1
-READY <- 1, OUTBUS <- NUM[1] + 48;
+READY <- 1, OUTBUS <- NUM[1] + 48; # Kontrollsignale: setRdy, wrtOut1
 # Zustand OUT2
-READY <- 1, OUTBUS <- NUM[2] + 48, goto BEGIN; # Kontrollsignal: goto BEGIN
+READY <- 1, OUTBUS <- NUM[2] + 48, goto BEGIN; # Kontrollsignale: setRdy, wrtOut2
