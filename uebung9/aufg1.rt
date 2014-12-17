@@ -1,3 +1,4 @@
+% University of Luebeck - RTeasy Version 0.3.8 %
 declare register AR(4:0), DR(17:0), A(17:0), B(17:0), CNT(5:0)
 declare memory MEM(AR,DR)
 declare bus OUTBUS(5:0)
