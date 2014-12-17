@@ -8,8 +8,7 @@ declare bus OUTBUS(5:0)
     read MEM | if DR <> B then goto RESULT fi;
     AR <- AR+1, CNT <- CNT+1;
 LOOP:
-    A <- B, B <- A+B;
-    read MEM | if DR <> B then goto RESULT fi;
+    A <- B, B <- A+B, read MEM | if DR <> B then goto RESULT fi;
     AR <- AR+1, CNT <- CNT+1 | goto LOOP;
 RESULT:
     OUTBUS <- CNT;
