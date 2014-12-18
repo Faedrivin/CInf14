@@ -1,0 +1,14 @@
+% University of Luebeck - RTeasy Version 0.3.8 %
+declare register AR(4:0), DR(17:0), A(17:0), B(17:0), CNT(5:0)
+declare memory MEM(AR,DR)
+declare bus OUTBUS(5:0)
+
+    AR <- 1, A <- 0, B <- 1, CNT <- 0, read MEM;
+
+LOOP:
+    if DR <> A then 
+      goto RESULT 
+    fi;    
+    A <- B, B <- A + B, AR <- AR + 1, CNT <- CNT + 1, read MEM | goto LOOP;
+RESULT:
+    OUTBUS <- CNT;
