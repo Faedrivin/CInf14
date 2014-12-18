@@ -181,7 +181,8 @@ sep=1pt,minimum height=.7em]
     \par\bigskip
   \fi
   \noindent\begin{tabularx}{\textwidth}{l>{\centering}Xr}
-    \bf Aufgabe \@sheet.\arabic{excount}: & \bf #2 & \bf(#3 P)
+     \bf Aufgabe \@sheet.\arabic{excount}: & \bf #2 & \bf(#3 =
+     \pgfmathparse{int(#3)}\pgfmathresult{} P)
   \end{tabularx}
   %\vspace{\baselineskip}
   \par
@@ -254,8 +255,8 @@ sep=1pt,minimum height=.7em]
 \fi
 }
 
-%% Centered Tabular. I *always* end up manually centering these. Who woul want a
-%% n uncencentered tabular?
+%% Centered Tabular. I *always* end up manually centering these. Who would want
+%% an uncentered tabular?
 \newenvironment{ctabular}[1]{
    \begin{center}
       \begin{tabular}{#1}
