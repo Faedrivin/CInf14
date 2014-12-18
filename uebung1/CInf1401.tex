@@ -245,7 +245,7 @@
         &    & &     & .ORG  & \$0600 & Program space \\\hline
    0600 & B6 & 0503 & INIT: & LDA & INP & Load operation\\\hline
    0603 & 8B & 01 & & ADDA & \#01 &\\\hline
-   0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ }& Check if valid \\\hline
+   0605 & 84 & FC & & ANDA & FC\footnote{\texttt{ = 11111100}& Check if valid \\\hline
    0607 & 26 & 16\footnote{\texttt{0x061F - 0x0607 - 2}} & SWITCH: & BNE & FAIL & Jump to exit if result nonzero (== false) \\\hline
    0609 & B8 & 0503 & & LDA & INP & Reload operation \\\hline
    060C & 81 & 00 & CHK\_ADD: & CMPA & \#00 & Check if operation is ADD \\\hline
