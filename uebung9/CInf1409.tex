@@ -18,6 +18,16 @@ nur 19.
 Das noch optimiertere Programm benötigt nur mehr 11 Takte für die 8 Zahlen.
 
 \lstinputlisting{aufg1_b.rt}
+
+Wenn man annimmt, dass die 1-Inkremente durch separate Kontrollsignale an die
+Register implementiert sind, benötigt man keine zusätzliche Hardware. Würde
+jedoch jede Addition von je einer ALU durchgeführt, würde man nun eine mehr
+benötigen,
+weil in Zeile 12 3 Additionen parallel durchgeführt werden sollen. In dem
+Programm aus b) sind es nur maximal 2.
+
+Darüber hinaus ist die Anforderung lediglich, dass Register anfangs 0-initialisiert
+sind.
 \ex{One-Hot-Design und Zählersteuerung}{14 + 3 + 14 + 3 = 34}
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8 = 21}
 \ex{Mikrobefehlsformate}{5 + 5 + 5 = 15}
