@@ -28,6 +28,24 @@ Programm aus b) sind es nur maximal 2.
 
 Darüber hinaus ist die Anforderung lediglich, dass Register anfangs 0-initialisiert
 sind.
+
+\subex{Modulbild}
+\begin{center}
+   \begin{tikzpicture}
+      \node[draw,text width=7cm,minimum height=2cm,text centered] (opw) {Operationswerk};
+
+      %% auto-spaced control signals ... hmmmyes.
+      \foreach \x[count=\i] in {setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
+      {
+         \draw[o-] let \p1 = ($(opw.north east) - (opw.north west)$), \n1 =
+         {veclen(\x1,\y1)/11} in
+         ($(opw.north west) + (\i*\n1,0)$) -- ++(0,{1cm+mod(\i,2)*2em}) coordinate (c);
+         \node[above,font=\footnotesize\ttfamily,yshift={mod(\i,2)*1em}] at (c) {\x};
+      }
+      \draw[-o] (opw.west) --++ (-1cm,0)
+      node[anchor=east,font=\footnotesize\ttfamily] {DReq1};
+   \end{tikzpicture}
+\end{center}
 \ex{One-Hot-Design und Zählersteuerung}{14 + 3 + 14 + 3}
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
