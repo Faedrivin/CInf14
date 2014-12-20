@@ -30,6 +30,20 @@ Darüber hinaus ist die Anforderung lediglich, dass Register anfangs 0-initialis
 sind.
 
 \subex{Modulbild}
+\begin{ctabular}{>{\ttfamily}ll}
+\textbf{\rmfamily{Kontrollsignal}} & \textbf{Bedeutung} \\
+   \hline
+   setAR1  & Set AR to 1 \\
+   clrA    & Set A to 0 \\
+   setB1   & Set B to 1 \\
+   clrCNT  & Set CNT to 0 \\
+   read    & Read from memory into DR \\
+   ldA     & Transfer B to A \\
+   ldB     & Transfer A+B to B \\
+   incAR   & Increment AR \\
+   incCNT  & Increment CNT \\
+   ldOUT   & Write CNT to OUTBUS \\
+\end{ctabular}
 \begin{center}
    \begin{tikzpicture}
       \node[draw,text width=7cm,minimum height=2cm,text centered] (opw) {Operationswerk};
@@ -42,10 +56,28 @@ sind.
          ($(opw.north west) + (\i*\n1,0)$) -- ++(0,{1cm+mod(\i,2)*2em}) coordinate (c);
          \node[above,font=\footnotesize\ttfamily,yshift={mod(\i,2)*1em}] at (c) {\x};
       }
-      \draw[-o] (opw.west) --++ (-1cm,0)
-      node[anchor=east,font=\footnotesize\ttfamily] {DReq1};
+      \draw[-{Latex}] (opw.west) --++ (-1cm,0)
+      node[anchor=east,font=\footnotesize\ttfamily] {DRneqA};
    \end{tikzpicture}
 \end{center}
+
+\subex{Zustandstabelle}
+
+Jeder Takt im Steuerwerk ist ein Zustand.
+Die Ausgabenspalte enthält die Kontrollsignale in der selben Reihenfolge wie die
+Tabelle oben:
+\begin{center}
+   \makebox[.6\linewidth]{\ttfamily setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
+\end{center}
+\begin{ctabular}{ccccc}
+   Kodierung & Zustand & \multicolumn{2}{c}{Folgezustand} & Ausgabe \\
+             &         & \texttt{DRneqA} & $\overline{\texttt{DRneqA}}$ & \\\hline
+   
+   00        & $S_0$   & $S_1$           & $S_1$                        & 0000000000\\
+   01        & $S_1$   & $S_3$           & $S_2$                        & 1111100000\\
+   11        & $S_2$   & $S_3$           & $S_2$                        & 0000111110\\
+   10        & $S_3$   & -               & -                            & 0000000001\\
+\end{ctabular}
 \ex{One-Hot-Design und Zählersteuerung}{14 + 3 + 14 + 3}
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
