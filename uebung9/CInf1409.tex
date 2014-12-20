@@ -79,6 +79,106 @@ Tabelle oben:
    10        & $S_3$   & -               & -                            & 0000000001\\
 \end{ctabular}
 \ex{One-Hot-Design und Zählersteuerung}{14 + 3 + 14 + 3}
+Grundlage der folgenden Diagramme ist das vereinfachte Programm aus Aufgabe 1
+b), da es am wenigsten Zustände braucht.
+
+\subex{Schaltbild}
+
+Im Prinzip sollten noch ein externes \texttt{BEGIN}-Signal und ein
+externes \texttt{END}-Kontrollsignal Teil des Schaltnetzes sein; das Programm
+enthält diese jedoch nicht. Der Zustand $S_0$ wird so eher überflüssig, weil er
+keine Kontrollsignale generiert.
+
+\tikzset{flipflop/.style={draw,minimum height=2cm,minimum
+      width=2cm,text centered,append after command={%
+         \pgfextra{ % no idea why this is necessary
+            \node[below right=2pt and 1pt of \tikzlastnode.north west] (\tikzlastnode-D)
+            {$D$};
+            \node[below left=2pt and 1pt of \tikzlastnode.north east] (\tikzlastnode-Q)
+            {$Q$};
+            \node[above left=2pt and 1pt of \tikzlastnode.south east]
+            (\tikzlastnode-NOTQ)
+            {$\overline{Q}$};
+         }
+      }
+   }
+}
+\begin{center}
+   \begin{tikzpicture}[or port/.append style={text width=.7\portsize,minimum height=\portsize}, 
+                       and port/.append style={text width=.7\portsize,minimum height=\portsize}
+                      ]
+      \node[flipflop] (ff-0) {FF0};
+      \node[flipflop,below=of ff-0] (ff-1) {FF1};
+      \node[flipflop,below=of ff-1] (ff-2) {FF2};
+      \node[flipflop,below=of ff-2] (ff-3) {FF3};
+
+      % draw control signal outputs
+      \foreach \x[count=\i] in {setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
+      {
+         \node[or port] (or-\x) at (4cm,{3cm + -1.5*\i cm}) {};
+         \draw (or-\x) -- ++(1cm,0) node[anchor=west,font=\ttfamily] {\x};
+      }
+
+      \node[and port,left=2cm of ff-2.north west] (and-1) {};
+      \node[and port,left=2cm of ff-2.south west] (and-2) {};
+
+      \draw (ff-0-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
+      \draw (ff-0-Q) -- ++(1cm,0) |- ($(ff-1-D) + (-1cm,1cm)$) |- (ff-1-D);
+
+      \draw (ff-1-Q) -- ++(1cm,0) |- ($(and-1.150) + (-1cm,.4cm)$) -- ($(and-1.150) + (-1cm,0)$) coordinate (c) -- (and-1.150);
+      \fill (c) circle (2pt);
+      \draw (c) |- (and-2.150);
+
+      \draw (and-1) -- ++(-2cm,0) node[anchor=east] (notdrneqa) {$\overline{\texttt{DRneqA}}$};
+      \draw (and-2) -- ++(-2cm,0) node[anchor=east] (drneqa) {\ttfamily{DRneqA}};
+
+      \draw (and-1) -- ++(1cm,0) |- (ff-2-D);
+      \draw (and-2) -- ++(1cm,0) |- (ff-3-D);
+
+      \draw (ff-2-Q) -- ++(1cm,0) |- ($(and-2.south west) + (-1em,-1em)$) --
+      ($(and-2.210) + (-1em,0)$) coordinate (c) -- (and-2.210);
+      \fill (c) circle (2pt);
+      \draw (c) |- (and-1.210);
+
+      \fill ($(ff-1-Q) + (1cm,0)$) circle (2pt);
+      \fill ($(ff-2-Q) + (1cm,0)$) circle (2pt);
+
+      \draw (ff-1-Q) -- ++(2cm,0) coordinate (c);
+      \fill (c) circle (2pt);
+
+      % draw paths to outputs for ff1
+      \foreach \gate[count=\i] in {setAR1,clrA,setB1,clrCNT,read}{
+         \draw let \p1 = (or-\gate.150), \p2 = (c) in (c) -- (\x2,\y1) coordinate
+         (c2);
+         \ifthenelse{\i=1 \OR \i=5}{}{% prevent circles at actual path corners
+            \fill (c2) circle (2pt);
+         }
+         \draw (c2) -- (or-\gate.150);
+      }
+
+      \draw (ff-2-Q) -- ++(1.5cm,0) coordinate (c);
+      \fill (c) circle (2pt);
+
+      % draw paths to outputs for ff2
+      \foreach \gate[count=\i] in {read,ldA,ldB,incAR,incCNT}{
+         \draw let \p1 = (or-\gate.210), \p2 = (c) in (c) -- (\x2,\y1) coordinate
+         (c2);
+         \ifthenelse{\i=1 \OR \i=5}{}{
+            \fill (c2) circle (2pt);
+         }
+         \draw (c2) -- (or-\gate.210);
+      }
+
+      % draw path to outputs for ff3
+      \draw (ff-3-Q) -- ++(1cm,0) |- (or-ldOUT);
+   \end{tikzpicture}
+\end{center}
+
+\subex{Hardwareaufwand}
+
+Gemäß des obigen Schaltbildes benötigt man für jeden der vier Zustände ein
+Flipflop sowie zwei AND-Gatter und zehn OR-Gatter (wenn man \texttt{BEGIN}- und
+\texttt{END}-Signale außen vor lässt und den redundanten Zustand $S_0$ behält).
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
 \end{document}
