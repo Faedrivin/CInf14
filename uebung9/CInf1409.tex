@@ -92,13 +92,14 @@ keine Kontrollsignale generiert.
 \tikzset{flipflop/.style={draw,minimum height=2cm,minimum
       width=2cm,text centered,append after command={%
          \pgfextra{ % no idea why this is necessary
-            \node[below right=2pt and 1pt of \tikzlastnode.north west] (\tikzlastnode-D)
-            {$D$};
-            \node[below left=2pt and 1pt of \tikzlastnode.north east] (\tikzlastnode-Q)
-            {$Q$};
+            \node[below right=2pt and 1pt of \tikzlastnode.north west] (\tikzlastnode-D) {$D$};
+            \node[below left=2pt and 1pt of \tikzlastnode.north east] (\tikzlastnode-Q) {$Q$};
             \node[above left=2pt and 1pt of \tikzlastnode.south east]
-            (\tikzlastnode-NOTQ)
-            {$\overline{Q}$};
+            (\tikzlastnode-NOTQ) {$\overline{Q}$};
+            \node[above=10pt of \tikzlastnode.south west,inner sep=2pt,isosceles
+            triangle,draw,anchor=west] (\tikzlastnode-CLK) {};
+            \node[right=-2pt of \tikzlastnode-CLK] {$C\kern-2ptL\kern-2ptK$};
+            \node[left=2pt of \tikzlastnode.east] {$\neg$};
          }
       }
    }
@@ -122,23 +123,27 @@ keine Kontrollsignale generiert.
       \node[and port,left=2cm of ff-2.north west] (and-1) {};
       \node[and port,left=2cm of ff-2.south west] (and-2) {};
 
+      \node[or port,xshift=-2cm] (or-1) at ($(and-1) !0.5! (and-2)$) {};
+
       \draw (ff-0-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
       \draw (ff-0-Q) -- ++(1cm,0) |- ($(ff-1-D) + (-1cm,1cm)$) |- (ff-1-D);
 
-      \draw (ff-1-Q) -- ++(1cm,0) |- ($(and-1.150) + (-1cm,.4cm)$) -- ($(and-1.150) + (-1cm,0)$) coordinate (c) -- (and-1.150);
-      \fill (c) circle (2pt);
-      \draw (c) |- (and-2.150);
+      \draw (ff-1-Q) -- ++(1cm,0) |- ($(or-1.150) + (-1cm,1.5cm)$) --
+      ($(or-1.150) + (-1cm,0)$) -- (or-1.150);
 
-      \draw (and-1) -- ++(-2cm,0) node[anchor=east] (notdrneqa) {$\overline{\texttt{DRneqA}}$};
+      \draw[o-] (and-1) -- ++(-2cm,0) node[anchor=east] (notdrneqa) {\texttt{DRneqA}};
       \draw (and-2) -- ++(-2cm,0) node[anchor=east] (drneqa) {\ttfamily{DRneqA}};
+
+      \draw (or-1.east) -- ++(1em,0) coordinate (c);
+      \fill (c) circle (2pt);
+      \draw (c) |- (and-1.210);
+      \draw (c) |- (and-2.150);
 
       \draw (and-1) -- ++(1cm,0) |- (ff-2-D);
       \draw (and-2) -- ++(1cm,0) |- (ff-3-D);
 
-      \draw (ff-2-Q) -- ++(1cm,0) |- ($(and-2.south west) + (-1em,-1em)$) --
-      ($(and-2.210) + (-1em,0)$) coordinate (c) -- (and-2.210);
-      \fill (c) circle (2pt);
-      \draw (c) |- (and-1.210);
+      \draw (ff-2-Q) -- ++(1cm,0) |- ($(or-1.south west) + (-1cm,-1.2cm)$) --
+      ($(or-1.210) + (-1cm,0)$) -- (or-1.210);
 
       \fill ($(ff-1-Q) + (1cm,0)$) circle (2pt);
       \fill ($(ff-2-Q) + (1cm,0)$) circle (2pt);
@@ -171,6 +176,17 @@ keine Kontrollsignale generiert.
 
       % draw path to outputs for ff3
       \draw (ff-3-Q) -- ++(1cm,0) |- (or-ldOUT);
+
+      % draw clock
+      \foreach \ff in {0,...,3}
+      {
+         \coordinate (c-\ff) at ($(ff-\ff-CLK) + (-1cm,0)$);
+         \ifthenelse{\ff=0}{}{\fill (c-\ff) circle (2pt);}
+      }
+      \node[below=of c-3] (c) {$CLK$};
+      \foreach \ff in {0,...,3}{
+         \draw (c) |- (ff-\ff-CLK);
+      }
    \end{tikzpicture}
 \end{center}
 
