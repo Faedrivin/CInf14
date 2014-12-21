@@ -193,8 +193,20 @@ keine Kontrollsignale generiert.
 \subex{Hardwareaufwand}
 
 Gemäß des obigen Schaltbildes benötigt man für jeden der vier Zustände ein
-Flipflop sowie zwei AND-Gatter und zehn OR-Gatter (wenn man \texttt{BEGIN}- und
+Flipflop sowie zwei AND-Gatter und elf OR-Gatter (wenn man \texttt{BEGIN}- und
 \texttt{END}-Signale außen vor lässt und den redundanten Zustand $S_0$ behält).
+Man kann die Kontrollsignalausgabe reduzieren, da die meisten Signale nur von
+genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
+überflüssig, sodass man auch  mit insgesamt zwei OR-Gattern hinkommt.
+
+\subex{Zählersteuerung}
+
+Dies macht hier m.E. keinen Sinn, weshalb ich diese Aufgabe nicht weiter
+bearbeiten kann (Modulo-1-Zähler sind sinnfrei).
+
+\subex{Hardwareaufwand}
+
+Diese Frage kann ich folglich nicht beantworten.
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
 \end{document}
