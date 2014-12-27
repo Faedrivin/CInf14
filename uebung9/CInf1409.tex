@@ -51,7 +51,7 @@ sind.
       %% auto-spaced control signals ... hmmmyes.
       \foreach \x[count=\i] in {setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
       {
-         \draw[o-] let \p1 = ($(opw.north east) - (opw.north west)$), \n1 =
+         \draw[{Latex}-] let \p1 = ($(opw.north east) - (opw.north west)$), \n1 =
          {veclen(\x1,\y1)/11} in
          ($(opw.north west) + (\i*\n1,0)$) -- ++(0,{1cm+mod(\i,2)*2em}) coordinate (c);
          \node[above,font=\footnotesize\ttfamily,yshift={mod(\i,2)*1em}] at (c) {\x};
@@ -63,20 +63,19 @@ sind.
 
 \subex{Zustandstabelle}
 
-Jeder Takt im Steuerwerk ist ein Zustand.
+Es gibt drei Zustände: Die Initialisierung ($S_0$), die Loop ($S_1$) und den 
+Terminalzustand ($S_2$). 
 Die Ausgabenspalte enthält die Kontrollsignale in der selben Reihenfolge wie die
 Tabelle oben:
 \begin{center}
    \makebox[.6\linewidth]{\ttfamily setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
 \end{center}
-\begin{ctabular}{ccccc}
-   Kodierung & Zustand & \multicolumn{2}{c}{Folgezustand} & Ausgabe \\
-             &         & \texttt{DRneqA} & $\overline{\texttt{DRneqA}}$ & \\\hline
-   
-   00        & $S_0$   & $S_1$           & $S_1$                        & 0000000000\\
-   01        & $S_1$   & $S_3$           & $S_2$                        & 1111100000\\
-   11        & $S_2$   & $S_3$           & $S_2$                        & 0000111110\\
-   10        & $S_3$   & -               & -                            & 0000000001\\
+\begin{ctabular}{cccccc}
+   Kodierung & Zustand & \multicolumn{2}{c}{Folgezustand} & \multicolumn{2}{c}{Ausgabe} \\
+             &         & \texttt{DRneqA} & $\overline{\texttt{DRneqA}}$ & \texttt{DRneqA} & $\overline{\texttt{DRneqA}}$ \\\hline
+   00        & $S_0$   & $S_1$           & $S_1$                        & 1111100000 & 1111100000 \\
+   01        & $S_1$   & $S_2$           & $S_1$                        & 0000000001 & 0000111110 \\
+   10        & $S_2$   & -               & -                            & 0000000000 & 0000000000 \\
 \end{ctabular}
 \ex{One-Hot-Design und Zählersteuerung}{14 + 3 + 14 + 3}
 Grundlage der folgenden Diagramme ist das vereinfachte Programm aus Aufgabe 1
@@ -108,10 +107,10 @@ keine Kontrollsignale generiert.
    \begin{tikzpicture}[or port/.append style={text width=.7\portsize,minimum height=\portsize}, 
                        and port/.append style={text width=.7\portsize,minimum height=\portsize}
                       ]
-      \node[flipflop] (ff-0) {FF0};
-      \node[flipflop,below=of ff-0] (ff-1) {FF1};
-      \node[flipflop,below=of ff-1] (ff-2) {FF2};
-      \node[flipflop,below=of ff-2] (ff-3) {FF3};
+      %\node[flipflop] (ff-0) {FF0};
+      \node[flipflop] (ff-1) {FF0};
+      \node[flipflop,below=of ff-1] (ff-2) {FF1};
+      \node[flipflop,below=of ff-2] (ff-3) {FF2};
 
       % draw control signal outputs
       \foreach \x[count=\i] in {setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
@@ -125,8 +124,9 @@ keine Kontrollsignale generiert.
 
       \node[or port,xshift=-2cm] (or-1) at ($(and-1) !0.5! (and-2)$) {};
 
-      \draw (ff-0-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
-      \draw (ff-0-Q) -- ++(1cm,0) |- ($(ff-1-D) + (-1cm,1cm)$) |- (ff-1-D);
+      %\draw (ff-0-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
+      %\draw (ff-0-Q) -- ++(1cm,0) |- ($(ff-1-D) + (-1cm,1cm)$) |- (ff-1-D);
+      \draw (ff-1-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
 
       \draw (ff-1-Q) -- ++(1cm,0) |- ($(or-1.150) + (-1cm,1.5cm)$) --
       ($(or-1.150) + (-1cm,0)$) -- (or-1.150);
@@ -151,7 +151,7 @@ keine Kontrollsignale generiert.
       \draw (ff-1-Q) -- ++(2cm,0) coordinate (c);
       \fill (c) circle (2pt);
 
-      % draw paths to outputs for ff1
+      % draw paths to outputs for ff1 (0)
       \foreach \gate[count=\i] in {setAR1,clrA,setB1,clrCNT,read}{
          \draw let \p1 = (or-\gate.150), \p2 = (c) in (c) -- (\x2,\y1) coordinate
          (c2);
@@ -162,29 +162,29 @@ keine Kontrollsignale generiert.
       }
 
       \draw (ff-2-Q) -- ++(1.5cm,0) coordinate (c);
-      \fill (c) circle (2pt);
+      %\fill (c) circle (2pt);
 
-      % draw paths to outputs for ff2
+      % draw paths to outputs for ff2 (1)
       \foreach \gate[count=\i] in {read,ldA,ldB,incAR,incCNT}{
          \draw let \p1 = (or-\gate.210), \p2 = (c) in (c) -- (\x2,\y1) coordinate
          (c2);
-         \ifthenelse{\i=1 \OR \i=5}{}{
+         \ifthenelse{\i=5}{}{
             \fill (c2) circle (2pt);
          }
          \draw (c2) -- (or-\gate.210);
       }
 
-      % draw path to outputs for ff3
+      % draw path to outputs for ff3 (2)
       \draw (ff-3-Q) -- ++(1cm,0) |- (or-ldOUT);
 
       % draw clock
-      \foreach \ff in {0,...,3}
+      \foreach \ff in {1,...,3}
       {
          \coordinate (c-\ff) at ($(ff-\ff-CLK) + (-1cm,0)$);
-         \ifthenelse{\ff=0}{}{\fill (c-\ff) circle (2pt);}
+         \ifthenelse{\ff=1}{}{\fill (c-\ff) circle (2pt);}
       }
       \node[below=of c-3] (c) {$CLK$};
-      \foreach \ff in {0,...,3}{
+      \foreach \ff in {1,...,3}{
          \draw (c) |- (ff-\ff-CLK);
       }
    \end{tikzpicture}
@@ -192,21 +192,131 @@ keine Kontrollsignale generiert.
 
 \subex{Hardwareaufwand}
 
-Gemäß des obigen Schaltbildes benötigt man für jeden der vier Zustände ein
-Flipflop sowie zwei AND-Gatter und elf OR-Gatter (wenn man \texttt{BEGIN}- und
-\texttt{END}-Signale außen vor lässt und den redundanten Zustand $S_0$ behält).
+Gemäß des obigen Schaltbildes benötigt man für jeden der drei Zustände ein
+Flipflop sowie insgesamt zwei AND-Gatter und elf OR-Gatter (wenn man \texttt{BEGIN}- und
+\texttt{END}-Signale außen vor lässt).
 Man kann die Kontrollsignalausgabe reduzieren, da die meisten Signale nur von
 genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
-überflüssig, sodass man auch  mit insgesamt zwei OR-Gattern hinkommt.
+überflüssig, sodass man auch  mit insgesamt zwei OR-Gattern auskommt.
 
 \subex{Zählersteuerung}
+%Wir benötigen ein weiteres Kontrollsignal (\texttt{InitScs}), um den Counter nach der Initialisierung zu erhöhen.
 
-Dies macht hier m.E. keinen Sinn, weshalb ich diese Aufgabe nicht weiter
-bearbeiten kann (Modulo-1-Zähler sind sinnfrei).
+\begin{center} 
+  \begin{tikzpicture}[or port/.append style={text width=.7\portsize,minimum height=\portsize}, 
+                      and port/.append style={text width=.7\portsize,minimum height=\portsize}]
+      
+      %\node[flipflop] (ff-0) {FF0};
+      \node[flipflop] (ff-1) {FF0};
+      \node[flipflop,below=of ff-1] (ff-2) {FF1};
+      \node[flipflop,below=of ff-2] (ff-3) {FF2};
+
+      % barbarian additions: and gates and counter
+      \draw ($(ff-1)+(.75,3)$) rectangle node[align=center] (counter) {Modulo-1\\sequence\\counter} ++(3,2);
+      \node[and port, right=2cm of ff-1.north east] (and-z1) {};
+      \node[and port, right=2cm of ff-2.north east] (and-z2) {};
+      \node[and port, right=2cm of ff-3.north east] (and-z3) {};
+      \draw[-,name path=phi1] ($(ff-1)+(2.25,3)$) -- ++(0,-10cm) node[below] {$\Phi_1$};
+      \draw[opacity=0,name path=and-z1-line] (and-z1.150) -- ++(-5cm,0);
+      \draw[-*,name intersections={of=and-z1-line and phi1}] (and-z1.150) --($(intersection-1)+(-0.08,0)$);
+      \draw[opacity=0,name path=and-z2-line] (and-z2.150) -- ++(-5cm,0);
+      \draw[-*,name intersections={of=and-z2-line and phi1}] (and-z2.150) --($(intersection-1)+(-0.08,0)$);
+      \draw[opacity=0,name path=and-z3-line] (and-z3.150) -- ++(-5cm,0);
+      \draw[-*,name intersections={of=and-z3-line and phi1}] (and-z3.150) --($(intersection-1)+(-0.08,0)$);
+      % BEGIN to counter
+      \draw[-*] ($(ff-1)+(.75,4)$) -| ($(ff-1-D)+(-0.75,-0.08)$);
+
+      % draw control signal outputs
+      \foreach \x[count=\i] in {setAR1,clrA,setB1,clrCNT,read,ldA,ldB,incAR,incCNT,ldOUT}
+      {
+         \node[or port] (or-\x) at (6.5cm,{3cm + -1.5*\i cm}) {};
+         \draw (or-\x) -- ++(1cm,0) node[anchor=west,font=\ttfamily] {\x};
+      }
+
+      \node[and port,left=2cm of ff-2.north west] (and-1) {};
+      \node[and port,left=2cm of ff-2.south west] (and-2) {};
+
+      \node[or port,xshift=-2cm] (or-1) at ($(and-1) !0.5! (and-2)$) {};
+
+      %\draw (ff-0-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
+      %\draw (ff-0-Q) -- ++(1cm,0) |- ($(ff-1-D) + (-1cm,1cm)$) |- (ff-1-D);
+      \draw (ff-1-D) -- ++(-1cm,0) node[anchor=east] {BEGIN (?)};
+
+      \draw (ff-1-Q) -- ++(1cm,0) |- ($(or-1.150) + (-1cm,1.5cm)$) --
+      ($(or-1.150) + (-1cm,0)$) -- (or-1.150);
+
+      \draw[o-] (and-1) -- ++(-2cm,0) node[anchor=east] (notdrneqa) {\texttt{DRneqA}};
+      \draw (and-2) -- ++(-2cm,0) node[anchor=east] (drneqa) {\ttfamily{DRneqA}};
+
+      \draw (or-1.east) -- ++(1em,0) coordinate (c);
+      \fill (c) circle (2pt);
+      \draw (c) |- (and-1.210);
+      \draw (c) |- (and-2.150);
+
+      \draw (and-1) -- ++(1cm,0) |- (ff-2-D);
+      \draw (and-2) -- ++(1cm,0) |- (ff-3-D);
+
+      \draw (ff-2-Q) -- ++(1cm,0) |- ($(or-1.south west) + (-1cm,-1.2cm)$) --
+      ($(or-1.210) + (-1cm,0)$) -- (or-1.210);
+
+      \fill ($(ff-1-Q) + (1cm,0)$) circle (2pt);
+      \fill ($(ff-2-Q) + (1cm,0)$) circle (2pt);
+      
+      % flip flop Qs to and-gates
+      \draw ($(ff-1-Q) + (1cm,0)$) -| (and-z1.south west);
+      \draw ($(ff-2-Q) + (1cm,0)$) -| (and-z2.south west);
+      \draw (ff-3-Q) -| (and-z3.south west);
+
+      %\draw (ff-1-Q) -- ++(2cm,0) coordinate (c);
+      \draw (and-z1) -- ++(2cm,0) coordinate (c);
+      \fill (c) circle (2pt);
+
+      % draw paths to outputs for ff1 (0)
+      \foreach \gate[count=\i] in {setAR1,clrA,setB1,clrCNT,read}{
+         \draw let \p1 = (or-\gate.150), \p2 = (c) in (c) -- (\x2,\y1) coordinate
+         (c2);
+         \ifthenelse{\i=1 \OR \i=5}{}{% prevent circles at actual path corners
+            \fill (c2) circle (2pt);
+         }
+         \draw (c2) -- (or-\gate.150);
+      }
+
+      %\draw (ff-2-Q) -- ++(1.5cm,0) coordinate (c);
+      \draw (and-z2) -- ++(1.5cm,0) coordinate (c);
+      %\fill (c) circle (2pt);
+
+      % draw paths to outputs for ff2 (1)
+      \foreach \gate[count=\i] in {read,ldA,ldB,incAR,incCNT}{
+         \draw let \p1 = (or-\gate.210), \p2 = (c) in (c) -- (\x2,\y1) coordinate
+         (c2);
+         \ifthenelse{\i=5}{}{
+            \fill (c2) circle (2pt);
+         }
+         \draw (c2) -- (or-\gate.210);
+      }
+
+      % draw path to outputs for ff3 (2)
+      %\draw (ff-3-Q) -- ++(1cm,0) |- (or-ldOUT);
+      \draw (and-z3) -- ++(1cm,0) |- (or-ldOUT);
+
+      % draw clock
+      \foreach \ff in {1,...,3}
+      {
+         \coordinate (c-\ff) at ($(ff-\ff-CLK) + (-1cm,0)$);
+         \ifthenelse{\ff=1}{}{\fill (c-\ff) circle (2pt);}
+      }
+      \node[below=of c-3] (c) {$CLK$};
+      \foreach \ff in {1,...,3}{
+         \draw (c) |- (ff-\ff-CLK);
+      }
+  \end{tikzpicture}
+\end{center}
 
 \subex{Hardwareaufwand}
+Es werden für jeden Zustand ein zusätzliches AND-Gatter sowie der Zähler mehr benötigt (sowie ein paar Drähte und Lötzinn).
 
-Diese Frage kann ich folglich nicht beantworten.
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
+
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
+
 \end{document}
