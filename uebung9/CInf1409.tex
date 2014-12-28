@@ -317,6 +317,154 @@ Es werden für jeden Zustand ein zusätzliches AND-Gatter sowie der Zähler mehr
 
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 
+\subex{Mikroprogramm}
+% this makes no sense at all to me, but maybe it's right...
+Es gibt keine komplexen if/else Konstrukte und deshalb muss die Verzweigung umgebaut werden. Nur ein simples goto ist möglich für das Branching.
+\lstinputlisting{aufg3_a.rt}
+
+\subex{Programmflusskontrolle durch MUX}
+Ein MUXer könnte z.B. ein 2 Bit-Condition-Select haben. 
+
+\begin{center}
+\begin{tabular}{|rl|}
+Cond. Select & Operation \\\hline
+00 & k. Verzw. \\
+01 & Verzw. wenn \texttt{DRneqA} = 1 \\
+10 & unbed. Verzw. \\
+11 & k. Verzw. \\
+\end{tabular}
+\end{center}
+
+\subex{Horizontales Befehlsformat}
+So hätten wir eine 2 Bit Condition, eine 5 Bit Adresse und noch 10 Bit für die 10 Signale (\texttt{setAR1, clrA, setB1, clrCNT, read, ldA, ldB, incAR, incCNT, ldOUT}), d.h. unsere Befehle sind insgesamt 17 Bit breit.
+
+\subex{Horizontales Mikroprogramm}
+
+\def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
+\begin{center}
+\begin{tabular}{|c|c|c|cccccccccc|c|}
+  \hline
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{10}{|c|}{\bf Control fields} & \\
+\bf in CM & \bf select & \bf addr. & \ctrl{setAR1} & \ctrl{clrA} & \ctrl{setB1} & \ctrl{clrCNT} & \ctrl{read} & \ctrl{ldA} & \ctrl{ldB} & \ctrl{incAR} & \ctrl{incCNT} & \ctrl{ldOUT} & Comments \\ \hline
+0000 & 00 & 0000 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+0001 & 01 & 0011 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 3 fi;} \\ \hline
+0010 & 10 & 0001 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
+0011 & 00 & 0000 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
+\end{tabular}
+\end{center}
+
+
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
+\subex{Minimiertes Horizontales Mikroprogramm}
+Die Signale \texttt{setAR1, setB1} und \texttt{read} werden im Signal \texttt{init} zusammengefasst, die Signale \texttt{read, ldA, ldB, incAR, incCNT} im Signal \texttt{cnt}. Übrig bleibt noch das Signal \texttt{ldOUT}, was nicht weiter zusammengefasst wird. Die Signale \texttt{clrA} und \texttt{clrCNT} können ignoriert werden.
+
+Da wir nur vier Zeilen Code haben, können wir für die Sprungadresse 3 bit nutzen. Springen wir sogar nur relativ brauchen wir maximal Sprünge der Größe 3 und können den Multiplexer wie folgt kodieren:
+
+\textbf{Relative Verzweigung}
+
+\begin{center}
+\begin{tabular}{|rl|}
+Condition Select & Operation \\\hline
+00 & keine Verzweigung \\
+01 & bedingte Verzweigung relativ vor wenn \texttt{DRneqA} = 1 \\
+10 & unbedingte Verzweigung relativ zurück \\
+11 & keine Verzweigung \\
+\end{tabular}
+\end{center}
+Das erlaubt es uns, die Addressbreite auf 2 Bit zu reduzieren.
+
+Insgesamt ist die Breite eines Codewortes nun 2 Bit Condition select + 2 Bit Adressoffset + 3 Bit Signale = 7 Bit.
+
+\def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
+\begin{center}
+\begin{tabular}{|c|c|c|ccc|c|}
+  \hline
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
+\bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
+0000 & 00 & 00 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+0001 & 01 & 10 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then go 2 fi;} \\ \hline
+0010 & 10 & 01 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | go back 1;}\\ \hline
+0011 & 00 & 00 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
+\end{tabular}
+\end{center}
+
+Das gesamte Programm ist also 28 Bit groß.
+
+Sollte keine relative Verzweigung möglich, so ist die Breite eines Codewortes mindestens 8 Bit, die Gesamtlänge ändert sich entsprechend um 4 Bit auf 32 Bit.
+
+\textbf{Absolute Verzweigung}
+
+\begin{center}
+\begin{tabular}{|rl|}
+Condition Select & Operation \\\hline
+00 & keine Verzweigung \\
+01 & bedingte Verzweigung wenn \texttt{DRneqA} = 1 \\
+10 & unbedingte Verzweigung \\
+11 & keine Verzweigung \\
+\end{tabular}
+\end{center}
+\def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
+\begin{center}
+\begin{tabular}{|c|c|c|ccc|c|}
+  \hline
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
+\bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
+0000 & 00 & 000 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+0001 & 01 & 011 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 3 fi;} \\ \hline
+0010 & 10 & 001 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
+0011 & 00 & 000 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
+\end{tabular}
+\end{center}
+
+
+\subex{Vertikales Mikroprogramm}
+Für das vertikale Mikroprogramm können wir die Befehle kodieren. Da wir im Grunde genommen nur 4 Befehle haben, können wir diese bereits mit 2 Bit kodieren:
+
+\begin{center}
+\begin{tabular}{|rl|}
+Kodierung & Signal \\ \hline
+00 & \texttt{init} \\
+01 & \sl bedingtes Branchen \\
+10 & \texttt{cnt} \\
+11 & \texttt{ldOUT} \\
+\end{tabular}
+\end{center}
+Der Decoder braucht so zwei Eingänge und drei Ausgänge (zehn Ausgänge, wenn die kompletten Codewörter ohne Zusammenfassung dekodiert werden sollen).
+Das Programm wird aber nur um 4 Bit kleiner (1 Bit pro Wort).
+
+\subex{Variables Befehlsformat für Mikroprogamme}
+
+\textbf{Relative Verzweigung}
+
+\def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
+\begin{center}
+\begin{tabular}{|c|c|c|ccc|c|}
+  \hline
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
+\bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
+0000 & 00 & 00 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+0001 & 01 & 11 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then go 3 fi;} \\ \hline
+0010 & 00 & 00 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem;}\\ \hline
+0011 & 10 & 10 & 0 & 0 & 0 & \parbox{4cm}{\small go back 2;} \\ \hline
+0100 & 00 & 00 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
+\end{tabular}
+\end{center}
+Das Programm braucht einen Befehl mehr und wird somit um dessen Breite länger. Damit ergeben sich 35 Bit (relatives Branching) bzw. 40 Bit (absolutes Branching mit 3-Bit-Adressen).
+
+\textbf{Absolute Verzweigung}
+
+\def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
+\begin{center}
+\begin{tabular}{|c|c|c|ccc|c|}
+  \hline
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
+\bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
+0000 & 00 & 000 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+0001 & 01 & 100 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 4 fi;} \\ \hline
+0010 & 00 & 000 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem;}\\ \hline
+0011 & 10 & 001 & 0 & 0 & 0 & \parbox{4cm}{\small goto 1;} \\ \hline
+0100 & 00 & 000 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
+\end{tabular}
+\end{center}
 
 \end{document}
