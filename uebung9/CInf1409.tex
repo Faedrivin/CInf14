@@ -29,6 +29,7 @@ Programm aus b) sind es nur maximal 2.
 Darüber hinaus ist die Anforderung lediglich, dass Register anfangs 0-initialisiert
 sind.
 
+\newpage
 \subex{Modulbild}
 \begin{ctabular}{>{\ttfamily}ll}
 \textbf{\rmfamily{Kontrollsignal}} & \textbf{Bedeutung} \\
@@ -81,6 +82,7 @@ Tabelle oben:
 Grundlage der folgenden Diagramme ist das vereinfachte Programm aus Aufgabe 1
 b), da es am wenigsten Zustände braucht.
 
+\newpage
 \subex{Schaltbild}
 
 Im Prinzip sollten noch ein externes \texttt{BEGIN}-Signal und ein
@@ -199,6 +201,7 @@ Man kann die Kontrollsignalausgabe reduzieren, da die meisten Signale nur von
 genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
 überflüssig, sodass man auch  mit insgesamt zwei OR-Gattern auskommt.
 
+\newpage
 \subex{Zählersteuerung}
 %Wir benötigen ein weiteres Kontrollsignal (\texttt{InitScs}), um den Counter nach der Initialisierung zu erhöhen.
 
@@ -315,6 +318,7 @@ genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
 \subex{Hardwareaufwand}
 Es werden für jeden Zustand ein zusätzliches AND-Gatter sowie der Zähler mehr benötigt (sowie ein paar Drähte und Lötzinn).
 
+\newpage
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 
 \subex{Mikroprogramm}
@@ -325,15 +329,13 @@ Es gibt keine komplexen if/else Konstrukte und deshalb muss die Verzweigung umge
 \subex{Programmflusskontrolle durch MUX}
 Ein MUXer könnte z.B. ein 2 Bit-Condition-Select haben. 
 
-\begin{center}
-\begin{tabular}{|rl|}
+\begin{ctabular}{|rl|}
 Condition Select & Operation \\\hline
 00 & keine Verzweigung \\
 01 & bedingte Verzweigung wenn \texttt{DRneqA} = 1 \\
 10 & unbedingte Verzweigung \\
 11 & keine Verzweigung \\
-\end{tabular}
-\end{center}
+\end{ctabular}
 
 \subex{Horizontales Befehlsformat}
 Nachdem wir das Programm aufgeschrieben haben, können wir die Breiten bestimmen. So haben wir eine 2 Bit Condition, eine 2 Bit Adresse und noch 10 Bit für die 10 Signale (\texttt{setAR1, clrA, setB1, clrCNT, read, ldA, ldB, incAR, incCNT, ldOUT}), d.h. unsere Befehle sind insgesamt 14 Bit breit.
@@ -341,98 +343,90 @@ Nachdem wir das Programm aufgeschrieben haben, können wir die Breiten bestimmen
 \subex{Horizontales Mikroprogramm}
 
 \def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
-\begin{center}
-\begin{tabular}{|c|c|c|cccccccccc|c|}
+\def\mybox#1#2{\parbox[c][#1][c]{4cm}{\ttfamily\raggedright\small #2}}
+\begin{ctabular}{|c|c|c|cccccccccc|c|}
   \hline
-  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{10}{|c|}{\bf Control fields} & \\
+  \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{10}{c|}{\bf Control fields} & \\
 \bf in CM & \bf select & \bf addr. & \ctrl{setAR1} & \ctrl{clrA} & \ctrl{setB1} & \ctrl{clrCNT} & \ctrl{read} & \ctrl{ldA} & \ctrl{ldB} & \ctrl{incAR} & \ctrl{incCNT} & \ctrl{ldOUT} & Comments \\ \hline
-00 & 00 & 00 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
-01 & 01 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 3 fi;} \\ \hline
-10 & 10 & 01 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
-11 & 00 & 00 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
-\end{tabular}
-\end{center}
+00 & 00 & 00 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \mybox{6ex}{ AR \la 1, B \la 1, read MEM;} \\ \hline
+01 & 01 & 11 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \mybox{6ex}{ if DR <> A then goto 3 fi;} \\ \hline
+10 & 10 & 01 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & \mybox{9ex}{ A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
+11 & 00 & 00 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \mybox{6ex}{ OUTBUS \la CNT;} \\ \hline
+\end{ctabular}
 
 
 \ex{Mikrobefehlsformate}{5 + 5 + 5}
 \subex{Minimiertes Horizontales Mikroprogramm}
-Die Signale \texttt{setAR1, setB1} und \texttt{read} werden im Signal \texttt{init} zusammengefasst, die Signale \texttt{read, ldA, ldB, incAR, incCNT} im Signal \texttt{cnt}. Übrig bleibt noch das Signal \texttt{ldOUT}, was nicht weiter zusammengefasst wird. Die Signale \texttt{clrA} und \texttt{clrCNT} können ignoriert werden.
+Die Signale \texttt{setAR1, setB1} und \texttt{read} werden im Signal
+\texttt{init} zusammengefasst, die Signale \texttt{read, ldA, ldB, incAR,
+incCNT} im Signal \texttt{cnt}. Übrig bleibt noch das Signal \texttt{ldOUT}, was
+nicht weiter zusammengefasst wird. Die Signale \texttt{clrA} und \texttt{clrCNT}
+können ignoriert werden.
 
 Da wir nur vier Zeilen Code haben, können wir für die Sprungadresse 2 bit nutzen. 
 
-Der MUX bleibt:
-\begin{center}
-\begin{tabular}{|rl|}
+Der MUXer bleibt:
+\begin{ctabular}{|rl|}
 Condition Select & Operation \\\hline
 00 & keine Verzweigung \\
 01 & bedingte Verzweigung wenn \texttt{DRneqA} = 1 \\
 10 & unbedingte Verzweigung \\
 11 & keine Verzweigung \\
-\end{tabular}
-\end{center}
+\end{ctabular}
 
 Es ergibt sich folgendes minimierters Programm:
 
 \def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
-\begin{center}
-\begin{tabular}{|c|c|c|ccc|c|}
+\begin{ctabular}{|c|c|c|ccc|c|}
   \hline
   \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
 \bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
-00 & 00 & 00 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
-01 & 01 & 11 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 3 fi;} \\ \hline
-10 & 10 & 01 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
-11 & 00 & 00 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
-\end{tabular}
-\end{center}
+00 & 00 & 00 & 1 & 0 & 0 & \mybox{6ex}{ AR \la 1, B \la 1, read MEM;} \\ \hline
+01 & 01 & 11 & 0 & 0 & 0 & \mybox{6ex}{ if DR <> A then goto 3 fi;} \\ \hline
+10 & 10 & 01 & 0 & 1 & 0 & \mybox{9ex}{ A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
+11 & 00 & 00 & 0 & 0 & 1 & \mybox{3ex}{ OUTBUS \la CNT;} \\ \hline
+\end{ctabular}
 
+\newpage
 \subex{Vertikales Mikroprogramm}
 Für das vertikale Mikroprogramm können wir die Befehle kodieren. Da wir im Grunde genommen nur 4 Befehle haben, können wir diese bereits mit 2 Bit kodieren:
 
-\begin{center}
-\begin{tabular}{|rl|}
+\begin{ctabular}{|rl|}
 Kodierung & Signal \\ \hline
 00 & \texttt{init} \\
 01 & \sl bedingtes Branchen \\
 10 & \texttt{cnt} \\
 11 & \texttt{ldOUT} \\
-\end{tabular}
-\end{center}
+\end{ctabular}
 Der Decoder braucht so zwei Eingänge und drei Ausgänge (zehn Ausgänge, wenn die kompletten Codewörter ohne Zusammenfassung dekodiert werden sollen).
 Das Programm wird aber nur um 4 Bit kleiner (1 Bit pro Wort).
 
 \def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
+\begin{ctabular}{|c|c|c|c|c|}
   \hline
   \bf Addr. & \bf Cond. & \bf Branch & Command & \\
 \bf in CM & \bf select & \bf addr. & & Comments \\ \hline
-00 & 00 & 00 & 00 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
-01 & 01 & 11 & 01 & \parbox{4cm}{\small if DR <> A then goto 3 fi;} \\ \hline
-10 & 10 & 01 & 10 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
-11 & 00 & 00 & 11 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
-\end{tabular}
-\end{center}
+00 & 00 & 00 & 00 & \mybox{6ex}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+01 & 01 & 11 & 01 & \mybox{6ex}{\small if DR <> A then goto 3 fi;} \\ \hline
+10 & 10 & 01 & 10 & \mybox{9ex}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem | goto 1;}\\ \hline
+11 & 00 & 00 & 11 & \mybox{3ex}{\small OUTBUS \la CNT;} \\ \hline
+\end{ctabular}
 Die Gesamtlänge ist also $4\cdot 6 = 24$ Bit.
 
 \subex{Variables Befehlsformat für Mikroprogamme}
 
 \def\ctrl#1{\rotatebox{90}{\texttt{#1}}}
-\begin{center}
-\begin{tabular}{|c|c|c|ccc|c|}
+\begin{ctabular}{|c|c|c|ccc|c|}
   \hline
   \bf Addr. & \bf Cond. & \bf Branch & \multicolumn{3}{|c|}{\bf Control fields} & \\
 \bf in CM & \bf select & \bf addr. & \ctrl{init} & \ctrl{cnt} & \ctrl{ldOUT} & Comments \\ \hline
-000 & 00 & 000 & 1 & 0 & 0 & \parbox{4cm}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
-001 & 01 & 100 & 0 & 0 & 0 & \parbox{4cm}{\small if DR <> A then goto 4 fi;} \\ \hline
-010 & 00 & 000 & 0 & 1 & 0 & \parbox{4cm}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem;}\\ \hline
-011 & 10 & 001 & 0 & 0 & 0 & \parbox{4cm}{\small goto 1;} \\ \hline
-100 & 00 & 000 & 0 & 0 & 1 & \parbox{4cm}{\small OUTBUS \la CNT;} \\ \hline
-\end{tabular}
-\end{center}
+000 & 00 & 000 & 1 & 0 & 0 & \mybox{6ex}{\small AR \la 1, B \la 1, read MEM;} \\ \hline
+001 & 01 & 100 & 0 & 0 & 0 & \mybox{6ex}{\small if DR <> A then goto 4 fi;} \\ \hline
+010 & 00 & 000 & 0 & 1 & 0 & \mybox{9ex}{\small A \la B, B \la A + B, AR \la AR + 1, CNT \la CNT + 1, read Mem;}\\ \hline
+011 & 10 & 001 & 0 & 0 & 0 & \mybox{3ex}{\small goto 1;} \\ \hline
+100 & 00 & 000 & 0 & 0 & 1 & \mybox{3ex}{\small OUTBUS \la CNT;} \\ \hline
+\end{ctabular}
 
 Wir brauchen einen Takt (bzw. eine Zeile) mehr. Dadurch müssen die Branchaddressen länger werden und außerdem braucht das gesamte Programm einen Befehl mehr. So wird die Länge 40 Bit.
-
-
 
 \end{document}
