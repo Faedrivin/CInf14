@@ -7,7 +7,39 @@
 
 \ex{Befehlserweiterung der HAM}{5 + 7 + 9 + 5 + 3 + 3}
 
-% \subex{\bf SETA}
+\subex{\bf SETA}
+\lstinputlisting[language=RTeasy,firstline=50,lastline=53]{HAM_extended.rt}
+\subex{\bf ADDI}
+\lstinputlisting[language=RTeasy,firstline=55,lastline=58]{HAM_extended.rt}
+\subex{\bf LOADI}
+\lstinputlisting[language=RTeasy,firstline=60,lastline=64]{HAM_extended.rt}
+\subex{\bf STOREI}
+\lstinputlisting[language=RTeasy,firstline=66,lastline=70]{HAM_extended.rt}
+
+\subex{Testprogramm}
+
+Nach Ausführen des Tests muss an Speicherstelle 9 die Zahl 1 stehen und an 10
+nur Einsen.
+
+\begin{assemblertable}
+   0 & 9 & - & & SETA & - & Set accu to all ones \\\hline
+   1 & A & -,2 & & ADDI & 2 & Add 2 to accu (will be 1 after) \\\hline
+   3 & C & 9,- & & STOREI & 9 & Store accu at address positioned at mem(9)
+   (which happens to be 9 again) \\\hline
+   4 & B & A,- & & LOADI & 10 & Load value from address stored in mem(10) (which
+   is again 10) \\\hline
+   5 & 9 & - & & SETA & - & Set accu to all ones \\\hline
+   6 & C & A,- & & STOREI & 10 & Store accu at address positioned at mem(10) \\\hline
+   \vdots & & & & & & \\\hline
+   9 & & & & .DB & 9 & Store value of 9 at position 9\\\hline
+   A & & & & .DB & 10 & Store value of 10 at position 10\\\hline
+\end{assemblertable}
+
+\subex{Assemblat}
+
+\lstinputlisting{aufg_1_test}
+
+\subex{Taktzahl}
 \ex{Collatz-Alg. auf der HAM}{18 + 10 + 4}
 \ex{Collatz-Alg. auf der H6809}{2 + 10 + 8 + 10 + 6}
 \end{document}

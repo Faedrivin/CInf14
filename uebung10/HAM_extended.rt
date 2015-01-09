@@ -53,6 +53,7 @@ SETA:   DR<-AC;
 	AC<-not AC | goto FETCH;
 	
 ADDI:   AR<-PC;
+	PC<-PC+1;
 	read M;
 	AC<-AC+DR | goto FETCH;
 
@@ -65,4 +66,5 @@ LOADI:  AR<-DR(7:0);
 STOREI: AR<-DR(7:0);
 	read M;
 	AR<-DR(7:0);
+	DR<-AC;
 	write M | goto FETCH;
