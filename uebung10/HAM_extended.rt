@@ -1,0 +1,68 @@
+% University of Luebeck - RTeasy Version 0.3.8 %
+declare register AC(11:0), DR(11:0), AR(7:0), PC(7:0), IR(3:0)
+declare memory M(AR,DR)
+
+
+FETCH:  AR<-PC;
+        read M;
+        IR<-DR(11:8), PC<-PC+1|
+
+        if IR=1 then goto LOAD  else
+        if IR=2 then goto STORE else
+        if IR=3 then goto ADD   else
+        if IR=4 then goto AND   else
+        if IR=5 then goto JUMP  else
+        if IR=6 then goto JUMPZ else
+        if IR=7 then goto COMP  else
+        if IR=8 then goto RSHIFT else
+	if IR=9 then goto SETA  else
+	if IR=10 then goto ADDI else
+	if IR=11 then goto LOADI else
+	if IR=12 then goto STOREI
+
+        else goto FETCH  fi  fi fi fi fi fi  fi  fi  fi  fi  fi  fi;
+ 
+
+LOAD:   AR<-DR(7:0);
+        read M;
+        AC<-DR | goto FETCH;
+
+STORE:  AR<-DR(7:0);
+        DR<-AC;
+        write M | goto FETCH;
+
+ADD:    AR<-DR(7:0);
+        read M;
+        AC<-AC+DR | goto FETCH;
+
+AND:    AR<-DR(7:0);
+        read M;
+        AC<-AC and DR | goto FETCH;
+
+JUMP:   PC<-DR(7:0) | goto FETCH;
+
+JUMPZ:  if AC<>0 then goto FETCH fi; PC<-DR(7:0)| goto FETCH;
+	
+COMP:   AC<- not AC | goto FETCH;
+
+RSHIFT: AC(11)<-AC(0), AC(10:0)<-AC(11:1) | goto FETCH;
+
+SETA:   DR<-AC;
+	AC<-not AC;
+	AC<-AC and DR;
+	AC<-not AC | goto FETCH;
+	
+ADDI:   AR<-PC;
+	read M;
+	AC<-AC+DR | goto FETCH;
+
+LOADI:  AR<-DR(7:0);
+	read M;
+	AR<-DR(7:0);
+	read M;
+	AC<-DR(7:0) | goto FETCH;
+
+STOREI: AR<-DR(7:0);
+	read M;
+	AR<-DR(7:0);
+	write M | goto FETCH;

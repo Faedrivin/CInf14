@@ -72,6 +72,7 @@
   numbers      = left,
   stringstyle  = \color{olive},
 }
+\lstdefinelanguage{RTeasy}{keywords={fi,declare,register,array,bus,memory,goto,then,read}}
 
 % generate document meta data
 \AtBeginDocument{
