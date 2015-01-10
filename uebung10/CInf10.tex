@@ -75,12 +75,45 @@ nur Einsen.
 \lstinputlisting{collatz_ham.mem}
 
 \subex{Speicherbedarf und Laufzeit}
-Speicherbedarf: $17 [Speicherstellen] \cdot 3 [\frac{Nibbles}{Speicherstelle}] \cdot 4 [\frac{Bit}{Nibble}] = 204 [Bit]$.
+Speicherbedarf: $17\, \left[Speicherstellen\right] \cdot 3\, \left[\frac{Nibbles}{Speicherstelle}] \cdot 4\, \left[\frac{Bit}{Nibble}\right] = 204 \left[Bits\right]$.
 
 Laufzeit für $13$: 545 RT Takte bis \texttt{JUMPZ END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: JUMP END}. 
 
-
 \ex{Collatz-Alg. auf der H6809}{2 + 10 + 8 + 10 + 6}
+\subex{Registernutzung}
+Eines kann z.B. zum Rechnen genutzt werden, während das andere als Zwischenspeicher der aktuellen Collatz-Zahl genutzt werden kann, oder aber einfach, wie es soll, die Adressen bereit hält.
+
+\subex{Unterprogramm: Nächste Collatz Zahl}
+\begin{assemblertable}
+   &    &      &        &      &           & This subroutine changes the\\\hline
+   &    &      &        &      &           & current value in the ACC   \\\hline
+   &    &      &        &      &           & to it's successor in the   \\\hline
+   &    &      &        &      &           & Collatz algorithm.         \\\hline
+   &    &      &        &      &           & It is side-effect free.    \\\hline
+40 & B7 & 004B & SUBRT: & STA  & TMP       & store Acc in TMP           \\\hline
+43 & 84 &   01 &        & ANDA &         1 & check odd/even               \\\hline
+42 & 27 &      &        & BEQ  & EVEN      & if even: branch              \\\hline
+43 &    &      & ODD:   & LDA  & TMP       & reload Acc                   \\\hline
+44 &    &      &        & ADDA & TMP       & $A = 2 \cdot TMP$            \\\hline
+45 &    &      &        & ADDA & TMP       & $A = 3 \cdot TMP$            \\\hline
+46 &    &      &        & ADDA & 0000 0001 & $A = 3 \cdot TMP + 1$        \\\hline
+47 &    &      &        & RTS  &           &                              \\\hline
+48 &    &      & EVEN:  & LDA  & TMP       & reload Acc                   \\\hline
+49 &    &      &        & RORA &           & ``divide by 2''              \\\hline
+4A &    &      &        & ANDA & 0111 1111 & delete first bit             \\\hline
+4B &    &      &        & RTS  &           &                              \\\hline
+4B &    &      & TMP    &      &         0 &                              \\\hline
+\end{assemblertable}
+
+\subex{Assemblerprogramm}
+\begin{assemblertable}
+
+\end{assemblertable}
+
+\subex{Handassemblierung}
+\lstinputlisting{collatz_h6809.mem}
+
+\subex{Speicherbedarf und Laufzeit}
 
 
 \end{document}
