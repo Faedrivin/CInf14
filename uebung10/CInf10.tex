@@ -95,5 +95,30 @@ Laufzeit für $13$: 545 RT Takte bis \texttt{JUMPZ END} ausgeführt ist, danach 
 
 \ex{Collatz-Alg. auf der H6809}{2 + 10 + 8 + 10 + 6}
 
-
+\begin{assemblertable}
+   & &  & INIT:     & LDX   & \#0  & Count iterations in X     \\\hline
+   & &  & LOOP:     & LDA   & VALUE  & Load argument     \\\hline
+   & &  &           & CMPA   & \#1  & If 1, abort     \\\hline
+   & &  &           & BEQ   & END & \\\hline
+   & &  &           & LDA   & VALUE & \textcolor{red}{necessary?} Load argument to subroutine \\\hline
+   & &  &           & JSR  & COLLATZ & Compute next value \\\hline
+   & &  &           & STA  & VALUE & Save new value \\\hline
+   & &  &           & ADDX  & \#1 & Increment count \\\hline
+   & &  &           & BRA  & LOOP & And so on  \\\hline
+   & &  & COLLATZ:  & ANDA   & \#1  & check if odd     \\\hline
+   & &  &           & BNE   & EVEN  & if not, branch     \\\hline
+   & &  &           & LDA   & VALUE  & Restore VALUE     \\\hline
+   & &  & ODD:      & ADDA   & VALUE  &  $\times 2$     \\\hline
+   & &  &           & ADDA   & VALUE  &  $\times 3$     \\\hline
+   & &  &           & ADDA   & \#1  &  $+1$     \\\hline
+   & &  &           & RTS   &   &  Done.     \\\hline
+   & &  & EVEN:     & RORA   &        & Divide by 2     \\\hline
+   & &  &           & ANDA   & \#128   & Kill MSB     \\\hline
+   & &  &           & RTS   &         & Done.     \\\hline
+   & &  & END:      & STX   & ERG-1     & Store count.     \\\hline
+   & &  &           & BRA   & 0         & Infinite loop.     \\\hline
+   & &  &           & .BYTE   & 1     & Must be free to have low-byte of X stored at ERG    \\\hline
+   & &  & ERG       & .BYTE   & 1     & Allocate 1 byte for ERG.     \\\hline
+   & &  & VALUE     & .BYTE   & 1     & Allocate 1 byte for inpu.     \\\hline
+\end{assemblertable}
 \end{document}
