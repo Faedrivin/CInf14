@@ -92,33 +92,40 @@ Speicherbedarf: $17 [Speicherstellen] \cdot 3 [\frac{Nibbles}{Speicherstelle}] \
 
 Laufzeit für $13$: 545 RT Takte bis \texttt{JUMPZ END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: JUMP END}. 
 
-
 \ex{Collatz-Alg. auf der H6809}{2 + 10 + 8 + 10 + 6}
 
+\subex{}
+
+Das X-Register kann z.B. genutzt werden, um den Iterationszähler zu speichern,
+sodass dieser nicht immer im Hauptspeicher abgelegt und daraus geladen werden
+muss.
+
+\subex{Assemblerprogramm}
+
 \begin{assemblertable}
-   & &  & INIT:     & LDX   & \#0  & Count iterations in X     \\\hline
-   & &  & LOOP:     & LDA   & VALUE  & Load argument     \\\hline
-   & &  &           & CMPA   & \#1  & If 1, abort     \\\hline
-   & &  &           & BEQ   & END & \\\hline
-   & &  &           & LDA   & VALUE & \textcolor{red}{necessary?} Load argument to subroutine \\\hline
-   & &  &           & JSR  & COLLATZ & Compute next value \\\hline
-   & &  &           & STA  & VALUE & Save new value \\\hline
-   & &  &           & ADDX  & \#1 & Increment count \\\hline
-   & &  &           & BRA  & LOOP & And so on  \\\hline
-   & &  & COLLATZ:  & ANDA   & \#1  & check if odd     \\\hline
-   & &  &           & BNE   & EVEN  & if not, branch     \\\hline
-   & &  &           & LDA   & VALUE  & Restore VALUE     \\\hline
-   & &  & ODD:      & ADDA   & VALUE  &  $\times 2$     \\\hline
-   & &  &           & ADDA   & VALUE  &  $\times 3$     \\\hline
-   & &  &           & ADDA   & \#1  &  $+1$     \\\hline
-   & &  &           & RTS   &   &  Done.     \\\hline
-   & &  & EVEN:     & RORA   &        & Divide by 2     \\\hline
-   & &  &           & ANDA   & \#128   & Kill MSB     \\\hline
-   & &  &           & RTS   &         & Done.     \\\hline
-   & &  & END:      & STX   & ERG-1     & Store count.     \\\hline
-   & &  &           & BRA   & 0         & Infinite loop.     \\\hline
-   & &  &           & .BYTE   & 1     & Must be free to have low-byte of X stored at ERG    \\\hline
-   & &  & ERG       & .BYTE   & 1     & Allocate 1 byte for ERG.     \\\hline
-   & &  & VALUE     & .BYTE   & 1     & Allocate 1 byte for inpu.     \\\hline
+0000   & 8E & 00     & INIT:     & LDX     & \#0     & Count iterations in X     \\\hline
+0003   & B6 & 0030   & LOOP:     & LDA     & VALUE   & Load argument     \\\hline
+0006   & 81 & 01     &           & CMPA    & \#1     & If 1, abort     \\\hline
+0008   & 27 & 18     &           & BEQ     & END     & \\\hline
+%    & B6 &        &           & LDA     & VALUE   & \textcolor{red}{necessary?} Load argument to subroutine \\\hline
+000A   & BD & 0015   &           & JSR     & COLLATZ & Compute next value \\\hline
+000D   & B7 & 0030   &           & STA     & VALUE   & Save new value \\\hline
+0010   & 30 & 01     &           & ADDX    & \#1     & Increment count \\\hline
+0013   & 20 & EF     &           & BRA     & LOOP    & And so on  \\\hline
+0015   & 84 & 01     & COLLATZ:  & ANDA    & \#1     & check if odd     \\\hline
+0017   & 26 & 0D     &           & BNE     & EVEN    & if not, branch     \\\hline
+0019   & B6 & 0030   &           & LDA     & VALUE   & Restore VALUE     \\\hline
+001C   & BB & 0030   & ODD:      & ADDA    & VALUE   &  $\times 2$     \\\hline
+001F   & BB & 0030   &           & ADDA    & VALUE   &  $\times 3$     \\\hline
+0022   & 8B & 01     &           & ADDA    & \#1     &  $+1$     \\\hline
+0024   & 39 &        &           & RTS     &         &  Done.     \\\hline
+0025   & 46 &        & EVEN:     & RORA    &         & Divide by 2     \\\hline
+0026   & 84 & 80     &           & ANDA    & \#128   & Kill MSB     \\\hline
+0028   & 39 &        &           & RTS     &         & Done.     \\\hline
+0029   & BF & 002E   & END:      & STX     & ERG-1   & Store count.     \\\hline
+002C   & 20 & 00     &           & BRA     & 0       & Infinite loop.     \\\hline
+002E   &    &        &           & .BYTE   & 1       & Must be free to have low-byte of X stored at ERG    \\\hline
+002F   &    &        & ERG       & .BYTE   & 1       & Allocate 1 byte for ERG.     \\\hline
+0030   &    &        & VALUE     & .BYTE   & 1       & Allocate 1 byte for input.     \\\hline
 \end{assemblertable}
 \end{document}
