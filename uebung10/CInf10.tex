@@ -19,7 +19,9 @@
 \subex{Testprogramm}
 
 Nach Ausführen des Tests muss an Speicherstelle 9 die Zahl 1 stehen und an 10
-nur Einsen.
+nur Einsen. Die Tabelle beinhaltet in der dritten Spalte eine zahl für den
+Operanden in den unteren 8 Bit, die dem Opcode folgen (für Ein-Wort-Befehle) und
+nach dem Komma den Operanden, der ggf. im zweiten Wort folgt.
 
 \begin{assemblertable}
    0 & 9 & - & & SETA & - & Set accu to all ones \\\hline
@@ -38,9 +40,20 @@ nur Einsen.
 \subex{Assemblat}
 
 \lstinputlisting{aufg_1_test.mem} % sadly MikTeX can't interpret files without extensions which are not .tex here
+                                  % wat ⦾ _ ⦾
 
 \subex{Taktzahl}
 
+Wenn man den FETCH-Zyklus ignoriert, der für alle Befehle gleich lang dauert,
+ergeben sich folgende Laufzeiten:
+\begin{ctabular}{>{\bf}lr}
+   \toprule
+   \normalfont{Befehl} & Taktzahl \\\midrule
+   SETA & 4 \\
+   ADDI & 4 \\
+   LOADI & 5 \\
+   STOREI & 5
+\end{ctabular}
 
 \ex{Collatz-Alg. auf der HAM}{18 + 10 + 4}
 

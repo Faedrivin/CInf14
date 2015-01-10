@@ -60,6 +60,21 @@
 
 \author{Rasmus Diederichsen, Sebastian H\"offner}
 
+% Have listings print the line number such that they accord with the parameters
+% firstline or linerange given to an individual listing. See
+% http://tex.stackexchange.com/questions/110187/listings-line-numbers-that-match-the-linerange-specification
+\lst@Key{matchrangestart}{f}{\lstKV@SetIf{#1}\lst@ifmatchrangestart}
+\def\lst@SkipToFirst{%
+    \lst@ifmatchrangestart\c@lstnumber=\numexpr-1+\lst@firstline\fi
+    \ifnum \lst@lineno<\lst@firstline
+        \def\lst@next{\lst@BeginDropInput\lst@Pmode
+        \lst@Let{13}\lst@MSkipToFirst
+        \lst@Let{10}\lst@MSkipToFirst}%
+        \expandafter\lst@next
+    \else
+        \expandafter\lst@BOLGobble
+    \fi}
+
 \lstset{
   xleftmargin  = .2\textwidth, 
   xrightmargin = .2\textwidth,
@@ -71,6 +86,7 @@
   numberstyle  = \tiny\color{gray},
   numbers      = left,
   stringstyle  = \color{olive},
+  matchrangestart=t,
 }
 \lstdefinelanguage{RTeasy}{keywords={fi,declare,register,array,bus,memory,goto,then,read}}
 
