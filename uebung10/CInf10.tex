@@ -52,9 +52,10 @@ ergeben sich folgende Laufzeiten:
    SETA & 4 \\
    ADDI & 4 \\
    LOADI & 5 \\
-   STOREI & 5
+   STOREI & 5 \\
 \end{ctabular}
 
+\newpage
 \ex{Collatz-Alg. auf der HAM}{18 + 10 + 4}
 
 \subex{Assemblerprogramm}
@@ -78,20 +79,21 @@ ergeben sich folgende Laufzeiten:
   10 & 2 & 16 &         & STORE  & ERG    & store ERG           \\\hline
   11 & 5 & 00 &         & JUMP   & LOOP   & repeat from start   \\\hline
   12 & 5 & 12 & END:    & JUMP   & END    & termination loop    \\\hline
-  13 & 0 & 0D & VALUE   & .BYTE  &      D & Input Value (13)    \\\hline
-  14 & 0 & 01 & ODDBIT  & .BYTE  &      1 & Mask: 000000000001  \\\hline
-  15 & F & FE & INVODD  & .BYTE  &    FFE & Mask: 111111111110  \\\hline
-  16 & 0 & 00 & ERG     & .BYTE  &      0 & Output Value        \\\hline
+  13 & 0 & 0D & VALUE   & .BYTE  &      3 & Input Value (13)    \\\hline
+  14 & 0 & 01 & ODDBIT  & .BYTE  &      3 & Mask: 000000000001  \\\hline
+  15 & F & FE & INVODD  & .BYTE  &      3 & Mask: 111111111110  \\\hline
+  16 & 0 & 00 & ERG     & .BYTE  &      3 & Output Value        \\\hline
 \end{assemblertable}
 
 \subex{Handassemblierung}
 \lstinputlisting{collatz_ham.mem}
 
 \subex{Speicherbedarf und Laufzeit}
-Speicherbedarf: $17\, \left[Speicherstellen\right] \cdot 3\, \left[\frac{Nibbles}{Speicherstelle}\right] \cdot 4\, \left[\frac{Bit}{Nibble}\right] = 204 \left[Bits\right]$.
+Speicherbedarf: $\$17\, \left[Speicherstellen\right] \cdot 3\, \left[\frac{Nibbles}{Speicherstelle}\right] \cdot 4\, \left[\frac{Bits}{Nibble}\right] = 228 \left[Bits\right]$.
 
-Laufzeit für $13$: 545 RTeasy Takte bis \texttt{JUMPZ END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: JUMP END}. 
+Laufzeit für \texttt{VALUE} $=13$: 545 RTeasy Takte bis \texttt{JUMPZ END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: JUMP END}. 
 
+\newpage
 \ex{Collatz-Alg. auf der H6809}{2 + 10 + 8 + 10 + 6}
 \subex{Registernutzung}
 Das X-Register kann z.B. genutzt werden, um den Iterationszähler zu speichern,
@@ -108,20 +110,20 @@ Dadurch sparen wir einiges Austauschen im Akkumulator.
    &    &      &        &      &           & current value in the ACC   \\\hline
    &    &      &        &      &           & to it's successor in the   \\\hline
    &    &      &        &      &           & Collatz algorithm.         \\\hline
-   &    &      &        &      &           & It is side-effect free.    \\\hline
-20 & B7 & 003A & SUBRT: & STA  & TMP       & store input in TMP         \\\hline
-23 & 84 &   01 &        & ANDA & 0000 0001 & check odd/even             \\\hline
-25 & 27 &   0C &        & BEQ  & EVEN      & if even: branch            \\\hline
-27 & B6 & 003A & ODD:   & LDA  & TMP       & reload input               \\\hline
-2A & BB & 003A &        & ADDA & TMP       & $A = 2 \cdot TMP$          \\\hline
-2D & BB & 003A &        & ADDA & TMP       & $A = 3 \cdot TMP$          \\\hline
-30 & 8B &   01 &        & ADDA & 0000 0001 & $A = 3 \cdot TMP + 1$      \\\hline
-32 & 39 &      &        & RTS  &           &                            \\\hline
-33 & B6 & 003A & EVEN:  & LDA  & TMP       & reload input               \\\hline
-36 & 46 &      &        & RORA &           & ``divide by 2''            \\\hline
-37 & 84 &   7F &        & ANDA & 0111 1111 & delete first bit           \\\hline
-39 & 39 &      &        & RTS  &           &                            \\\hline
-3A &    &   00 & TMP    & .BYTE&         0 & TMP, initial 0             \\\hline
+   &    &      &        &      &           & Otherwise side-effect free.\\\hline
+30 & B7 & 004A & SUBRT: & STA  & TMP       & store input in TMP         \\\hline
+33 & 84 &   01 &        & ANDA & 0000 0001 & check odd/even             \\\hline
+35 & 27 &   0C &        & BEQ  & EVEN      & if even: branch            \\\hline
+37 & B6 & 004A & ODD:   & LDA  & TMP       & reload input               \\\hline
+3A & BB & 004A &        & ADDA & TMP       & $A = 2 \cdot TMP$          \\\hline
+3D & BB & 004A &        & ADDA & TMP       & $A = 3 \cdot TMP$          \\\hline
+40 & 8B &   01 &        & ADDA & 0000 0001 & $A = 3 \cdot TMP + 1$      \\\hline
+42 & 39 &      &        & RTS  &           &                            \\\hline
+43 & B6 & 004A & EVEN:  & LDA  & TMP       & reload input               \\\hline
+46 & 46 &      &        & RORA &           & ``divide by 2''            \\\hline
+47 & 84 &   7F &        & ANDA & 0111 1111 & delete first bit           \\\hline
+49 & 39 &      &        & RTS  &           &                            \\\hline
+4A &    &   00 & TMP    & .BYTE&         1 & TMP, initial 0             \\\hline
 \end{assemblertable}
 \textbf{Takte:} Odd: 25, Even: 18. 
 
@@ -131,28 +133,30 @@ Dadurch sparen wir einiges Austauschen im Akkumulator.
   \item Even: +3 Takte (\texttt{RORA, ANDA}: $1 + 2 = 3$)
 \end{itemize}
 
+\newpage
 \subex{Assemblerprogramm}
 \begin{assemblertable}
-00 & 8E & 001C & INIT:  & LDX  & \#VALUE   & load address of VALUE      \\\hline
-03 & A6 &      & LOOP:  & LDA  & @X        & load VALUE                 \\\hline
-04 & 8B &   FF &        & ADDA & \$FF      & -1 to check for VALUE=1    \\\hline
-06 & 27 &   12 &        & BEQ  & END       & terminate on 1             \\\hline
-08 & 8B &   01 &        & ADDA & \$01      & restore VALUE              \\\hline
-0A & BD & 0020 &        & JSR  & SUBRT:    & jump to Collatz routine    \\\hline
-0D & A7 &      & RETURN:& STA  & @X        & store VALUE                \\\hline
-0E & 30 & 0001 &        & ADDX & \$0001    & set X to ERG address       \\\hline
-11 & A6 &      &        & LDA  & @X        & load ERG                   \\\hline
-12 & 8B &   01 &        & ADDA & \$01      & increment ERG              \\\hline
-14 & A7 &      &        & STA  & @X        & store ERG                  \\\hline
-15 & 30 & FFFF &        & ADDX & \$FFFF    & restore address of VALUE   \\\hline
-18 & 20 &   E9 &        & BRA  & LOOP      & back to LOOP               \\\hline
-1A & 20 &   FE & END:   & BRA  & END       & terminate                  \\\hline
-1C &    &   0D & VALUE  & .BYTE& D         & VALUE, to test 13          \\\hline
-1D &    &   00 & ERG    & .BYTE& 0         & ERG, default 0             \\\hline
+00 & 8F & FFFF & INIT:  & LDS  & \$FFFF    & init stack pointer         \\\hline
+03 & 8E & 001F &        & LDX  & \#VALUE   & load address of VALUE      \\\hline
+06 & A6 &      & LOOP:  & LDA  & @X        & load VALUE                 \\\hline
+07 & 8B &   FF &        & ADDA & \$FF      & -1 to check for VALUE=1    \\\hline
+09 & 27 &   12 &        & BEQ  & END       & terminate on 1             \\\hline
+0B & 8B &   01 &        & ADDA & \$01      & restore VALUE              \\\hline
+0D & BD & 0030 &        & JSR  & SUBRT:    & jump to Collatz routine    \\\hline
+10 & A7 &      & RETURN:& STA  & @X        & store VALUE                \\\hline
+11 & 30 & 0001 &        & ADDX & \$0001    & set X to ERG address       \\\hline
+12 & A6 &      &        & LDA  & @X        & load ERG                   \\\hline
+14 & 8B &   01 &        & ADDA & \$01      & increment ERG              \\\hline
+15 & A7 &      &        & STA  & @X        & store ERG                  \\\hline
+18 & 30 & FFFF &        & ADDX & \$FFFF    & restore address of VALUE   \\\hline
+1B & 20 &   E9 &        & BRA  & LOOP      & back to LOOP               \\\hline
+1D & 20 &   FE & END:   & BRA  & END       & terminate                  \\\hline
+1F &    &   0D & VALUE  & .BYTE& 1         & VALUE, to test 13          \\\hline
+20 &    &   00 & ERG    & .BYTE& 1         & ERG, default 0             \\\hline
 \end{assemblertable}
 \textbf{Takte (ohne Subroutine):} 
 \begin{itemize}
-	\item Initialisierung: 3 Takte (\texttt{LDX})
+	\item Initialisierung: 6 Takte (\texttt{LDS, LDX})
   \item Loop:
   \begin{itemize}
     \item[für 1:] 6 Takte (\texttt{LDA@X, ADDA, BEQ}: $2 + 2 + 2 = 6$)
@@ -165,14 +169,15 @@ Dadurch sparen wir einiges Austauschen im Akkumulator.
 \subex{Handassemblierung}
 \lstinputlisting{collatz_h6809.mem}
 
+\newpage
 \subex{Speicherbedarf und Laufzeit}
-Speicherbedarf: 3 Variablen + 6 Befehle à 1 Byte + 10 Befehle à 2 Byte + 9 Befehle à 3 Byte $\rightarrow$ 53 Byte = 424 Bit.
+Speicherbedarf: \$21 + \$1B = \$3C = 60 Byte = 480 Bit.
 
-Laufzeit für $13$: 1210 RTeasy Takte bis \texttt{BRA END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: BRA END}. Auf der realen H6809 wären es 410 Takte:
+Laufzeit für $13$: 1219 RTeasy Takte bis \texttt{BRA END} ausgeführt ist, danach beliebig viele Takte in \texttt{END: BRA END}. Auf der realen H6809 wären es 413 Takte:
 
 \begin{ctabular}{rlrr}
-Schritt & Programmteil & Collatz-Zahl & Takte \\
-0 & Init  &  - &   3 \\
+Schritt & Programmteil & Collatz-Zahl & Takte \\\hline
+0 & Init  &  - &   6 \\
 0 & Loop  & 13 &  25 \\
 1 & Subrt & 13 &  25 \\
 1 & Loop  & 40 &  25 \\
@@ -192,7 +197,7 @@ Schritt & Programmteil & Collatz-Zahl & Takte \\
 8 & Loop  &  2 &  25 \\
 9 & Subrt &  2 &  18 \\
 9 & Loop  &  1 &   6 \\\hline\hline
-- & Ges.  &  - & 410 \\
+- & Ges.  &  - & 413 \\
 \end{ctabular}
 
 Trotz der taktreichen Subroutinen Sprünge ist damit das Programm auf der H6809 schneller (vergleiche: 545 Takte auf der HAM). Das liegt daran, dass durch das Ausnutzen des Adressregisters für die VALUE und ERG Adressen das Austauschen der Werte im Akkumulator gespart werden kann.
