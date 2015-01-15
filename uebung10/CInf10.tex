@@ -112,16 +112,16 @@ Dadurch sparen wir einiges Austauschen im Akkumulator.
    &    &      &        &      &           & Collatz algorithm.         \\\hline
    &    &      &        &      &           & Otherwise side-effect free.\\\hline
 30 & B7 & 004A & SUBRT: & STA  & TMP       & store input in TMP         \\\hline
-33 & 84 &   01 &        & ANDA & 0000 0001 & check odd/even             \\\hline
+33 & 84 &   01 &        & ANDA &       0b1 & check odd/even             \\\hline
 35 & 27 &   0C &        & BEQ  & EVEN      & if even: branch            \\\hline
 37 & B6 & 004A & ODD:   & LDA  & TMP       & reload input               \\\hline
 3A & BB & 004A &        & ADDA & TMP       & $A = 2 \cdot TMP$          \\\hline
 3D & BB & 004A &        & ADDA & TMP       & $A = 3 \cdot TMP$          \\\hline
-40 & 8B &   01 &        & ADDA & 0000 0001 & $A = 3 \cdot TMP + 1$      \\\hline
+40 & 8B &   01 &        & ADDA &       0b1 & $A = 3 \cdot TMP + 1$      \\\hline
 42 & 39 &      &        & RTS  &           &                            \\\hline
 43 & B6 & 004A & EVEN:  & LDA  & TMP       & reload input               \\\hline
 46 & 46 &      &        & RORA &           & ``divide by 2''            \\\hline
-47 & 84 &   7F &        & ANDA & 0111 1111 & delete first bit           \\\hline
+47 & 84 &   7F &        & ANDA & 0b0111 1111 & delete first bit           \\\hline
 49 & 39 &      &        & RTS  &           &                            \\\hline
 4A &    &   00 & TMP    & .BYTE&         1 & TMP, initial 0             \\\hline
 \end{assemblertable}
@@ -137,12 +137,12 @@ Dadurch sparen wir einiges Austauschen im Akkumulator.
 \subex{Assemblerprogramm}
 \begin{assemblertable}
 00 & 8F & FFFF & INIT:  & LDS  & \$FFFF    & init stack pointer         \\\hline
-03 & 8E & 001F &        & LDX  & \#VALUE   & load address of VALUE      \\\hline
+03 & 8E & 001F &        & LDX  & VALUE   & load address of VALUE      \\\hline
 06 & A6 &      & LOOP:  & LDA  & @X        & load VALUE                 \\\hline
 07 & 8B &   FF &        & ADDA & \$FF      & -1 to check for VALUE=1    \\\hline
 09 & 27 &   12 &        & BEQ  & END       & terminate on 1             \\\hline
 0B & 8B &   01 &        & ADDA & \$01      & restore VALUE              \\\hline
-0D & BD & 0030 &        & JSR  & SUBRT:    & jump to Collatz routine    \\\hline
+0D & BD & 0030 &        & JSR  & SUBRT    & jump to Collatz routine    \\\hline
 10 & A7 &      & RETURN:& STA  & @X        & store VALUE                \\\hline
 11 & 30 & 0001 &        & ADDX & \$0001    & set X to ERG address       \\\hline
 12 & A6 &      &        & LDA  & @X        & load ERG                   \\\hline

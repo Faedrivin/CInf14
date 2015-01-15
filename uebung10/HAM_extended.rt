@@ -61,7 +61,7 @@ LOADI:  AR<-DR(7:0);
 	read M;
 	AR<-DR(7:0);
 	read M;
-	AC<-DR(7:0) | goto FETCH;
+	AC<-DR | goto FETCH;
 
 STOREI: AR<-DR(7:0);
 	read M;
