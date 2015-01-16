@@ -52,11 +52,6 @@
 .include "m16def.inc"
 
 /**
- * Program starts at 0.
- */
-.org 0
-
-/**
  * Holds the current value.
  */
 .def current_value = R24
@@ -79,11 +74,6 @@
  * Thus the high byte array_ptr_high is stored in R27 (also XH)
  */
 .def array_ptr_high = R27
-
-/**
- * The start address of the array is 0x200.
- */
-.set array_begin = 0x200
 
 /**
  * The maximum array length is 30.
@@ -113,7 +103,7 @@
     SER stack_size
     SER array_ptr_low
     SER array_ptr_high
-.endm
+.endmacro
 
 /**
  * This macro loads the array address "address" into the X register.
@@ -125,7 +115,7 @@
 .macro RESET_ARRAY_PTR
     LDI XL, low(@0)
     LDI XH, high(@0)
-.endm
+.endmacro
 
 /**
  * Initializes the stack pointer (SPL and SPH) to "address".
@@ -139,7 +129,7 @@
     OUT SPL, current_value
     LDI current_value, high(@0)
     OUT SPH, current_value
-.endm
+.endmacro
 
 /**
  * Provides a macro for an infinite loop to handle default
@@ -152,7 +142,64 @@
 .macro TERMINATE
     Termination_Loop:
         RJMP Termination_Loop
-.endm
+.endmacro
+
+/**
+ * Code segment for INIT_ARRAY.
+ */
+.cseg
+
+/**
+ * Leave enough room for the normal code.
+ */
+.org 0x400
+
+/**
+ * Define INIT_ARRAY for custom array.
+ */
+/* add a / at the end of this line to enable the custom array *
+INIT_ARRAY:
+  RESET_ARRAY_PTR array_begin // init array ptr
+
+  // Load a value (5) and store it to the data space.
+  // Repeat as needed.
+  LDI current_value, 5
+  ST X+, current_value
+
+  // return from subroutine
+  RET
+/**/
+
+/**
+ * Prepare array at 0x200 iff INIT_ARRAY is not defined.
+ */
+.dseg
+
+/**
+ * Start array at 0x200.
+ */
+.org 0x200
+
+/**
+ * Declare max_array_len bytes as array.
+ */
+Array_Begin: .byte max_array_len
+
+.ifndef INIT_ARRAY
+    .warning "INIT_ARRAY not defined! Using default."
+.else
+    .message "Found custom INIT_ARRAY."
+.endif
+
+/**
+ * Start of the code segment.
+ */
+.cseg
+
+/**
+ * Program starts at 0.
+ */
+.org 0
 
 /**
  * Runs the program after initializing the registers and 
@@ -175,11 +222,9 @@ Main_Entry_Point:
     INIT_STACK_PTR RAMEND     // init stack pointer
     
     .ifndef INIT_ARRAY
-        .message "Define INIT_ARRAY for your array. Loading example."
-        CALL PREPARE_EXAMPLE  // creates an example array
-    .else
-        CALL INIT_ARRAY       // shall create the correct array
+        .message "Define INIT_ARRAY for your array. Using example."
     .endif
+     CALL INIT_ARRAY       // shall create the correct array
     
     CALL REVERSE_ARRAY_ODDS   // run the program
     
@@ -206,7 +251,7 @@ Main_Entry_Point:
  */
 REVERSE_ARRAY_ODDS:
     Begin:                            // initialize the program
-        RESET_ARRAY_PTR array_begin   // init array address (in X)
+        RESET_ARRAY_PTR Array_Begin   // init array address (in X)
         LDI stack_size, 0
         
     Loop_Push:
@@ -230,9 +275,9 @@ REVERSE_ARRAY_ODDS:
         BRNE Loop_Push                // if Z-flag = 0 branch to Loop_Push
         
     Init_Pop:
-        RESET_ARRAY_PTR array_begin   // return to array begin
+        RESET_ARRAY_PTR Array_Begin   // return to array begin
         TST stack_size                // check if stack is <= 0 
-		                              // (will never be < 0)
+                                      // (will never be < 0)
         BREQ End                      // end if no elements are on the stack
 
     Loop_Pop:
@@ -246,36 +291,35 @@ REVERSE_ARRAY_ODDS:
         RET
 
 /**
- * Prepares an example array.
+ * Prepares an array.
  * This subroutine resets the array pointer with RESET_ARRAY_PTR
  * and uses the register current_value (R24) to load some immediate
  * values and store them subsequently into the array.
- * The values are:
- * 3, 124, 6, 2, 113, 255, 154, 9.
- *
+ * 
  * in:     void
  * out:    void
- * Effect: (X) and following memory addresses are set to
- *         3, 124, 6, 2, 113, 255, 154, 9.
+ * Effect: (X) and following memory addresses are set
  */
-PREPARE_EXAMPLE: 
-    RESET_ARRAY_PTR array_begin // init array ptr
-    LDI current_value,   3
-    ST X+, current_value
-    LDI current_value, 124
-    ST X+, current_value
-    LDI current_value,   6
-    ST X+, current_value
-    LDI current_value,   2
-    ST X+, current_value
-    LDI current_value, 113
-    ST X+, current_value
-    LDI current_value, 255
-    ST X+, current_value
-    LDI current_value, 154
-    ST X+, current_value
-    LDI current_value,   9
-    ST X+, current_value
-    RET
+.ifndef INIT_ARRAY
+    INIT_ARRAY:
+        RESET_ARRAY_PTR Array_Begin
+        LDI current_value,   3
+        ST X+, current_value
+        LDI current_value, 124
+        ST X+, current_value
+        LDI current_value,   6
+        ST X+, current_value
+        LDI current_value,   2
+        ST X+, current_value
+        LDI current_value, 113
+        ST X+, current_value
+        LDI current_value, 255
+        ST X+, current_value
+        LDI current_value, 154
+        ST X+, current_value
+        LDI current_value,   9
+        ST X+, current_value
+        RET
+.endif
 
 .exit
