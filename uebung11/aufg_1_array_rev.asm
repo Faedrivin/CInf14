@@ -150,14 +150,14 @@
 .cseg
 
 /**
- * Leave enough room for the normal code.
+ * Leave enough space for the program code.
  */
 .org 0x400
 
 /**
  * Define INIT_ARRAY for custom array.
  */
-/* add a / at the end of this line to enable the custom array *
+/*
 INIT_ARRAY:
   RESET_ARRAY_PTR array_begin // init array ptr
 
@@ -168,7 +168,7 @@ INIT_ARRAY:
 
   // return from subroutine
   RET
-/**/
+*/
 
 /**
  * Prepare array at 0x200 iff INIT_ARRAY is not defined.
@@ -185,6 +185,9 @@ INIT_ARRAY:
  */
 Array_Begin: .byte max_array_len
 
+/**
+ * Warn if INIT_ARRAY is not defined by the user.
+ */
 .ifndef INIT_ARRAY
     .warning "INIT_ARRAY not defined! Using default."
 .else
@@ -224,7 +227,7 @@ Main_Entry_Point:
     .ifndef INIT_ARRAY
         .message "Define INIT_ARRAY for your array. Using example."
     .endif
-     CALL INIT_ARRAY       // shall create the correct array
+    CALL INIT_ARRAY       // shall create the correct array
     
     CALL REVERSE_ARRAY_ODDS   // run the program
     
