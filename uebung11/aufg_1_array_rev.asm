@@ -105,16 +105,17 @@
     SER array_ptr_high
 .endmacro
 
-/**
+/* 
  * This macro loads the array address "address" into the X register.
  *
  * in:     address (16 bit)
  * out:    X at address
- * Effect: X <- address (XL <- low(address), XH <- high(address))
+ * Effect: X <- address (array_ptr_low <- low(address), 
+ *                       array_ptr_high <- high(address))
  */
 .macro RESET_ARRAY_PTR
-    LDI XL, low(@0)
-    LDI XH, high(@0)
+    LDI array_ptr_low, low(@0)
+    LDI array_ptr_high, high(@0)
 .endmacro
 
 /**
@@ -268,7 +269,7 @@ REVERSE_ARRAY_ODDS:
         SBRC current_value, lsb       // skip if lsb 0 (= if even)
         INC stack_size                // increment stack counter
 
-        // check if value = 255 or at end of arry (XL = 30)
+        // check if value = 255 or at end of array (XL = 30)
         // if any applies: branch to Init_Pop
         // else: go to back to Loop_Push
         CPI current_value, array_terminal // if array terminal Z-flag <- 1
