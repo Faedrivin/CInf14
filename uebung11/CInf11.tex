@@ -89,7 +89,18 @@ X   & X & R26 und R27 sind X\\
 
 Das gesamte Programm ist in \autoref{calc} \textcolor{red}{(wtf is the number?)} abgedruckt.
 
-\subex{Programmablaufplan}
+\subex{Programmablaufplan und Registerbelegung}
+
+Um den unterschiedlichen Namen der bereits entwickelten Unterprogramme Rechnung
+zu tragen, haben die Register mehrere Namen.
+
+\begin{ctabular}{>{\ttfamily}l>{\ttfamily}l}
+    \rmfamily Name & \rmfamily Register \\\hline
+   numerator, n, summand1, subtrahend & R16 \\
+   denominator,summand2, minuend & R17 \\
+   quotient, result & R18 \\
+   remainder, tmp, operation & R19
+\end{ctabular}
 
 \begin{center}
    \begin{tikzpicture}[block/.append style={text width=4cm}]
