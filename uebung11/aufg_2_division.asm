@@ -76,8 +76,8 @@
  * Effect: infinite loop.
  */
 .macro TERMINATE
-    Termination_Loop:
-        RJMP Termination_Loop
+    Termination_LoopDiv:
+        RJMP Termination_LoopDiv
 .endmacro
 
 /**
@@ -165,13 +165,13 @@ DIVIDE:
 
 	// While remainder >= denominator, subtract denominator from
 	// remainder and increment 
-    Loop:
+    LoopDiv:
 	    CP remainder, denominator
-		BRLO End
+		BRLO EndDiv
 		SUB remainder, denominator
 		INC quotient
-		RJMP Loop
-	End:
+		RJMP LoopDiv
+	EndDiv:
         RET
 
 /**

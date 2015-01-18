@@ -85,6 +85,7 @@
   keywordstyle = \color{purple}\textbf,
   numberstyle  = \tiny\color{gray},
   numbers      = left,
+  title        = \lstname,
   stringstyle  = \color{olive},
   matchrangestart=t,
 }
@@ -115,6 +116,16 @@
 \tikzstyle{line}     = [draw, -latex', typewriter]
 \tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
                         minimum height=1em, typewriter]
+\tikzstyle{subprogram}    = [rectangle, draw, typewriter,
+                        text width=7em, text centered, minimum height=2em,append after command={
+   \pgfextra{
+      \draw ($(\tikzlastnode.north west) + (5pt,0)$) 
+         -- ($(\tikzlastnode.south west) + (5pt,0)$);
+      \draw ($(\tikzlastnode.north east) - (5pt,0)$) 
+         -- ($(\tikzlastnode.south east) - (5pt,0)$);
+      }
+   }
+]
 
 % styles for circuit diagrams
 \newlength{\portsize}
@@ -259,7 +270,7 @@ sep=1pt,minimum height=.7em]
 
 
 % short hand for $\leftarrow$
-\newcommand{\la}{\ensuremath{\leftarrow}}
+\newcommand{\la}{\ensuremath{\leftarrow{}}}
 
 % complement for boolean algebra
 \newcommand{\comp}[1]{% \comp{<expr>}

@@ -99,23 +99,24 @@
 
 MAIN_PROGRAM_CALCULATOR:
 		INIT_STACK_PTR RAMEND
-		CALL INIT_PORTS
-		IN operation, PINB ; load everything from PINB
-		ANDI operation, 0x03 ; mask out all but the lower to bits
-		CPI operation, 0x00
+		CALL INIT_PORTS         ; should we save contents of R16-19 here?
+		IN operation, PINB      ; load everything from PINB
+		ANDI operation, 0x03    ; mask out all but the lower two bits
+		CPI operation, 0x00     ; controls == 00 => sum
 		BREQ Sum
-		CPI operation, 0x01
+		CPI operation, 0x01     ; controls == 01 => difference
 		BREQ Subtract
-		CPI operation, 0x02
+		CPI operation, 0x02     ; controls == 10 => quotient
 		BREQ Div
-		CPI operation, 0x03
-		BREQ Fact
+		CPI operation, 0x03     ; controls == 11 => factorial
+		BREQ Fact               ; the check can be avoided, but like this is easier to read
+      ; there is no else case
 
 	Sum:
-		IN summand1, PINA
+		IN summand1, PINA       ; read 2 summands from input pins
 		IN summand2, PINC
-		ADD summand1, summand2
-		OUT PORTD, summand1
+		ADD summand1, summand2  ; add
+		OUT PORTD, summand1     ; write out
 		RJMP End
 	Subtract:
 		IN subtrahend, PINA
@@ -124,45 +125,45 @@ MAIN_PROGRAM_CALCULATOR:
 		OUT PORTD, subtrahend
 		RJMP End
 	Div:
-		IN numerator, PINA
+		IN numerator, PINA      ; load arguments from input pins
 		IN denominator, PINC
-		CALL Divide
+		CALL Divide             ; subroutine will operate on R16-R19
 		OUT PORTD, quotient
 		RJMP End
 	Fact:
 		IN n, PINA
-		CALL Factorial
+		CALL Factorial          ; subroutine will operate on R16 and R18
 		OUT PORTD, result
-	End:
-		TERMINATE
 
+	End:
+		TERMINATE               ; endless loop macro
 		
 
 INIT_PORTS:
-	PUSH R16 ; save whatever is in R16
-	IN R16, SREG ; use it to get status flags
-	PUSH R16 ; put them on stack
+	PUSH R16                   ; save whatever is in R16
+	IN R16, SREG               ; use it to get status flags
+	PUSH R16                   ; put them on stack
 
-	// init a and c
-	CLR R16
-	OUT DDRA, R16 ; set all bits of PORTA and PORTC to be inputs
+	/* init a and c */
+	CLR R16                    ; set R16 to all 0s
+	OUT DDRA, R16              ; set all bits of PORTA and PORTC to be inputs
 	OUT DDRC, R16
-	SER R16
-	OUT PORTA, R16 ; activate internal pull-up resistors for port a and c (because we use them as inputs at it is done for b?)
-	OUT PORTC, R16 ; now data can be read from PINA and PINC
+	SER R16                    ; set R16 to all 1s
+	OUT PORTA, R16             ; activate internal pull-up resistors for port a and c (necessary?)
+	OUT PORTC, R16             ; now data can be read from PINA and PINC
 
-	// init d 
-	OUT DDRD, R16 ; set all bits of PORTD to be outputs, now data can be written to PORTD
+	 /* init d */ 
+	OUT DDRD, R16              ; set all bits of PORTD to be outputs, now data can be written to PORTD
 
 	// init b
-	CBI DDRB, PB0	; set fst and scnd bit of PINB to be inputs, rest will stay the same		
+	CBI DDRB, PB0	            ; set 1st and 2nd bit of PINB to be inputs, rest will stay the same		
 	CBI DDRB, PB1	
-	SBI PORTB, PB0  ; set lower 2 pins of PORTB to 1 so PINB(0,1) will function as 'input with pull-up' whatever the fuck that means
-	SBI PORTB, PB1  ; now we can read from PINB0 and PINB1 to get the command select signals
+	SBI PORTB, PB0             ; set lower 2 pins of PORTB to 1 so PINB(0,1) will have activated pull-up resistors (whatever that means)
+	SBI PORTB, PB1             ; now we can read from PINB0 and PINB1 to get the command select signals
 
-	POP R16 ; get status flags back from stack
-	OUT SREG, R16
-	POP R16 ; get original R16 contents back from stack
+	POP R16                    ; get status flags back from stack
+	OUT SREG, R16              ; restore status flags
+	POP R16                    ; get original R16 contents back from stack
 	RET
 
 DIVIDE:

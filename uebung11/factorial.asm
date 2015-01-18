@@ -23,8 +23,8 @@
  * Effect: infinite loop.
  */
 .macro TERMINATE
-    Termination_Loop:
-        RJMP Termination_Loop
+    Termination_LoopFact:
+        RJMP Termination_LoopFact
 .endmacro
 
 /**
@@ -84,20 +84,20 @@ FACTORIAL:
 		BREQ Abort	; if <= 0, this is bullshit 
 		MOV tmp, n	; else save in tmp
 		LDI result, 1 ; result is at least 1
-	Loop:
+	LoopFact:
 		; while tmp != 0 do result *= tmp--
 		TST tmp		; check if counter is down to zero
-		BREQ Clean	; if yes, exit
+		BREQ EndFact	; if yes, exit
 		MUL result, tmp ; else multiply intermediate by current decrement
 		MOV result, R0 ; product is placed in R0 so, move out (this can perhaps be avoided)
 		DEC tmp		; decrement n
-		RJMP Loop	; continue
+		RJMP LoopFact	; continue
 
 	Abort:
 		LDI result, 0 ; bad argument, set result to 0 (normally impossible)
-		RJMP Clean	; restore shit
+		RJMP EndFact	; restore shit
 
-	Clean:			; get all status back to what it was before
+	EndFact:			; get all status back to what it was before
 		POP R1
 		OUT SREG, R1
 		POP R1

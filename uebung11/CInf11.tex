@@ -80,10 +80,99 @@ X   & X & R26 und R27 sind X\\
 
 \ex{Fakultät auf dem ATmega16}{8 + 15}
 
-\lstset{language={[avr8avra]Assembler}}
+\lstset{language={[avr8avra]Assembler},morecomment=[n]{/*}{*/},morecomment=[l]{//}}
 \lstinputlisting{factorial.asm}
 
 \ex{Einfacher Rechner}{8 + 8 + 15}
 
-\lstinputlisting{calculator/calculator.asm}
+\subex{\texttt{INIT\_PORTS}}
+
+Das gesamte Programm ist in \autoref{calc} \textcolor{red}{(wtf is the number?)} abgedruckt.
+
+\subex{Programmablaufplan}
+
+\begin{center}
+   \begin{tikzpicture}[block/.append style={text width=4cm}]
+      \node[cloud] (main) {Main Program};
+      \node[below=of main, block] (initsp1) {SP(15..8) \la RAMEND(15..8)};
+      \node[below=of initsp1, block] (initsp2) {SP(15..8) \la RAMEND(15..8)};
+      \node[subprogram,below=of initsp2]  (call init_ports) {INIT\_PORTS};
+      \node[block,below=of call init_ports] (ldop) {operation \la PINB};
+
+      \draw[line] (main) -- (initsp1);
+      \draw[line] (initsp1) -- (initsp2);
+      \draw[line] (initsp2) -- (call init_ports);
+      \draw[line] (call init_ports) -- (ldop);
+
+      \node[decision,below=of ldop] (op==0) {operation == 0?};
+      \node[decision,below=of {op==0}] (op==1) {operation == 1?};
+      \node[decision,below=of {op==1}] (op==2) {operation == 2?};
+
+
+      \draw[line] (ldop) -- node[left] {No} (op==0);
+      \draw[line] (op==0) -- node[left] {No} (op==1);
+      \draw[line] (op==1) -- node[left] {No} (op==2);
+
+      \node[on grid,cloud,right=of {op==0}] (sum) {Sum};
+      \node[on grid,cloud,right=of {op==1}] (sub) {Subtract};
+      \node[on grid,cloud,right=of {op==2}] (div) {Divide};
+      \node[on grid,cloud,below=of div] (fact) {Factorial};
+
+      \draw[line] (op==0) -- node[above] {Yes} (sum);
+      \draw[line] (op==1) -- node[above] {Yes} (sub);
+      \draw[line] (op==2) -- node[above] {Yes} (div);
+      \draw[line] (op==2) |- node[above right] {No} (fact);
+
+      \node[block,above right=10cm and 3cm of sum.center] (lds1) {summand1 \la PINA};
+      \node[block,below=3ex of lds1] (lds2) {summand2 \la PINC};
+      \node[block,below=3ex of lds2] (add) {summand1 \la summand1 + summand2};
+      \node[block,below=3ex of add] (addout) {PORTD \la summand1};
+
+      \draw[line] (sum.east) -- ++(1em,0) |- (lds1);
+      \draw[line] (lds1) -- (lds2);
+      \draw[line] (lds2) -- (add);
+      \draw[line] (add) -- (addout);
+
+      \node[block,above right=7cm and 3cm of sub.center] (ldsubtr) {subtrahend \la PINA};
+      \node[block,below=3ex of ldsubtr] (ldminu) {minuend \la PINC};
+      \node[block,below=3ex of ldminu] (subtract) {subtrahend \la subtrahend - minuend};
+      \node[block,below=3ex of subtract] (subout) {PORTD \la subtrahend};
+
+      \draw[line] (sub.east) -- ++(1em,0) |- (ldsubtr);
+      \draw[line] (ldsubtr) -- (ldminu);
+      \draw[line] (ldminu) -- (subtract);
+      \draw[line] (subtract) -- (subout);
+
+      \node[block,above right=4cm and 3cm of div.center] (ldnum) {numerator \la PINA};
+      \node[block,below=3ex of ldnum] (lddenom) {denominator \la PINC};
+      \node[subprogram,below=3ex of lddenom] (call divide) {DIVIDE};
+      \node[block,below=3ex of call divide] (divout) {PORTD \la quotient};
+
+      \draw[line] (div.east) -- ++(3em,0) |- (ldnum);
+      \draw[line] (ldnum) -- (lddenom);
+      \draw[line] (lddenom) -- (call divide);
+      \draw[line] (call divide) -- (divout);
+
+      \node[block,above right=1cm and 3cm of fact.center] (ldn) {n \la PINA};
+      \node[subprogram,below=3ex of ldn] (call fact) {FACTORIAL};
+      \node[block,below=3ex of call fact] (factout) {PORTD \la result};
+
+      \draw[line] (fact.east) -- ++(1em,0) |- (ldn);
+      \draw[line] (ldn) -- (call fact);
+      \draw[line] (call fact) -- (factout);
+
+      \node[cloud,right=of lddenom] (term) {TERM};
+
+      \draw[line] (addout.east) -| (term);
+      \draw[line] (subout.east) -| (term);
+      \draw[line] (divout.east) -| (term);
+      \draw[line] (factout.east) -| (term);
+
+      \path[-latex']
+      (term) edge[loop left,-latex'] ();
+   \end{tikzpicture}
+\end{center}
+
+\subex{Assemblerprogramm}
+\lstinputlisting[label={calc}]{calculator/calculator.asm}
 \end{document}
