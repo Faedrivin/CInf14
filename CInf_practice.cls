@@ -76,18 +76,18 @@
     \fi}
 
 \lstset{
-  xleftmargin  = .2\textwidth, 
-  xrightmargin = .2\textwidth,
-  basicstyle   = \footnotesize\ttfamily,
-  language     = Python,
-  breaklines   = true,
-  commentstyle = \color{blue},
-  keywordstyle = \color{purple}\textbf,
-  numberstyle  = \tiny\color{gray},
-  numbers      = left,
-  title        = \lstname,
-  stringstyle  = \color{olive},
-  matchrangestart=t,
+   tabsize=2,
+   basicstyle   = \footnotesize\ttfamily,
+   breaklines   = true,
+   commentstyle = \color{blue},
+   keywordstyle = \color{purple}\textbf,
+   numberstyle  = \tiny\color{gray},
+   numbers      = left,
+   title        = \lstname,
+   stringstyle  = \color{olive},
+   matchrangestart=t,
+   linewidth=\textwidth,
+   xleftmargin=\marginparwidth,
 }
 \lstdefinelanguage{RTeasy}{keywords={fi,declare,register,array,bus,memory,goto,then,read}}
 
