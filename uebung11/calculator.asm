@@ -34,7 +34,7 @@
  * Temp. Used by the main program to store the command selection.
  * Also used by the factorial.
  */
-.def tmp = R20
+.def operation = R20
 
  /**
  * Start of the code segment.
@@ -47,19 +47,19 @@
 .org 0
 
 Main_Program_Calculator:
-		INIT_STACK_PTR RAMEND, tmp
-		CALL INIT_PORTS      ; should we save contents of R16-19 here?
-		IN tmp, PINB      ; load everything from PINB
-		ANDI tmp, 0x03    ; mask out all but the lower two bits
-		CPI tmp, 0x00     ; controls == 00 => sum
+		INIT_STACK_PTR RAMEND, operation
+		CALL INIT_PORTS         ; should we save contents of R16-19 here?
+		IN operation, PINB      ; load everything from PINB
+		ANDI operation, 0x03    ; mask out all but the lower two bits
+		CPI operation, 0x00     ; controls == 00 => sum
 		BREQ Sum
-		CPI tmp, 0x01     ; controls == 01 => difference
+		CPI operation, 0x01     ; controls == 01 => difference
 		BREQ Subtract
-		CPI tmp, 0x02     ; controls == 10 => quotient
+		CPI operation, 0x02     ; controls == 10 => quotient
 		BREQ Div
-		CPI tmp, 0x03     ; controls == 11 => factorial
+		CPI operation, 0x03     ; controls == 11 => factorial
 		BREQ Fact         
-		RJMP End          ; on invalid input terminate
+		RJMP End                ; on invalid input terminate
 
 	Sum:
 		IN operandLeft, PINA       ; read 2 summands from input pins
@@ -89,20 +89,20 @@ Main_Program_Calculator:
 		
 
 INIT_PORTS:
-	PUSH tmp                   ; save whatever is in tmp
-	IN tmp, SREG               ; use it to get status flags
-	PUSH tmp                   ; put them on stack
+	PUSH operation                   ; save whatever is in tmp
+	IN operation, SREG               ; use it to get status flags
+	PUSH operation                   ; put them on stack
 
 	/* init a and c */
-	CLR tmp                    ; set tmp to all 0s
-	OUT DDRA, tmp              ; set all bits of PORTA and PORTC to be inputs
-	OUT DDRC, tmp
-	SER tmp                    ; set tmp to all 1s
-	OUT PORTA, tmp             ; activate internal pull-up resistors for port a and c (necessary?)
-	OUT PORTC, tmp             ; now data can be read from PINA and PINC
+	CLR operation                    ; set tmp to all 0s
+	OUT DDRA, operation              ; set all bits of PORTA and PORTC to be inputs
+	OUT DDRC, operation
+	SER operation                    ; set tmp to all 1s
+	OUT PORTA, operation             ; activate internal pull-up resistors for port a and c (necessary?)
+	OUT PORTC, operation             ; now data can be read from PINA and PINC
 
 	 /* init d */ 
-	OUT DDRD, tmp              ; set all bits of PORTD to be outputs, now data can be written to PORTD
+	OUT DDRD, operation              ; set all bits of PORTD to be outputs, now data can be written to PORTD
 
 	/* init b */
 	CBI DDRB, PB0	            ; set 1st and 2nd bit of PINB to be inputs, rest will stay the same		
@@ -110,9 +110,9 @@ INIT_PORTS:
 	SBI PORTB, PB0             ; set lower 2 pins of PORTB to 1 so PINB(0,1) will have activated pull-up resistors (whatever that means)
 	SBI PORTB, PB1             ; now we can read from PINB0 and PINB1 to get the command select signals
 
-	POP tmp                    ; get status flags back from stack
-	OUT SREG, tmp              ; restore status flags
-	POP tmp                    ; get original R16 contents back from stack
+	POP operation                    ; get status flags back from stack
+	OUT SREG, operation              ; restore status flags
+	POP operation                    ; get original R16 contents back from stack
 	RET
 
 /**
