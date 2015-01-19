@@ -162,16 +162,15 @@ REVERSE_ARRAY_ODDS:
         
     Init_Pop:
         SET_X_REG Array_Begin   // return to array begin
-        TST stack_size          // check if stack is <= 0 
-                                // (will never be < 0)
-        BREQ End                // end if no elements are on the stack
-
-    Loop_Pop:
+    
+	Loop_Pop:
+	    TST stack_size       // check if stack is <= 0 
+                             // (will never be < 0)
+        BREQ End             // end if no elements are on the stack
         POP current_value    // remove TOS
         ST X+, current_value // store value
         DEC stack_size       // decrement stack_size
-        TST stack_size       // check if there are elements left
-        BRNE Loop_Pop        // if there are, remove them, else end
+		RJMP Loop_Pop
 
     End:
         RET
