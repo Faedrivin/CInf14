@@ -1,4 +1,3 @@
-
 /**
  * This program is designed for an ATmega16.
  */
@@ -18,13 +17,13 @@
  * Effect: SPL <- low(address), SPH <- high(address)
  */
 .macro INIT_STACK_PTR 
-    LDI @1, low(@0)
-    OUT SPL, @1
-    LDI @1, high(@0)
-    OUT SPH, @1
+  LDI @1, low(@0)
+  OUT SPL, @1
+  LDI @1, high(@0)
+  OUT SPH, @1
 .endmacro
 
-/* 
+/**
  * This macro loads the array address "address" into the X register.
  *
  * in:     address (16 bit)
@@ -33,34 +32,8 @@
  *                       XH <- high(address))
  */
 .macro SET_X_REG
-    LDI XL, low(@0)
-    LDI XH, high(@0)
-.endmacro
-
-/* 
- * This macro loads the array address "address" into the Y register.
- *
- * in:     address (16 bit)
- * out:    Y at address
- * Effect: Y <- address (YL <- low(address), 
- *                       YH <- high(address))
- */
-.macro SET_Y_REG
-    LDI YL, low(@0)
-    LDI YH, high(@0)
-.endmacro
-
-/* 
- * This macro loads the array address "address" into the Z register.
- *
- * in:     address (16 bit)
- * out:    Z at address
- * Effect: Z <- address (ZL <- low(address), 
- *                       ZH <- high(address))
- */
-.macro SET_Z_REG
-    LDI ZL, low(@0)
-    LDI ZH, high(@0)
+  LDI XL, low(@0)
+  LDI XH, high(@0)
 .endmacro
 
 /**
@@ -72,6 +45,6 @@
  * Effect: infinite loop.
  */
 .macro TERMINATE
-    Termination_Loop:
-        RJMP Termination_Loop
+  Termination_Loop:
+    RJMP Termination_Loop
 .endmacro

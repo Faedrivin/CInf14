@@ -14,13 +14,13 @@ Alle Programme dieses Aufgabenblattes nutzen folgende Include-Datei \texttt{init
 \lstinputlisting{init_header.inc}
 
 
-
+\newpage
 \ex{Stackverarbeitung}{1 + 8 + 14}
 
 
 \subex{Adressierung Arrays}
 Am besten kann man für Arrayadressierungen in unserem Anwendungsfall auf dem ATmega16 
-\emph{Data Indirect with Post-increment} verwenden.
+\emph{Data Indirect with Post-increment} verwenden: Wir wollen immer auf ein Datum zugreifen und dann weitergehen.
 
 
 \subex{Programmablaufplan \& Registerbelegung}
@@ -85,15 +85,52 @@ X   & X & R26 und R27 sind X\\
 \end{center}
 } % end scope for \val, \stack, ...
 
+\newpage
 \subex{Assemblerprogramm}
 \lstinputlisting{array_rev.asm}
 
 
 
+\newpage
 \ex{Division auf dem ATmega16}{8 + 15}
 
 \subex{Programmablaufplan}
+{ % scope for these short hands:
+\def\num{numerator}
+\def\den{denominator}
+\def\quot{quotient}
+\def\rem{remainder}
 
+\def\blockW{5.0cm}
+\def\decW{4.0cm}
+
+\begin{center}
+\begin{tikzpicture}
+\node[cloud] (begin) {Begin};
+\node[decision, below=of begin, text width=\decW, shape aspect=3] (div0)
+    {\den\ == 0?};
+\node[block, below=of div0, text width=\blockW] (init) 
+    {\rem\ \la \num \\ \quot\ \la 0};
+\node[decision, below=of init, text width=\decW, shape aspect=3] (loophead)
+    {\rem\ < \den ?};
+\node[block, below=of loophead, text width=1.5*\blockW] (step)
+    {\rem\ \la \rem\ - \den \\ \quot\ \la \quot + 1};
+\node[cloud, left=of step] (end) {End};
+
+\node[block, above=of end, left=of div0, text width=.7*\blockW] (error)
+    {\quot\ \la \#0 \\ \rem\ \la \#\$ff};
+
+\draw[->] (begin) -- (div0);
+\draw[->] (div0) -- node[left] {no} (init);
+\draw[->] (div0) -- node[above] {yes} (error);
+\draw[->] (error) -| (end);
+\draw[->] (init) -- (loophead);
+\draw[->] (loophead) -| node[near start, above] {no} (end);
+\draw[->] (loophead) -- node[left] {yes} (step);
+\draw[->] (step) -- ($(step)+(\blockW,0)$) |- (loophead);
+\end{tikzpicture}
+\end{center}
+} % end scope for \val, \stack, ...
 
 \subex{Assemblerprogramm}
 
@@ -167,24 +204,22 @@ X   & X & R26 und R27 sind X\\
 \lstinputlisting{factorial.asm}
 
 
-
+\newpage
 \ex{Einfacher Rechner}{8 + 8 + 15}
 
 \subex{\texttt{INIT\_PORTS}}
 
-Das gesamte Programm ist in \autoref{lst:calc} \textcolor{red}{(wtf is the number?)} abgedruckt.
+Das gesamte Programm ist in Teilaufgabe c) abgedruckt.
 
 \subex{Programmablaufplan und Registerbelegung}
 
-Um den unterschiedlichen Namen der bereits entwickelten Unterprogramme Rechnung
-zu tragen, haben die Register mehrere Namen.
-
-\begin{ctabular}{>{\ttfamily}l>{\ttfamily}l}
-    \rmfamily Name & \rmfamily Register \\\hline
-   numerator, n, summand1, subtrahend & R16 \\
-   denominator,summand2, minuend & R17 \\
-   quotient, result & R18 \\
-   remainder, tmp, operation & R19
+\begin{ctabular}{>{\ttfamily}l>{\ttfamily}ll}
+    \rmfamily Name & \rmfamily Register & Belegung\\\hline
+   operandLeft & R16 & Linker Operand (Minuend, Zähler, etc.) \\
+   operandRight & R17 & Rechter Operand (Subtrahend, Divisor) \\
+   result & R18 & Das Ergebnis, bei der Division der Quotient\\
+   remainder & R19 & Bei der Division der Rest\\
+   operation & R20 & Als temporäre Variable und für den Operator genutzt. \\
 \end{ctabular}
 
 \begin{center}
@@ -219,37 +254,37 @@ zu tragen, haben die Register mehrere Namen.
       \draw[line] (op==2) -- node[above] {Yes} (div);
       \draw[line] (op==2) |- node[above right] {No} (fact);
 
-      \node[block,above right=10cm and 3cm of sum.center] (lds1) {summand1 \la PINA};
-      \node[block,below=3ex of lds1] (lds2) {summand2 \la PINC};
-      \node[block,below=3ex of lds2] (add) {summand1 \la summand1 + summand2};
-      \node[block,below=3ex of add] (addout) {PORTD \la summand1};
+      \node[block,above right=10cm and 3cm of sum.center] (lds1) {operandLeft \la PINA};
+      \node[block,below=3ex of lds1] (lds2) {operandRight \la PINC};
+      \node[block,below=3ex of lds2] (add) {operandLeft \la operandLeft + operandRight};
+      \node[block,below=3ex of add] (addout) {PORTD \la operandLeft};
 
       \draw[line] (sum.east) -- ++(1em,0) |- (lds1);
       \draw[line] (lds1) -- (lds2);
       \draw[line] (lds2) -- (add);
       \draw[line] (add) -- (addout);
 
-      \node[block,above right=7cm and 3cm of sub.center] (ldsubtr) {subtrahend \la PINA};
-      \node[block,below=3ex of ldsubtr] (ldminu) {minuend \la PINC};
-      \node[block,below=3ex of ldminu] (subtract) {subtrahend \la subtrahend - minuend};
-      \node[block,below=3ex of subtract] (subout) {PORTD \la subtrahend};
+      \node[block,above right=7cm and 3cm of sub.center] (ldsubtr) {operandLeft \la PINA};
+      \node[block,below=3ex of ldsubtr] (ldminu) {operandRight \la PINC};
+      \node[block,below=3ex of ldminu] (subtract) {operandLeft \la operandLeft - operandRight};
+      \node[block,below=3ex of subtract] (subout) {PORTD \la operandLeft};
 
       \draw[line] (sub.east) -- ++(1em,0) |- (ldsubtr);
       \draw[line] (ldsubtr) -- (ldminu);
       \draw[line] (ldminu) -- (subtract);
       \draw[line] (subtract) -- (subout);
 
-      \node[block,above right=4cm and 3cm of div.center] (ldnum) {numerator \la PINA};
-      \node[block,below=3ex of ldnum] (lddenom) {denominator \la PINC};
+      \node[block,above right=4cm and 3cm of div.center] (ldnum) {operandLeft \la PINA};
+      \node[block,below=3ex of ldnum] (lddenom) {operandRight \la PINC};
       \node[subprogram,below=3ex of lddenom] (call divide) {DIVIDE};
-      \node[block,below=3ex of call divide] (divout) {PORTD \la quotient};
+      \node[block,below=3ex of call divide] (divout) {PORTD \la result};
 
       \draw[line] (div.east) -- ++(3em,0) |- (ldnum);
       \draw[line] (ldnum) -- (lddenom);
       \draw[line] (lddenom) -- (call divide);
       \draw[line] (call divide) -- (divout);
 
-      \node[block,above right=1cm and 3cm of fact.center] (ldn) {n \la PINA};
+      \node[block,above right=1cm and 3cm of fact.center] (ldn) {operandLeft \la PINA};
       \node[subprogram,below=3ex of ldn] (call fact) {FACTORIAL};
       \node[block,below=3ex of call fact] (factout) {PORTD \la result};
 
@@ -269,7 +304,7 @@ zu tragen, haben die Register mehrere Namen.
    \end{tikzpicture}
 \end{center}
 
-\subex{Assemblerprogramm}
-\lstinputlisting[label={lst:calc}]{calculator.asm}
+\subex{Assemblerprogramm}\label{lst:calc}
+\lstinputlisting{calculator.asm}
 
 \end{document}

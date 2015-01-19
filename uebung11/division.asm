@@ -55,11 +55,11 @@
  * Effect: Runs the program.
  */
 Main_Entry_Point:
-    INIT_STACK_PTR RAMEND, quotient ; init stack pointer
-    
-    CALL DIVISION ; run the program
-    
-    TERMINATE     ; terminate in infinite loop
+  INIT_STACK_PTR RAMEND, quotient ; init stack pointer
+  
+  CALL DIVISION ; run the program
+  
+  TERMINATE     ; terminate in infinite loop
 
 /**
  * Performs the division numerator / denominator = quotient remainder
@@ -71,29 +71,29 @@ Main_Entry_Point:
  * Effect: divides numerator by denominator and stores the results.
  */
 DIVISION:
-   ; check if denominator is 0, if yes interrupt, else continue at Init
-	TST denominator
-	BRNE Init
+  ; check if denominator is 0, if yes interrupt, else continue at Init
+  TST denominator
+  BRNE Init
 
-	; if div 0, set quotient to 0 and remainder to $ff and return to terminate
-	LDI quotient, 0
-	SER remainder
-	RET
+  ; if div 0, set quotient to 0 and remainder to $ff and return to terminate
+  LDI quotient, 0
+  SER remainder
+  RET
 
-	; copy numerator to remainder and initialize quotient
-	Init:
-	    MOV remainder, numerator 
-	    LDI quotient, 0
+  ; copy numerator to remainder and initialize quotient
+  Init:
+      MOV remainder, numerator 
+      LDI quotient, 0
 
-	; While remainder >= denominator, subtract denominator from
-	; remainder and increment 
-    LoopDiv:
-	    CP remainder, denominator
-		BRLO EndDiv
-		SUB remainder, denominator
-		INC quotient
-		RJMP LoopDiv
-	EndDiv:
-        RET
+  ; While remainder >= denominator, subtract denominator from
+  ; remainder and increment 
+  LoopDiv:
+    CP remainder, denominator
+    BRLO EndDiv
+    SUB remainder, denominator
+    INC quotient
+    RJMP LoopDiv
+  EndDiv:
+    RET
 
 .exit

@@ -109,3 +109,8 @@ sympy-plots-for-*.tex/
 
 # OS X folder display options file
 .DS_Store
+
+*.asmproj
+*.lss
+*.obj
+*Debug*
