@@ -104,7 +104,7 @@ INIT_PORTS:
 	 /* init d */ 
 	OUT DDRD, tmp              ; set all bits of PORTD to be outputs, now data can be written to PORTD
 
-	// init b
+	/* init b */
 	CBI DDRB, PB0	            ; set 1st and 2nd bit of PINB to be inputs, rest will stay the same		
 	CBI DDRB, PB1	
 	SBI PORTB, PB0             ; set lower 2 pins of PORTB to 1 so PINB(0,1) will have activated pull-up resistors (whatever that means)

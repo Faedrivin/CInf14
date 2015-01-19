@@ -1,4 +1,3 @@
-
 /**
  * This program is designed for an ATmega16.
  */
@@ -35,32 +34,6 @@
 .macro SET_X_REG
     LDI XL, low(@0)
     LDI XH, high(@0)
-.endmacro
-
-/* 
- * This macro loads the array address "address" into the Y register.
- *
- * in:     address (16 bit)
- * out:    Y at address
- * Effect: Y <- address (YL <- low(address), 
- *                       YH <- high(address))
- */
-.macro SET_Y_REG
-    LDI YL, low(@0)
-    LDI YH, high(@0)
-.endmacro
-
-/* 
- * This macro loads the array address "address" into the Z register.
- *
- * in:     address (16 bit)
- * out:    Z at address
- * Effect: Z <- address (ZL <- low(address), 
- *                       ZH <- high(address))
- */
-.macro SET_Z_REG
-    LDI ZL, low(@0)
-    LDI ZH, high(@0)
 .endmacro
 
 /**
