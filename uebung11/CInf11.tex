@@ -2,22 +2,30 @@
 
 \sheet{11}{ATmega16}
 
+\lstset{language={[avr8avra]Assembler},morecomment=[n]{/*}{*/},morecomment=[l]{//}}
+
 \begin{document}
 \cinftitle
 
+Alle Programme dieses Aufgabenblattes nutzen folgende Include-Datei \texttt{init\_header.inc}.
+\lstinputlisting{init_header.inc}
+
+
+
 \ex{Stackverarbeitung}{1 + 8 + 14}
+
+
 \subex{Adressierung Arrays}
 Am besten kann man für Arrayadressierungen in unserem Anwendungsfall auf dem ATmega16 
 \emph{Data Indirect with Post-increment} verwenden.
 
-\subex{Programmablaufplan \& Registerbelegung}
-Registerbelegung
 
+\subex{Programmablaufplan \& Registerbelegung}
 { % scope for these short hands:
 \def\val{current\_value}
 \def\stack{stack\_size}
-\def\ptrl{array\_ptr\_low}
-\def\ptrh{array\_ptr\_high}
+\def\ptrl{XL}
+\def\ptrh{XH}
 
 \def\blockW{5.0cm}
 \def\decW{3.5cm}
@@ -36,31 +44,31 @@ X   & X & R26 und R27 sind X\\
 \begin{tikzpicture}
 \node[cloud] (begin) {Begin};
 \node[block, below=of begin, text width=\blockW] (init)
-    {\ptrl \la low(\#0x200) \\ \ptrh \la high(\#0x200) \\ \stack \la \#0};
+    {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200) \\ \stack\ \la \#0};
 \node[block, below=of init, text width=\blockW] (loophead) 
-    {\val \la (X+)};
-\node[decision, below=of loophead, text width=\decW] (odd)
-    {lsb(\val) == 1?};
+    {\val\ \la (X+)};
+\node[decision, below=of loophead, text width=\decW, shape aspect=2.5] (odd)
+    {odd(\val)?};
 \node[block, below=of odd, text width=\blockW] (push) 
-    {PUSH \val \\ \stack \la \stack + 1};
-\node[decision, right=of push, text width=\decW] (255)
+    {PUSH \val \\ \stack\ \la \stack + 1};
+\node[decision, right=of odd, text width=\decW, shape aspect=2.5] (255)
     {\val\ == 255?};
-\node[decision, right=of odd, above=of 255, text width=\decW] (30)
+\node[decision, right=of odd, above=of 255, text width=\decW, shape aspect=2.5] (30)
     {\ptrl\ == 30?};
 \node[block, right=of 30, text width=\blockW] (reset)
-    {\ptrl \la low(\#0x200) \\ \ptrh \la high(\#0x200)};
-\node[decision, above=of reset, text width=\decW] (done)
+    {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200)};
+\node[decision, above=of reset, text width=\decW, shape aspect=2.5] (done)
     {\stack\ == 0?};
 \node[block, above=of done, text width=\blockW] (pop)
-    {POP \val \\ (X+)\la \val \\ \stack \la \stack - 1};
+    {POP \val \\ (X+)\ \la \val \\ \stack\ \la \stack - 1};
 \node[cloud, left=of done] (end) {End};
 
 \draw[->] (begin) -- (init);
 \draw[->] (init) -- (loophead);
 \draw[->] (loophead) -- (odd);
 \draw[->] (odd) -- node[left] {yes} (push);
-\draw[->] (odd) -- node[above] {no} (30);
-\draw[->] (push) -- (255);
+\draw[->] (odd) -- node[above] {no} (255);
+\draw[->] (push) -| (255);
 \draw[->] (255) -- node[left] {no} (30);
 \draw[->] (255) -| node[below] {yes} (reset);
 \draw[->] (30) -- node[above] {no} (loophead);
@@ -74,20 +82,37 @@ X   & X & R26 und R27 sind X\\
 \end{center}
 } % end scope for \val, \stack, ...
 
+\subex{Assemblerprogramm}
+\lstinputlisting{array_rev.asm}
+
 
 
 \ex{Division auf dem ATmega16}{8 + 15}
 
+\subex{Programmablaufplan}
+
+
+\subex{Assemblerprogramm}
+
+\lstinputlisting{division.asm}
+
+
+
 \ex{Fakultät auf dem ATmega16}{8 + 15}
 
-\lstset{language={[avr8avra]Assembler},morecomment=[n]{/*}{*/},morecomment=[l]{//}}
+\subex{Programmablaufplan}
+
+\subex{Assemblerprogramm}
+
 \lstinputlisting{factorial.asm}
+
+
 
 \ex{Einfacher Rechner}{8 + 8 + 15}
 
 \subex{\texttt{INIT\_PORTS}}
 
-Das gesamte Programm ist in \autoref{calc} \textcolor{red}{(wtf is the number?)} abgedruckt.
+Das gesamte Programm ist in \autoref{lst:calc} \textcolor{red}{(wtf is the number?)} abgedruckt.
 
 \subex{Programmablaufplan und Registerbelegung}
 
@@ -185,5 +210,6 @@ zu tragen, haben die Register mehrere Namen.
 \end{center}
 
 \subex{Assemblerprogramm}
-\lstinputlisting[label={calc}]{calculator/calculator.asm}
+\lstinputlisting[label={lst:calc}]{calculator.asm}
+
 \end{document}
