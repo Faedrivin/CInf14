@@ -110,11 +110,11 @@ Array_Begin: .byte max_array_len
  * Effect: Runs the program.
  */
 Main_Entry_Point:
-    INIT_STACK_PTR RAMEND, current_value    ; init stack pointer
-    
-    CALL REVERSE_ARRAY_ODDS   ; run the program
-    
-    TERMINATE                 ; terminate in infinite loop
+  INIT_STACK_PTR RAMEND, current_value    ; init stack pointer
+  
+  CALL REVERSE_ARRAY_ODDS   ; run the program
+  
+  TERMINATE                 ; terminate in infinite loop
 
 /**
  * The program code to handle the effects
@@ -136,43 +136,43 @@ Main_Entry_Point:
  *         into XL.
  */
 REVERSE_ARRAY_ODDS:
-    Begin:                      ; initialize the program
-        SET_X_REG Array_Begin   ; init array address (in X)
-        LDI stack_size, 0       ; init stack size
-        
-    Loop_Push:
-        ; load element and check if odd or even
-        LD current_value, X+          ; load next array element
-        
-        ; if odd: push current_value and increment stack_size
-        ; if even: skip through
-        SBRC current_value, lsb       ; skip if lsb 0 (= if even)
-        PUSH current_value            ; push odd value onto stack
-        SBRC current_value, lsb       ; skip if lsb 0 (= if even)
-        INC stack_size                ; increment stack counter
-
-        ; check if value = 255 or at end of array (XL = 30)
-        ; if any applies: branch to Init_Pop
-        ; else: go to back to Loop_Push
-        CPI current_value, array_terminal ; if array terminal Z-flag <- 1
-        BREQ Init_Pop                     ; if Z-flag = 1 branch to Init_Pop
-
-        CPI XL, max_array_len  ; if end of array Z-flag <- 1
-        BRNE Loop_Push         ; if Z-flag = 0 branch to Loop_Push
-        
-    Init_Pop:
-        SET_X_REG Array_Begin   ; return to array begin
+  Begin:                    ; initialize the program
+    SET_X_REG Array_Begin   ; init array address (in X)
+    LDI stack_size, 0       ; init stack size
+      
+  Loop_Push:
+    ; load element and check if odd or even
+    LD current_value, X+          ; load next array element
     
-	Loop_Pop:
-	    TST stack_size        ; check if stack is <= 0 
-                             ; (will never be < 0)
-        BREQ End             ; end if no elements are on the stack
-        POP current_value    ; remove TOS
-        ST X+, current_value ; store value
-        DEC stack_size       ; decrement stack_size
-		RJMP Loop_Pop
+    ; if odd: push current_value and increment stack_size
+    ; if even: skip through
+    SBRC current_value, lsb       ; skip if lsb 0 (= if even)
+    PUSH current_value            ; push odd value onto stack
+    SBRC current_value, lsb       ; skip if lsb 0 (= if even)
+    INC stack_size                ; increment stack counter
 
-    End:
-        RET
+    ; check if value = 255 or at end of array (XL = 30)
+    ; if any applies: branch to Init_Pop
+    ; else: go to back to Loop_Push
+    CPI current_value, array_terminal ; if array terminal Z-flag <- 1
+    BREQ Init_Pop                     ; if Z-flag = 1 branch to Init_Pop
+
+    CPI XL, max_array_len  ; if end of array Z-flag <- 1
+    BRNE Loop_Push         ; if Z-flag = 0 branch to Loop_Push
+      
+  Init_Pop:
+    SET_X_REG Array_Begin   ; return to array begin
+    
+  Loop_Pop:
+    TST stack_size       ; check if stack is <= 0 
+                         ; (will never be < 0)
+    BREQ End             ; end if no elements are on the stack
+    POP current_value    ; remove TOS
+    ST X+, current_value ; store value
+    DEC stack_size       ; decrement stack_size
+    RJMP Loop_Pop
+
+  End:
+    RET
 
 .exit
