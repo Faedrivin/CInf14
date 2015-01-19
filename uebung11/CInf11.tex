@@ -105,6 +105,63 @@ X   & X & R26 und R27 sind X\\
 
 \subex{Programmablaufplan}
 
+% help macro to avoid infinite \draw commands.
+\newcommand{\drawlines}[2]{
+      \foreach \node [remember=\node as \lastnode (initially #1)] in
+      {#2}
+      {
+         \draw[line] (\lastnode) -- (\node);
+      }
+}
+
+\begin{center}
+   \begin{tikzpicture}
+      \node[cloud] (fact) {FACTORIAL};
+      \node[block, below=of fact] (tmponst) {STACK \la tmp};
+      \node[block, below=of tmponst] (r0onst) {STACK \la R0};
+      \node[block, below=of r0onst] (r1onst) {STACK \la R1};
+      \node[block, below=of r1onst] (sregonst) {STACK \la SREG};
+
+
+      \node[decision, below=of sregonst] (n==0) {n == 0?};
+      \node[cloud, left=of {n==0}] (abort) {Abort};
+      \node[block, below=of abort] (clrres) {result \la 0};
+
+      \drawlines{fact}{tmponst,r0onst,r1onst,sregonst,n==0}
+      \draw[line] (n==0) -- node[above] {Yes} (abort);
+      \draw[line] (abort) -- (clrres);
+
+      \node[block, below=of {n==0}] (ldtmp) {tmp \la n};
+      \node[block, below=of ldtmp] (ldres) {result \la 1};
+
+      \draw[line] (n==0) -- node[right] {No} (ldtmp);
+
+
+      \node[cloud, right=of ldres] (loop) {LoopFact};
+      \node[decision, above=of loop] (tmp==0) {tmp == 0?};
+      \node[block, above=of {tmp==0}] (updres) {result \la result * tmp};
+      \node[block, above=of updres] (updtmp) {tmp \la tmp - 1};
+
+      \drawlines{ldtmp}{ldres,loop,tmp==0}
+      \draw[line] (tmp==0) -- node[right] {No} (updres);
+
+      \drawlines{updres}{updtmp}
+
+      \node[cloud, below=1cm of ldres] (end) {End};
+      \node[block, below=of end] (sregfromst) {SREG \la STACK};
+      \node[block, below=of sregfromst] (r1fromst) {R1 \la STACK};
+      \node[block, below=of r1fromst] (r0fromst) {R0 \la STACK};
+      \node[block, below=of r0fromst] (tmpfromst) {tmp \la STACK};
+
+      \drawlines{end}{sregfromst,r1fromst,r0fromst,tmpfromst};
+      \draw[line] (clrres) |- (end);
+      \draw[line] (tmp==0) -- node[above right] {Yes} ++(2cm,0) |- (end);
+
+      \draw[line] (updtmp) -- ++(-2cm,0) |- (tmp==0);
+
+   \end{tikzpicture}
+\end{center}
+
 \subex{Assemblerprogramm}
 
 \lstinputlisting{factorial.asm}
