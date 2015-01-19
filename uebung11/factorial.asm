@@ -1,52 +1,44 @@
-/*
- * factorial.asm
- *
- *  Created: 16.01.2015 22:03:19
- *   Author: Rasmus
- */ 
-
-.include "m16def.inc"
-
-.macro INIT_STACK_PTR 
-    LDI result, low(@0)		; use result because it's gonna be overwritten anyway
-    OUT SPL, result
-    LDI result, high(@0)
-    OUT SPH, result
-.endmacro
-
 /**
- * Provides a macro for an infinite loop to handle default
- * termination of the main program.
+ * This program calculates the factorial of a number.
+ * The factorial for positive numbers is recursively defined by:
  *
- * in:     void
- * out:    void
- * Effect: infinite loop.
- */
-.macro TERMINATE
-    Termination_LoopFact:
-        RJMP Termination_LoopFact
-.endmacro
-
-/**
- * Register names
+ * n! = n(n-1)! if n > 1
+ * n! = 1       else
  */
 
-.def n = R16 // argument
+ /**
+ * Includes macros and names.
+ */
+.include "init_header.inc"
 
-.def result = R18 // result location
+/**
+ * Argument
+ */
+.def n = R16
 
-.def tmp = R19 // temporary location for calcs
+/**
+ * Result
+ */
+.def result = R18
 
+/**
+ * Temp register.
+ */
+.def tmp = R19
 
-.cseg 
+/**
+ * Start of the code segment.
+ */
+.cseg
 
+/**
+ * Program starts at 0.
+ */
 .org 0
 
 /**
  * Runs the program after initializing the 
  * the stack pointer.
- *
- * An example arugment is supplied with INIT_FACTORIAL.
  *
  * After the program is finished, the TERMINATE macro is
  * called, resulting in an infinite loop.
@@ -56,16 +48,11 @@
  * Effect: Runs the program.
  */
 Main_Entry_Point:
-    INIT_STACK_PTR RAMEND     // init stack pointer
+    INIT_STACK_PTR RAMEND, tmp  // init stack pointer
     
-    .ifndef INIT_FCATORIAL
-        .message "Define INIT_FACTORIAL for your division. Using example."
-    .endif
-    CALL INIT_FACTORIAL       // shall create the correct array
+    CALL FACTORIAL // run the program
     
-    CALL FACTORIAL   // run the program
-    
-    TERMINATE                 // terminate in infinite loop
+    TERMINATE      // terminate in infinite loop
 
 
 /**
@@ -75,26 +62,26 @@ Main_Entry_Point:
  * out: n!, positive integer truncated to 8 bits in R18
  */
 FACTORIAL:
-		PUSH tmp	; save current gloabl state
-		PUSH R0		; Multiply operattions always write to R1.R0
+		PUSH tmp	  ; save current gloabl state
+		PUSH R0	      ; Multiply operattions always write to R1.R0
 		PUSH R1
-		IN R1, SREG ; R1 saved, so use to load SREG
-		PUSH R1		; push anew
+		IN R1, SREG   ; R1 saved, so use to load SREG
+		PUSH R1		  ; push anew
 		CPI n, 0
-		BREQ Abort	; if <= 0, this is bullshit 
-		MOV tmp, n	; else save in tmp
+		BREQ Abort	  ; if <= 0, this is bullshit 
+		MOV tmp, n	  ; else save in tmp
 		LDI result, 1 ; result is at least 1
 	LoopFact:
 		; while tmp != 0 do result *= tmp--
-		TST tmp		; check if counter is down to zero
+		TST tmp		    ; check if counter is down to zero
 		BREQ EndFact	; if yes, exit
 		MUL result, tmp ; else multiply intermediate by current decrement
-		MOV result, R0 ; product is placed in R0 so, move out (this can perhaps be avoided)
-		DEC tmp		; decrement n
+		MOV result, R0  ; product is placed in R0 so, move out (this can perhaps be avoided)
+		DEC tmp		    ; decrement n
 		RJMP LoopFact	; continue
 
 	Abort:
-		LDI result, 0 ; bad argument, set result to 0 (normally impossible)
+		LDI result, 0   ; bad argument, set result to 0 (normally impossible)
 		RJMP EndFact	; restore shit
 
 	EndFact:			; get all status back to what it was before
@@ -104,11 +91,5 @@ FACTORIAL:
 		POP R0
 		POP TMP
 		RET
-
-.ifndef INIT_FACTORIAL
-    INIT_FACTORIAL:
-        LDI n, 5
-        RET
-.endif
 
 .exit
