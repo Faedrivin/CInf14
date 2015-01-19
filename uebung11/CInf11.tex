@@ -47,19 +47,19 @@ X   & X & R26 und R27 sind X\\
     {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200) \\ \stack\ \la \#0};
 \node[block, below=of init, text width=\blockW] (loophead) 
     {\val\ \la (X+)};
-\node[decision, below=of loophead, text width=\decW, shape aspect=2.5] (odd)
+\node[decision, below=of loophead, text width=\decW, shape aspect=3] (odd)
     {odd(\val)?};
 \node[block, below=of odd, text width=\blockW] (push) 
     {PUSH \val \\ \stack\ \la \stack + 1};
-\node[decision, right=of odd, text width=\decW, shape aspect=2.5] (255)
+\node[decision, below=of push, text width=\decW, shape aspect=2.5] (255)
     {\val\ == 255?};
-\node[decision, right=of odd, above=of 255, text width=\decW, shape aspect=2.5] (30)
+\node[decision, below=of 255, text width=\decW, shape aspect=2.5] (30)
     {\ptrl\ == 30?};
-\node[block, right=of 30, text width=\blockW] (reset)
+\node[block, below=of 30, text width=\blockW] (reset)
     {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200)};
-\node[decision, above=of reset, text width=\decW, shape aspect=2.5] (done)
+\node[decision, below=of reset, text width=\decW, shape aspect=2.5] (done)
     {\stack\ == 0?};
-\node[block, above=of done, text width=\blockW] (pop)
+\node[block, below=of done, text width=\blockW] (pop)
     {POP \val \\ (X+)\ \la \val \\ \stack\ \la \stack - 1};
 \node[cloud, left=of done] (end) {End};
 
@@ -67,12 +67,12 @@ X   & X & R26 und R27 sind X\\
 \draw[->] (init) -- (loophead);
 \draw[->] (loophead) -- (odd);
 \draw[->] (odd) -- node[left] {yes} (push);
-\draw[->] (odd) -- node[above] {no} (255);
-\draw[->] (push) -| (255);
+\draw[->] (odd) -- node[above] {no} ($(odd)+(\blockW/1.5,0)$) |- (255);
+\draw[->] (push) -- (255);
 \draw[->] (255) -- node[left] {no} (30);
-\draw[->] (255) -| node[below] {yes} (reset);
-\draw[->] (30) -- node[above] {no} (loophead);
-\draw[->] (30) -- node[above] {yes} (reset);
+\draw[->] (255) -- node[below] {yes} ($(255)+(-\blockW/1.5,0)$) |- (reset);
+\draw[->] (30) -- node[below] {no} ($(30)+(\blockW,0)$) |- (loophead);
+\draw[->] (30) -- node[left] {yes} (reset);
 \draw[->] (reset) -- (done);
 \draw[->] (done) -- node[above] {yes} (end);
 \draw[->] (done) -- node[left] {no} (pop);
