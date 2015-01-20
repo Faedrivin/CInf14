@@ -68,7 +68,7 @@ FACTORIAL:
     IN R1, SREG   ; R1 saved, so use to load SREG
     PUSH R1       ; push anew
     CPI n, 0
-    BREQ Abort    ; if <= 0, this is bullshit 
+    BREQ Abort    ; if <= 0, this is to be aborted 
     MOV tmp, n    ; else save in tmp
     LDI result, 1 ; result is at least 1
   LoopFact:
@@ -76,20 +76,20 @@ FACTORIAL:
     TST tmp         ; check if counter is down to zero
     BREQ EndFact    ; if yes, exit
     MUL result, tmp ; else multiply intermediate by current decrement
-    MOV result, R0  ; product is placed in R0 so, move out (this can perhaps be avoided)
+    MOV result, R0  ; product is placed in R0 so, move out 
     DEC tmp         ; decrement n
     RJMP LoopFact   ; continue
 
   Abort:
     LDI result, 0   ; bad argument, set result to 0 (normally impossible)
-    RJMP EndFact    ; restore shit
+    RJMP EndFact    ; restore state
 
   EndFact:          ; get all status back to what it was before
     POP R1
     OUT SREG, R1
     POP R1
     POP R0
-    POP TMP
+    POP tmp
     RET
 
 .exit

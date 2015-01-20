@@ -35,34 +35,34 @@ Am besten kann man für Arrayadressierungen in unserem Anwendungsfall auf dem AT
 
 \begin{ctabular}{l|l|l}
 Register & Bennenung & Belegung \\\hline
-R24 & \val & Der aktuell betrachtete Wert \\
+R24 & \val   & Der aktuell betrachtete Wert \\
 R25 & \stack & Anzahl Elemente auf dem Stack \\
-R26 & \ptrl & Low-Byte d. Array Pointers \\
-    &       & Länge Ergebnisarray \\
-R27 & \ptrh & High-Byte d. Array Pointers \\
-X   & X & R26 und R27 sind X\\
+R26 & \ptrl  & Low-Byte d. Array Pointers \\
+    &        & Länge Ergebnisarray \\
+R27 & \ptrh  & High-Byte d. Array Pointers \\
+X   & X      & R26 und R27 sind X\\
 \end{ctabular}
 
 \begin{center}
 \begin{tikzpicture}
 \node[cloud] (begin) {Begin};
-\node[block, below=of begin, text width=\blockW] (init)
+\node[block, right=.5cm of begin, text width=\blockW] (init)
     {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200) \\ \stack\ \la \#0};
-\node[block, below=of init, text width=\blockW] (loophead) 
+\node[block, right=.5cm of init, text width=\blockW] (loophead) 
     {\val\ \la (X+)};
-\node[decision, below=of loophead, text width=\decW, shape aspect=3] (odd)
+\node[decision, below=.5cm of loophead, text width=\decW, shape aspect=3] (odd)
     {odd(\val)?};
-\node[block, below=of odd, text width=\blockW] (push) 
+\node[block, below=.5cm of odd, text width=\blockW] (push) 
     {PUSH \val \\ \stack\ \la \stack + 1};
-\node[decision, below=of push, text width=\decW, shape aspect=2.5] (255)
+\node[decision, below=.5cm of push, text width=\decW, shape aspect=2.5] (255)
     {\val\ == 255?};
-\node[decision, below=of 255, text width=\decW, shape aspect=2.5] (30)
+\node[decision, below=.5cm of 255, text width=\decW, shape aspect=2.5] (30)
     {\ptrl\ == 30?};
-\node[block, below=of 30, text width=\blockW] (reset)
+\node[block, below=.5cm of 30, text width=\blockW] (reset)
     {\ptrl\ \la low(\#0x200) \\ \ptrh\ \la high(\#0x200)};
-\node[decision, below=of reset, text width=\decW, shape aspect=2.5] (done)
+\node[decision, below=.5cm of reset, text width=\decW, shape aspect=2.5] (done)
     {\stack\ == 0?};
-\node[block, below=of done, text width=\blockW] (pop)
+\node[block, below=.5cm of done, text width=\blockW] (pop)
     {POP \val \\ (X+)\ \la \val \\ \stack\ \la \stack - 1};
 \node[cloud, left=of done] (end) {End};
 
@@ -137,7 +137,7 @@ X   & X & R26 und R27 sind X\\
 \lstinputlisting{division.asm}
 
 
-
+\newpage
 \ex{Fakultät auf dem ATmega16}{8 + 15}
 
 \subex{Programmablaufplan}
@@ -154,13 +154,13 @@ X   & X & R26 und R27 sind X\\
 \begin{center}
    \begin{tikzpicture}
       \node[cloud] (fact) {FACTORIAL};
-      \node[block, below=of fact] (tmponst) {STACK \la tmp};
-      \node[block, below=of tmponst] (r0onst) {STACK \la R0};
-      \node[block, below=of r0onst] (r1onst) {STACK \la R1};
-      \node[block, below=of r1onst] (sregonst) {STACK \la SREG};
+      \node[block, below=.5cm of fact] (tmponst) {STACK \la tmp};
+      \node[block, below=.5cm of tmponst] (r0onst) {STACK \la R0};
+      \node[block, below=.5cm of r0onst] (r1onst) {STACK \la R1};
+      \node[block, below=.5cm of r1onst] (sregonst) {STACK \la SREG};
 
 
-      \node[decision, below=of sregonst] (n==0) {n == 0?};
+      \node[decision, below=.5cm of sregonst] (n==0) {n == 0?};
       \node[cloud, left=of {n==0}] (abort) {Abort};
       \node[block, below=of abort] (clrres) {result \la 0};
 
@@ -169,7 +169,7 @@ X   & X & R26 und R27 sind X\\
       \draw[line] (abort) -- (clrres);
 
       \node[block, below=of {n==0}] (ldtmp) {tmp \la n};
-      \node[block, below=of ldtmp] (ldres) {result \la 1};
+      \node[block, below=.5cm of ldtmp] (ldres) {result \la 1};
 
       \draw[line] (n==0) -- node[right] {No} (ldtmp);
 
@@ -177,7 +177,7 @@ X   & X & R26 und R27 sind X\\
       \node[cloud, right=of ldres] (loop) {LoopFact};
       \node[decision, above=of loop] (tmp==0) {tmp == 0?};
       \node[block, above=of {tmp==0}] (updres) {result \la result * tmp};
-      \node[block, above=of updres] (updtmp) {tmp \la tmp - 1};
+      \node[block, above=.5cm of updres] (updtmp) {tmp \la tmp - 1};
 
       \drawlines{ldtmp}{ldres,loop,tmp==0}
       \draw[line] (tmp==0) -- node[right] {No} (updres);
@@ -185,10 +185,10 @@ X   & X & R26 und R27 sind X\\
       \drawlines{updres}{updtmp}
 
       \node[cloud, below=1cm of ldres] (end) {End};
-      \node[block, below=of end] (sregfromst) {SREG \la STACK};
-      \node[block, below=of sregfromst] (r1fromst) {R1 \la STACK};
-      \node[block, below=of r1fromst] (r0fromst) {R0 \la STACK};
-      \node[block, below=of r0fromst] (tmpfromst) {tmp \la STACK};
+      \node[block, below=.5cm of end] (sregfromst) {SREG \la STACK};
+      \node[block, below=.5cm of sregfromst] (r1fromst) {R1 \la STACK};
+      \node[block, below=.5cm of r1fromst] (r0fromst) {R0 \la STACK};
+      \node[block, below=.5cm of r0fromst] (tmpfromst) {tmp \la STACK};
 
       \drawlines{end}{sregfromst,r1fromst,r0fromst,tmpfromst};
       \draw[line] (clrres) |- (end);
@@ -199,6 +199,7 @@ X   & X & R26 und R27 sind X\\
    \end{tikzpicture}
 \end{center}
 
+\newpage
 \subex{Assemblerprogramm}
 
 \lstinputlisting{factorial.asm}
@@ -215,11 +216,12 @@ Das gesamte Programm ist in Teilaufgabe c) abgedruckt.
 
 \begin{ctabular}{>{\ttfamily}l>{\ttfamily}ll}
     \rmfamily Name & \rmfamily Register & Belegung\\\hline
-   operandLeft & R16 & Linker Operand (Minuend, Zähler, etc.) \\
+   operandLeft  & R16 & Linker Operand (Minuend, Zähler, etc.) \\
    operandRight & R17 & Rechter Operand (Subtrahend, Divisor) \\
-   result & R18 & Das Ergebnis, bei der Division der Quotient\\
-   remainder & R19 & Bei der Division der Rest\\
-   operation & R20 & Als temporäre Variable und für den Operator genutzt. \\
+   result       & R18 & Das Ergebnis, bei der Division der Quotient\\
+   remainder    & R19 & Bei der Division der Rest\\
+   operation    & R20 & Für den Operator genutzt. \\
+   tmp          & R21 & Temporäres Register.
 \end{ctabular}
 
 \begin{center}
@@ -304,6 +306,7 @@ Das gesamte Programm ist in Teilaufgabe c) abgedruckt.
    \end{tikzpicture}
 \end{center}
 
+\newpage
 \subex{Assemblerprogramm}\label{lst:calc}
 \lstinputlisting{calculator.asm}
 

@@ -82,8 +82,8 @@ DIVISION:
 
   ; copy numerator to remainder and initialize quotient
   Init:
-      MOV remainder, numerator 
-      LDI quotient, 0
+    MOV remainder, numerator 
+    LDI quotient, 0
 
   ; While remainder >= denominator, subtract denominator from
   ; remainder and increment 

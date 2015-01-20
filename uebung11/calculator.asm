@@ -1,10 +1,3 @@
-/*
- * calculator.asm
- *
- *  Created: 17.01.2015 13:53:36
- *   Author: Rasmus
- */ 
-
 /**
  * Includes macros and names.
  */
@@ -31,12 +24,16 @@
 .def remainder = R19
 
 /**
- * Temp. Used by the main program to store the command selection.
- * Also used by the factorial.
+ * Used by the main program to store the command selection.
  */
 .def operation = R20
 
- /**
+/**
+ * A temporary register for other calculations.
+ */
+.def tmp = R21
+
+/**
  * Start of the code segment.
  */
 .cseg
@@ -47,7 +44,7 @@
 .org 0
 
 Main_Program_Calculator:
-  INIT_STACK_PTR RAMEND, operation
+  INIT_STACK_PTR RAMEND, tmp
   CALL INIT_PORTS         ; should we save contents of R16-19 here?
   IN operation, PINB      ; load everything from PINB
   ANDI operation, 0x03    ; mask out all but the lower two bits
@@ -83,26 +80,25 @@ Main_Program_Calculator:
     IN operandLeft, PINA
     CALL FACTORIAL          ; subroutine will operate on R16 and R18
     OUT PORTD, result
-
   End:
     TERMINATE               ; endless loop macro
     
 
 INIT_PORTS:
-  PUSH operation         ; save whatever is in tmp
-  IN operation, SREG     ; use it to get status flags
-  PUSH operation         ; put them on stack
+  PUSH tmp         ; save whatever is in tmp
+  IN tmp, SREG     ; use it to get status flags
+  PUSH tmp         ; put them on stack
 
   /* init a and c */
-  CLR operation          ; set tmp to all 0s
-  OUT DDRA, operation    ; set all bits of PORTA and PORTC to be inputs
-  OUT DDRC, operation
-  SER operation          ; set tmp to all 1s
-  OUT PORTA, operation   ; activate internal pull-up resistors for port a and c
-  OUT PORTC, operation   ; now data can be read from PINA and PINC
+  CLR tmp          ; set tmp to all 0s
+  OUT DDRA, tmp    ; set all bits of PORTA and PORTC to be inputs
+  OUT DDRC, tmp
+  SER tmp          ; set tmp to all 1s
+  OUT PORTA, tmp   ; activate internal pull-up resistors for port a and c
+  OUT PORTC, tmp   ; now data can be read from PINA and PINC
 
    /* init d */ 
-  OUT DDRD, operation    ; set all bits of PORTD to be outputs, now data can be written to PORTD
+  OUT DDRD, tmp    ; set all bits of PORTD to be outputs, now data can be written to PORTD
 
   /* init b */
   CBI DDRB, PB0          ; set 1st and 2nd bit of PINB to be inputs, rest will stay the same    
@@ -110,9 +106,9 @@ INIT_PORTS:
   SBI PORTB, PB0         ; set lower 2 pins of PORTB to 1 so PINB(0,1) will have activated pull-up resistors
   SBI PORTB, PB1         ; now we can read from PINB0 and PINB1 to get the command select signals
 
-  POP operation          ; get status flags back from stack
-  OUT SREG, operation    ; restore status flags
-  POP operation          ; get original R16 contents back from stack
+  POP tmp          ; get status flags back from stack
+  OUT SREG, tmp    ; restore status flags
+  POP tmp          ; get original R16 contents back from stack
   RET
 
 /**
@@ -162,7 +158,7 @@ FACTORIAL:
     IN R1, SREG ; R1 saved, so use to load SREG
     PUSH R1     ; push anew
     CPI operandLeft, 0
-    BREQ Abort           ; if <= 0, this is bullshit 
+    BREQ Abort           ; if <= 0, this is to abort 
     MOV tmp, operandLeft ; else save in tmp
     LDI result, 1        ; result is at least 1
   LoopFact:
@@ -170,21 +166,20 @@ FACTORIAL:
     TST tmp         ; check if counter is down to zero
     BREQ EndFact    ; if yes, exit
     MUL result, tmp ; else multiply intermediate by current decrement
-    MOV result, R0  ; product is placed in R0 so, move out (this can perhaps be avoided)
+    MOV result, R0  ; product is placed in R0 so, move out 
     DEC tmp         ; decrement n
     RJMP LoopFact   ; continue
 
   Abort:
     LDI result, 0 ; bad argument, set result to 0 (normally impossible)
-    RJMP EndFact  ; restore shit
+    RJMP EndFact  ; restore state
 
-  EndFact:      ; get all status back to what it was before
+  EndFact:        ; get all status back to what it was before
     POP R1
     OUT SREG, R1
     POP R1
     POP R0
-    POP TMP
+    POP tmp
     RET
-
 
 .exit
