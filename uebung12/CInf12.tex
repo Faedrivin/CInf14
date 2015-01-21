@@ -6,6 +6,7 @@
         morecomment=[n]{/*}{*/},
         morecomment=[l]{//},
      }
+\usepackage{marvosym}
 
 \begin{document}
 \cinftitle
@@ -102,9 +103,48 @@ nun den Programmstatus zu sichern und wieder herzustellen.
 \lstinputlisting[linerange={321-342}]{stopwatch.asm}
 
 \ex{Nebenläufigkeiten}{4 + 4 + 4}
-\subex{Polling}
-\subex{Externer Interrupt}
-\subex{Interner Timer-Counter-Interrupt}
+Die Hauptprogramme werden unterschiedlich unterbrochen und weiterverarbeitet.
+\texttt{cnt} steht stellvertretend für die Aufrufe der Interrupt-Handler und 
+deren Unterprogramme.
+Counter ist der T/C0-Zähler.
+
+\begin{tabular}{ccc}
+\subex{Polling}&
+\subex{Externer INT0 Interrupt}&
+\subex{Interner T/C0-Interrupt}\\
+\tikz{
+  \draw[->] (.5,7.5) -- (.5,7); 
+  \draw[thin] (.25,7) rectangle node {\rotatebox{90}{Programm}} (.75,.5); 
+  \draw[->] (.5,.5) -- (.5,0); 
+} & 
+\tikz{
+  \draw[->] (2.5,7.5) -- (2.5,7); 
+  \draw[thin] (2.25,7) rectangle node {\rotatebox{90}{Programm}} (2.75,.5); 
+  \draw[->] (2.5,.5) -- (2.5,0); 
+  
+  \draw[->] (3.5,6.5) -- node[above] {\Lightning} (2.75,6);
+  \draw[-] (2.75,6) -- ++(-.5,0);
+  \draw[thin] (.75,5.5) rectangle node {\rotatebox{90}{cnt}} (1.25,2.5);
+  \draw[->]  (2.25,6) -- (1.25,5.5);
+  \draw[->] (1.25,2.5) -- (2.25,6);
+} & 
+\tikz{
+  \draw[->] (2.5,7.5) -- (2.5,7); 
+  \draw[thin] (2.25,7) rectangle node {\rotatebox{90}{Programm}} (2.75,.5); 
+  \draw[->] (2.5,.5) -- (2.5,0);
+  
+  \draw[->] (4.5,7.5) -- (4.5,7); 
+  \draw[thin] (4.25,7) rectangle node {\rotatebox{90}{Counter}} (4.75,.5); 
+  \draw[->] (4.5,.5) -- (4.5,0);
+  
+  \draw[->] (4.25,3.5) -- node[above] {\Lightning} (2.75,4.5);
+  \draw[-] (2.75,4.5) -- ++(-.5,0);
+  \draw[thin] (.75,5.5) rectangle node {\rotatebox{90}{cnt}} (1.25,2.5);
+  \draw[->]  (2.25,4.5) -- (1.25,5.5);
+  \draw[->] (1.25,2.5) -- (2.25,4.5);
+  
+} \\
+\end{tabular}
 
 \newpage
 {\large\textbf{Vollständiger Programmcode}}
