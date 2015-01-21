@@ -10,22 +10,100 @@
 \begin{document}
 \cinftitle
 
+Das gesamte Programm befindet sich am Ende der Abgabe.
+Für die einzelnen Teilaufgaben ist jeweils der wichtigste Codeabschnitt
+direkt erwähnt. Dabei sind aber ggf. Sprungadressen, Compilerdirektiven u.ä.
+nicht direkt aufgeführt, wenn sie an anderer Stelle im Code stehen. Der gesamte
+Code am Ende hält diese Befehle dann bereit.
+
+Die Header-Datei des letzten Aufgabenblatts wurde hier wieder verwendet, sie 
+befindet sich noch nach dem Programmcode ganz am Ende.
+
 \ex{Systemstruktur}{6 + 4}
 
 
 \ex{Konfiguration der I/O-Ports}{10}
+\lstinputlisting[linerange={58-85}]{stopwatch.asm}
 
 
 \ex{Ausgabe der 7-Segment-Codes}{10}
+\lstinputlisting[linerange={118-153,181-207}]{stopwatch.asm}
 
 
 \ex{Hauptprogramm}{10}
+\lstinputlisting[linerange={367-370,376-383,393-393}]{stopwatch.asm}
 
 
 \ex{Polling vs. Interrupt}{4 + 10 + 4 + 6 + 4}
 
+\subex{Polling}
+Achtung, das Polling ist bereits auskommentiert, um den Änderungen aus 
+Teilaufgabe d) gerecht zu werden.
+
+\lstinputlisting[linerange={386-390}]{stopwatch.asm}
+
+\subex{\texttt{COUNT\_UP}}
+\lstinputlisting[linerange={222-248}]{stopwatch.asm}
+
+\subex{\texttt{ISR\_CLOCK}}
+\lstinputlisting[linerange={259-263,267-273}]{stopwatch.asm}
+
+\subex{\texttt{INIT\_EXT\_INTERRUPT}}
+Die Änderungen im Hauptprogramm sind das Auskommentieren des Pollings sowie
+der Aufruf der \texttt{INIT\_EXT\_INTERRUPT}-Routine, wie im Code am Ende der 
+Abgabe zu sehen ist.
+
+Der Aufruf von \texttt{INIT\_EXT\_INTERRUPT} im Hauptprogramm ist ebenfalls 
+auskommentiert, um Aufgabe 6b) gerecht zu werden.
+
+\lstinputlisting[linerange={286-302}]{stopwatch.asm}
+
+\subex{Vorteile Interrupts}
+Die Stopp-Uhr ist genauer, da sie (mehr oder weniger) unabhängig vom 
+restlichen Programm korrekt erhöht wird, und nicht nur dann, wenn gerade ein 
+Polling ansteht.
 
 \ex{T/C0-Interrupt}{6 + 14}
+\subex{Prescale-Faktor}
+Der Zusammenhang zwischen Prescale-Faktor $P$, Frequenz $F$ und Anzahl Bits 
+des Zählregisters $B$ lässt sich wie folgt veranschaulichen:
+\begin{align*}
+\frac{F}{P} = 2^B Hz\\
+\end{align*}
+Daraus ergibt sich für $F = 2^{15} Hz$ und $B = 8$:
+\begin{align*}
+\frac{2^{15} Hz}{P} = 2^8 Hz \equiv P = \frac{2^{15} Hz}{2^8 Hz} = 2^7 = 128
+\end{align*}
+Die resultierende Auflösung ist dann $\frac{1 s}{2^7} = 0.0078125 s = 7.8125 ms$.
 
+Der ATmega16 unterstützt die Prescale-Faktoren $8, 64, 256$ und $1024$. Wir 
+müssen einen wählen, der größer ist als $128$, damit unser Zähler nicht 
+ungewollt überläuft. $256$ bietet sich deshalb an. Der resultierende 
+Vergleichswert ist $\frac{2^{15} Hz}{256 Hz} = 2^7 = 128$.
+
+\subex{\texttt{INIT\_TCO\_INTERRUPT}}
+Die weitere Änderung im Hauptprogramm ist, dass \texttt{TCNT0} zurückgesetzt
+werden muss. Dies geschieht in der Interrupt-Serviceroutine \texttt{ISR\_CLOCK}.
+
+Vorher war es außerdem nicht unbedingt notwendig, in \texttt{ISR\_CLOCK} den 
+Programmstatus zu retten, nun wird aber das tmp-Register gebraucht und durch
+den \texttt{CLR}-Befehl auch das \texttt{SREG} verändert. Es ist deshalb nötig,
+nun den Programmstatus zu sichern und wieder herzustellen.
+
+\lstinputlisting[linerange={321-342}]{stopwatch.asm}
+
+\ex{Nebenläufigkeiten}{4 + 4 + 4}
+\subex{Polling}
+\subex{Externer Interrupt}
+\subex{Interner Timer-Counter-Interrupt}
+
+\newpage
+{\large\textbf{Vollständiger Programmcode}}
+\lstinputlisting{stopwatch.asm}
+
+\bigskip
+
+{\large\textbf{\texttt{init\_header.inc}}}
+\lstinputlisting{init_header.inc}
 
 \end{document}

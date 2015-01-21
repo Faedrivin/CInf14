@@ -1,0 +1,34 @@
+%%
+%% This is file `lstlang0.sty',
+%%
+% \ProvidesFile{lstlang0.sty}
+%     [2011/02/19 1.0 Erweiterung fuer AVR-Assembler]
+%%
+%% AVRA definition (c) 2011 Joerg Kurrek
+%%
+\lst@definelanguage[avr8avra]{Assembler}%
+ {morekeywords={adc,add,adiw,andi,asr,%
+bclr,bld,brbc,brbs,brcc,brcs,break,breq,brge,brhc,brhs,brid,brie,brlo,%
+brlt,brmi,brne,brpl,brsh,brtc,brts,brvc,brvs,bset,bst,%
+cbi,cbr,clc,clh,cli,cln,cls,clr,clt,clv,clz,%
+com,count,cp,cpc,cpi,cpse,dec,%
+eicall,eijmp,elpm,end,eor,espm,fmul,fmuls,fmulsu,mul,%
+in,inc,ldd,ldi,lds,lsl,lsr,%
+mov,movw,neg,nop,ori,out,pop,push,rcall,ret,reti,rjmp,rol,%
+sbc,sbci,sbi,sbic,sbis,sbiw,sbr,sbrc,sbrs,%
+sec,seh,sei,sen,ser,ses,sev,sez,sleep,std,sts,sub,subi,swap,tst,wdr},%
+morekeywords=[2]{.byte,.cseg,.csegsize,.db,.device,.dseg,.dw,.endm,.endmacro,.equ,%
+.eseg,.def,.exit,.include,.includepath,.listmac,.macro,.nolist,.org,.set,%
+.define,.undef,.ifdef,.ifndef,.else,.elseif,.elif,.endif,%
+.message,.warning,.error,%
+byte1,byte2,byte3,byte4,exp2,high,hwrd,log2,low,lwrd,page},%
+alsoletter=.,%
+sensitive=false,%
+morecomment=[l]{\#},%
+morecomment=[l]{;},%
+morestring=[b]{"},%
+morestring=[b]{'}%
+}[keywords,comments,strings]%
+\endinput
+%%
+%% End of file `lstlang0.sty'.
