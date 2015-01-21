@@ -21,6 +21,15 @@ befindet sich noch nach dem Programmcode ganz am Ende.
 
 \ex{Systemstruktur}{6 + 4}
 
+\subex{Modulbild}
+
+\subex{Registerbelegungsplan}
+\begin{tabular}{l|l|l}
+\bf Register & \bf Name & \bf Funktion \\\hline
+R16 & tmp & Temporäres Register, universell eingesetzt \\
+R17 & time & aktuelle Zeit der Stoppuhr, hält kompakten BCD-Wert \\
+X & X & Adressregister, für Table-Initialisierung und Lookups
+\end{tabular}
 
 \ex{Konfiguration der I/O-Ports}{10}
 \lstinputlisting[linerange={58-85}]{stopwatch.asm}
