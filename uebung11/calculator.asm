@@ -171,7 +171,7 @@ FACTORIAL:
     RJMP LoopFact   ; continue
 
   Abort:
-    LDI result, 0 ; bad argument, set result to 0 (normally impossible)
+    LDI result, 1 ; bad argument, set result to 0 (normally impossible)
     RJMP EndFact  ; restore state
 
   EndFact:        ; get all status back to what it was before
