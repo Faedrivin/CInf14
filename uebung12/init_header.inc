@@ -17,10 +17,10 @@
  * Effect: SPL <- low(address), SPH <- high(address)
  */
 .macro INIT_STACK_PTR 
-  LDI @1, low(@0)
-  OUT SPL, @1
   LDI @1, high(@0)
   OUT SPH, @1
+  LDI @1, low(@0)
+  OUT SPL, @1
 .endmacro
 
 /**
@@ -32,8 +32,8 @@
  *                       XH <- high(address))
  */
 .macro SET_X_REG
-  LDI XL, low(@0)
   LDI XH, high(@0)
+  LDI XL, low(@0)
 .endmacro
 
 /**

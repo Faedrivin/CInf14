@@ -57,8 +57,6 @@
  */
 INIT_PORTS:
   PUSH tmp       ; save state
-  IN tmp, SREG
-  PUSH tmp
 
   ; PA0, PA1: in with pull-up
   CBI DDRA, PA0  ; switch to in
@@ -80,8 +78,6 @@ INIT_PORTS:
   CBI PORTD, PD2 ; disable pull-up
 
   POP tmp        ; restore state
-  OUT SREG, tmp
-  POP tmp
   RET
 
 /**
@@ -117,8 +113,6 @@ INIT_PORTS:
  */
 INIT_TABLE:
   PUSH tmp        ; save state
-  IN tmp, SREG
-  PUSH tmp
   PUSH XL
   PUSH XH
 
@@ -147,8 +141,6 @@ INIT_TABLE:
 
   POP XH          ; restore state
   POP XL
-  POP tmp
-  OUT SREG, tmp
   POP tmp
   RET
 
@@ -180,8 +172,6 @@ INIT_TABLE:
  */
 SSEG_OUT:
   PUSH tmp        ; save state
-  IN tmp, SREG
-  PUSH tmp
   PUSH XL
   PUSH XH
 
@@ -202,8 +192,6 @@ SSEG_OUT:
   POP XH         ; restore state
   POP XL
   POP tmp
-  OUT SREG, tmp
-  POP tmp
   RET
 
 /**
@@ -215,15 +203,13 @@ SSEG_OUT:
  * If the high nibble flows over, the time
  * is reseted to 0.
  *
+ * This does not restore the tmp register!
+ *
  * in: time
  * out: time = time + 1 % 60 as BCD.
  * Effect: time is incremented correctly.
  */
 COUNT_UP:
-  PUSH tmp       ; save state
-  IN tmp, SREG
-  PUSH tmp
-
   INC time       ; +1 second
   MOV tmp, time
   ANDI tmp, 0x0f ; clear high nibble
@@ -242,9 +228,6 @@ COUNT_UP:
   CLR time       ; on overflow: clear
 
   Count_up_ret:
-    POP tmp      ; restore state
-    OUT SREG, tmp
-    POP tmp
     RET
 
 /**
@@ -260,9 +243,6 @@ ISR_CLOCK:
   PUSH tmp       ; save state
   IN tmp, SREG
   PUSH tmp
-  
-  CLR tmp        ; reset counter
-  OUT TCNT0, tmp
 
   SBIS PINA, PA1 ; if PA1: pause!
   RCALL COUNT_UP
@@ -327,8 +307,9 @@ INIT_TCO_INTERRUPT:
   
   IN tmp, TCCR0    ; get TCCR0 state and
   ANDI tmp, 0xf8   ; clear the CS00/01/02 bits
-  ORI tmp, (1 << CS02)
-  OUT TCCR0, tmp   ; set prescale 256
+  ORI tmp, (1 << WGM01) | (1 << CS02)
+  OUT TCCR0, tmp   ; set prescale 256 and reset
+                   ; timer on reaching compare val
 
   LDI tmp, 128     ; set compare value to 2^7
   OUT OCR0, tmp
@@ -380,7 +361,7 @@ Stopwatch:
     SBIC PINA, PA0 ; check for reset
     CLR time       ; reset: clear time
 
-    CALL SSEG_OUT ; output time
+    RCALL SSEG_OUT ; output time
 
     ; ===== unneccessary with interrupts =====
     ; poll for PD2
