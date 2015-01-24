@@ -298,7 +298,7 @@ INIT_EXT_INTERRUPT:
  *         TCCR0 |= (1 << CS02)
  *         Has an effect on SREG: sets I.
  */
-INIT_TCO_INTERRUPT:
+INIT_TC0_INTERRUPT:
   PUSH tmp         ; store state
 
   IN tmp, TIMSK    ; get TIMSK state and set 
@@ -351,7 +351,7 @@ Stopwatch:
   RCALL INIT_PORTS
   ; ====== neccessary with interrupts ======
   ;RCALL INIT_EXT_INTERRUPT ; for INT0 interrupt
-  RCALL INIT_TCO_INTERRUPT ; for T/C0 interrupt
+  RCALL INIT_TC0_INTERRUPT ; for T/C0 interrupt
   ; ========================================
   
   CLR time ; init time as 00
@@ -366,7 +366,7 @@ Stopwatch:
     ; ===== unneccessary with interrupts =====
     ; poll for PD2
     ;SBIS PIND, PD2 ; if PD2: COUNT_UP
-    ;RJMP Loop
+    ;RJMP Stopwatch_Loop
     ;SBIS PINA, PA1 ; if PA1: pause!
     ;CALL COUNT_UP
     ; ========================================
