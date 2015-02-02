@@ -43,7 +43,7 @@
 .org INT0addr JMP ISR_CLOCK ; INT0 routine
 .org OC0addr JMP ISR_CLOCK  ; T/C0 routine
 
-.org SPMRaddr               ; program memory
+.org INT_VECTORS_SIZE       ; program memory
 
 /**
  * Initializes the I/O ports.
@@ -311,7 +311,7 @@ INIT_TC0_INTERRUPT:
   OUT TCCR0, tmp   ; set prescale 256 and reset
                    ; timer on reaching compare val
 
-  LDI tmp, 128     ; set compare value to 2^7
+  LDI tmp, 127     ; set compare value to 2^7
   OUT OCR0, tmp
 
   CLR tmp          ; init counter to 0
