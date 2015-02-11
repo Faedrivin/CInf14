@@ -219,25 +219,32 @@ a \cdot a \cdot \comp a & = 0 & \text{(Kommutativgesetz)} \\
 \end{IEEEeqnarray*}
 \hfill{$\square$}
 
-\vbox{
 \subex{}
-\begin{IEEEeqnarray*}{rC?l}
-   a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
-   (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
-   ((b \cdot a) + (\comp b \cdot a)) \cdot (a + b) & = a &\text{(Distributivgesetz)}\\
-   ((b \cdot a) \cdot (a + b)) + ((\comp b \cdot a) \cdot (a + b)) & =  a & \text{(Distributivgesetz)}\\
-   (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
-   (((a \cdot b) + (b \cdot b)) \cdot ((a \cdot b) + (a\cdot a))) + ((\comp b \cdot a) \cdot (a + b))& =  a &  \text{(Distributivgesetz)}\\
-   ((a \cdot b) + (a \cdot b)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz, invers)}\\
-   (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Idempotenzgesetz)}\\
-   (a \cdot b) + ((\comp b \cdot a \cdot a) + (\comp b \cdot a \cdot b))& =  a & \text{(Distributivgesetz)}\\
-   (a \cdot b) + ((\comp b \cdot a) + 0)& =  a & \text{($a \cdot \comp a = 0$)}\\
-   (a \cdot b) + (\comp b \cdot a)& =  a & \text{($a + 0 = a$)}\\
-   a \cdot (b + \comp b) & = a & \text{(Distributivgesetz, invers)} \\
-   a & = a & \text{($b + \comp b = 1$)}
+
+\begin{IEEEeqnarray*}{rCl?l}
+   a\cdot (a + b) & = & a\cdot a + a\cdot b & \text{(Distributivgesetz)}\\
+                  & = & a + a\cdot b \\
+                  & = & a\cdot 1 + a\cdot b & \text{(5.: $x\cdot 1=x$)} \\
+                  & = & a\cdot (b + \comp{b}) + a\cdot b  & \text{(3.: $x + \comp{x}=1$)}\\
+                  & = & a\cdot b + a\cdot\comp{b} + a\cdot b & \text{(Distributivgesetz)} \\
+                  & = & a\cdot b + a\cdot\comp{b} \\
+                  & = & a\cdot (b + \comp{b}) & \text{(Distributivgesetz)}\\
+                  & = & a\cdot 1 = a
+   % a\cdot \left( a + b \right) &= a & \hspace{1cm}\\
+   % (b + \comp b) \cdot a \cdot (a + b) & = a & \text{(Neutrales Element)}\\
+   % ((b \cdot a) + (\comp b \cdot a)) \cdot (a + b) & = a &\text{(Distributivgesetz)}\\
+   % ((b \cdot a) \cdot (a + b)) + ((\comp b \cdot a) \cdot (a + b)) & =  a & \text{(Distributivgesetz)}\\
+   % (((a + b) \cdot b) \cdot ((a + b) \cdot a)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz)}\\
+   % (((a \cdot b) + (b \cdot b)) \cdot ((a \cdot b) + (a\cdot a))) + ((\comp b \cdot a) \cdot (a + b))& =  a &  \text{(Distributivgesetz)}\\
+   % ((a \cdot b) + (a \cdot b)) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Distributivgesetz, invers)}\\
+   % (a \cdot b) + ((\comp b \cdot a) \cdot (a + b))& =  a & \text{(Idempotenzgesetz)}\\
+   % (a \cdot b) + ((\comp b \cdot a \cdot a) + (\comp b \cdot a \cdot b))& =  a & \text{(Distributivgesetz)}\\
+   % (a \cdot b) + ((\comp b \cdot a) + 0)& =  a & \text{($a \cdot \comp a = 0$)}\\
+   % (a \cdot b) + (\comp b \cdot a)& =  a & \text{($a + 0 = a$)}\\
+   % a \cdot (b + \comp b) & = a & \text{(Distributivgesetz, invers)} \\
+   % a & = a & \text{($b + \comp b = 1$)}
 \end{IEEEeqnarray*}
 \hfill{$\square$}
-}% end vbox
 
 \subex{}
 \begin{IEEEeqnarray*}{rC?l} % not sure if we are allowed to use associative law!
@@ -340,14 +347,14 @@ f &= \comp{ab + \comp a \comp c} &&+ \comp{ \comp{ bcd + c \comp d } + \comp{acd
   \node[anchor=east] at(4, 0) (d) {D};
 
   % ~B & A
-  \node[and port] at(7, 2.725) (not B and A) {};
+  \node[european and port] at(7, 2.725) (not B and A) {};
   \draw ($(b) + (0.2, 0)$) to[short, -o] ($(not B and A.in 1) + (0.325, 0)$);
   \draw ($(a) + (0.2, 0)$) to[short, -*] (5, 2) 
                            to (5, 2.45) 
                            to (not B and A.in 2);
 
   % C & ~A
-  \node[and port] at(7, 1.275) (C and not A) {};
+  \node[european and port] at(7, 1.275) (C and not A) {};
   \draw ($(c) + (0.2, 0)$) to (C and not A.in 2) {};
   \draw (5, 2) to (5, 1.55) 
                to[short, -o] ($(C and not A.in 1) + (0.325, 0)$) {};

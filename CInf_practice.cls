@@ -142,7 +142,7 @@ draw ]
 \tikzstyle{and gate}=[rectangle,font=\small,align=center,draw,fill=white,inner
 sep=1pt,minimum height=.7em]
 
-   \usetikzlibrary{intersections}
+\usetikzlibrary{intersections}
 %%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
 %%%%%%%%%%%%%%%%%%%%%%%
