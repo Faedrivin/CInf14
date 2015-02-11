@@ -60,7 +60,7 @@ oder rückwärts) zur Vereinfachung angewandt.
          f_{KKN} & = & (a + b + \comp c) \cdot (\comp a + b + c) \cdot (\comp a + b  +\comp c) \cdot (\comp a + \comp b  +\comp c) \\
                  & = & (a + b + \comp c) \cdot (\comp a + b + c) \cdot (\comp a
                         + b  +\comp c) \cdot (\comp a + \comp b  +\comp c) \cdot (\comp a + b + \comp c)\\
-                 & = & (a + b + \comp c) \cdot ((\comp a + b) + (c\comp e)) \cdot ((\comp a + \comp c) + (b\comp b)) \\
+                 & = & (a + b + \comp c) \cdot ((\comp a + b) + (c\comp c)) \cdot ((\comp a + \comp c) + (b\comp b)) \\
                  & = & (a + b \comp c) \cdot (\comp a + b) \cdot (\comp a + \comp c) \\
                  & = & (\comp a + b) \cdot (\comp c + ((a + b)\cdot\comp a)) \\
                  & = & (\comp a + b) \cdot (\comp c + (a\comp a + \comp a b)) \\
@@ -224,7 +224,7 @@ oder rückwärts) zur Vereinfachung angewandt.
 \ex{Schaltungsanalyse}{6 + 6 + 3 + 3 }
 % ruby for ttable generation
 % expr = expr.gsub(/\\comp{(.*)}/, "not \\1").gsub("+", " or ").gsub("\\cdot", " and ").gsub(/\\comp (.)/, "not \\1")
-%    table = '\begin{tabular}{ccc|l}'
+%    table = '\begin{ctabular}{ccc|l}'
 %    table += "\n $a$ & $b$ & $c$ & $f$\\\\\\hline"
 %    [true,false].each do |a|
 %       [true,false].each do |b|
@@ -233,7 +233,7 @@ oder rückwärts) zur Vereinfachung angewandt.
 %          end
 %       end
 %    end
-%    puts table.gsub("true", "1").gsub("false", "0").concat("\n\\end{tabular}")
+%    puts table.gsub("true", "1").gsub("false", "0").concat("\n\\end{ctabular}")
 \begin{enumerate}[label=\alph{*})]
    \item 
       \begin{eqnarray*}
@@ -243,7 +243,7 @@ oder rückwärts) zur Vereinfachung angewandt.
       \end{eqnarray*}
    \item \hspace{\linewidth}
 
-      \begin{tabular}{ccc|lll}
+      \begin{ctabular}{ccc|lll}
          $a$ & $b$ & $c$ & $f_1$ & $f_2$ & $f_3$\\\hline
          1 & 1 & 1 & 0&0&0\\
          1 & 1 & 0 & 1&1&0\\
@@ -253,19 +253,19 @@ oder rückwärts) zur Vereinfachung angewandt.
          0 & 1 & 0 & 0&0&0\\
          0 & 0 & 1 & 1&1&1\\
          0 & 0 & 0 & 1&0&0\\
-      \end{tabular}
+      \end{ctabular}
    \item $f_1$ ist kanonisch und kann auch nicht weiter vereinfacht werden. $f_2$
       ist in Normalform (nichtkanonisch) und $f_3$ weder noch.
    \item \hspace{\linewidth}
 
-      \begin{tabular}{>{$}l<{$}@{ }
+      \begin{ctabular}{>{$}l<{$}@{ }l}
          L_d(f_1) & 5\\
          L_d(f_2) & 7\\
          L_d(f_3) & 7\\\hline
          L_g(f_1) & 4\\
          L_g(f_2) & 3\\
          L_g(f_3) & 3\\
-      \end{tabular}
+      \end{ctabular}
 \end{enumerate}
 
 \ex{KV-Minimierung}{6 + 8 + 8 }
@@ -505,7 +505,7 @@ $f = ae + \comp b \comp c d + \comp a \comp b \comp e + b \comp c de + b \comp c
 
 \subex{Wahrheitstafel}
 \begin{center}
-\begin{tabular}{CCCC|CCCCCCC}
+\begin{ctabular}{CCCC|CCCCCCC}
 $x_3$ & $x_2$ & $x_1$ & $x_0$ & a & b & c & d & e & f & g \\ \hline
   0   &   0   &   0   &   0   & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
   0   &   0   &   0   &   1   & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
@@ -515,7 +515,7 @@ $x_3$ & $x_2$ & $x_1$ & $x_0$ & a & b & c & d & e & f & g \\ \hline
   0   &   1   &   0   &   1   & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
   0   &   1   &   1   &   0   &\multicolumn{7}{C}{0}      \\
 \vdots&\vdots &\vdots &\vdots &\multicolumn{7}{C}{\vdots} \\
-\end{tabular}
+\end{ctabular}
 \end{center}
 
 \subex{KV-Diagramme \& Schaltfunktionen}
