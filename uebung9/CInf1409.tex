@@ -32,6 +32,12 @@ sind.
 
 \newpage
 \subex{Modulbild}
+
+\begin{center}
+   \emph{Hier sollte eigentlich ein Blockschaltbild stehen \ldots oh
+   well.}
+\end{center}
+
 \begin{ctabular}{>{\ttfamily}ll}
 \textbf{\rmfamily{Kontrollsignal}} & \textbf{Bedeutung} \\
    \hline
@@ -220,7 +226,7 @@ genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
       \node[and port, right=2cm of ff-1.north east] (and-z1) {};
       \node[and port, right=2cm of ff-2.north east] (and-z2) {};
       \node[and port, right=2cm of ff-3.north east] (and-z3) {};
-      \draw[-,name path=phi1] ($(ff-1)+(2.25,3)$) -- ++(0,-10cm) node[below] {$\Phi_1$};
+      \draw[o-,name path=phi1] ($(ff-1)+(2.25,3)$) -- ++(0,-10cm) node[below] {$\Phi_1$};
       \draw[opacity=0,name path=and-z1-line] (and-z1.150) -- ++(-5cm,0);
       \draw[-*,name intersections={of=and-z1-line and phi1}] (and-z1.150) --($(intersection-1)+(-0.08,0)$);
       \draw[opacity=0,name path=and-z2-line] (and-z2.150) -- ++(-5cm,0);
@@ -317,14 +323,17 @@ genau einem Zustand generiert werden. Neun der Gatter sind im Prinzip
 \end{center}
 
 \subex{Hardwareaufwand}
-Es werden für jeden Zustand ein zusätzliches AND-Gatter sowie der Zähler mehr benötigt (sowie ein paar Drähte und Lötzinn).
+Es werden für jeden Zustand ein zusätzliches AND-Gatter sowie der Zähler mehr
+benötigt, der selbst im Prinzip $\log_2{n}$ Flipflops benötigt, hier aber
+sinnlos ist, sowie ein paar Drähte und Lötzinn.
 
 \newpage
 \ex{Mikroprogrammiertes Steuerwerk}{7 + 2 + 4 + 8}
 
 \subex{Mikroprogramm}
 % this makes no sense at all to me, but maybe it's right...
-Es gibt keine komplexen if/else Konstrukte und deshalb muss die Verzweigung umgebaut werden. Nur ein simples goto ist möglich für das Branching.
+Es gibt keine komplexen \texttt{if/else}-Konstrukte und deshalb muss die Verzweigung
+umgebaut werden. Nur ein simples \texttt{goto} ist möglich für das Branching.
 \lstinputlisting{aufg3_a.rt}
 
 \subex{Programmflusskontrolle durch MUX}
