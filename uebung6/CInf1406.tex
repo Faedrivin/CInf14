@@ -427,8 +427,8 @@ erste mit dem letzten und umgekehrt verbunden ist, so wie oben zu sehen.
       \node[font=\tiny,right=2pt of clk-port] {CLK};
       \node[above=of kasten] (D) {Data};
       \node[below=of kasten] (N) {N};
-      \draw (D.south) -- (kasten);
-      \draw (N.north) -- (kasten);
+      \draw[->] (D.south) -- (kasten);
+      \draw[<-] (N.north) -- (kasten);
       \draw (clk-port.west) -| ++(-2em,-1cm);
    \end{tikzpicture}
 \end{center}
@@ -440,8 +440,8 @@ Der Zustandsgraph ist
 \usetikzlibrary{automata}
 \begin{center}
    \begin{tikzpicture}[node distance=2cm]
-      \node[state] (1) {1};
-      \node[state,right=of 1] (0) {0};
+      \node[state] (1) {1/1};
+      \node[state,right=of 1,initial] (0) {0/0};
       \path[->]
       (1) edge[bend left] node[above] {1} (0)
       (0) edge[bend left] node[below] {1} (1)
