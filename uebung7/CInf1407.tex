@@ -12,13 +12,13 @@
 \subex{Ein- \& Ausgaben}
 \noindent Eingaben:
 \begin{enumerate}[align=left,leftmargin=\marginparwidth]
-   \item[$X_C$] 50 Cent einwerfen oder nicht
-   \item[$X_E$] Euromünze einwerfen oder nicht
+   \item[$X_C$] 50 Cent einwerfen (1) oder nicht (0)
+   \item[$X_E$] Euromünze einwerfen (1) oder nicht (0)
 \end{enumerate}
 Ausgaben:
 \begin{enumerate}[align=left,leftmargin=\marginparwidth]
-   \item[$Y_R$] 50 Cent auswerfen oder nicht
-   \item[$Y_G$] Getränk auswerfen oder nicht
+   \item[$Y_R$] 50 Cent auswerfen (1) oder nicht (0)
+   \item[$Y_G$] Getränk auswerfen (1) oder nicht (0)
 \end{enumerate}
 
 \subex{Zustandsgraph}
@@ -192,7 +192,8 @@ Bits, die den Folgezustand codieren.
 
 \ex{Schaltwerksminimierung}{2 + 4 + 9 + 9 + 4 }
 \subex{Automatentyp}
-Da die Ausgaben allein von den Zuständen abhängig sind (Notation in den Zustandsknoten), handelt es sich um einen Moore-Automaten.
+Da die Ausgaben allein von den Zuständen abhängig sind (Notation in den
+Zustandsknoten), handelt es sich um einen nicht-autonomen Moore-Automaten.
 
 \subex{Zustandstabelle}
 Wir verwenden X als Eingabe und Y als Ausgabe. 

@@ -1,7 +1,5 @@
 % University of Luebeck - RTeasy Version 0.3.4% 
 declare bus OUTBUS(0:15);
-declare bus AREQ31;
-declare bus MINBIGA;
 declare register MINADR(0:4);
 declare register AR(0:4);
 declare register DR(0:15);
@@ -15,17 +13,18 @@ BEGIN: # 3 cylces
 	MIN <- DR; # control signal ldmin
 LOOP: # 32 * 5 - 4 = 156 cycles
 	if AR = 31 then # criterion areq31
-		AREQ31 <- 1, goto END
+		goto END
 	fi;
 	AR <- AR + 1; # control signal incrar
 	read MEM;
 	A <- DR; # control signal lda
 	if MIN > A then # criterion minbiga
-		MINBIGA <- 1, MINADR <- AR, goto LOOP # control signal ldminadr
+		MINADR <- AR, goto LOOP # control signal ldminadr
 	else
 		goto LOOP
 	fi;
 END: # 3 cycles
 	AR <- MINADR; # control signal ldar
 	read MEM;
+   MIN <- DR;
 	OUTBUS <- DR; # controlsignal ldout

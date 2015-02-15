@@ -39,7 +39,8 @@ Ausgaben:
     \draw[{Latex}-] (2,2) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_m$};
     \draw[{Latex}-] (2,1.5) -- node[bus={1}{above}] {} ++(-1,0) node[left] {$X_b$};
     % out
-    \draw[-{Latex}] (8,2) -- node[bus={1}{above}] {} ++(1,0) node[right] {$Y$};
+    \draw[-{Latex}] (8,2.5) -- node[bus={1}{above}] {} ++(1,0) node[right] {$Y$};
+    \draw[-{Latex}] (8,1.5) -- node[bus={1}{above}] {} ++(1,0) node[right] {$E$};
   \end{tikzpicture}
 \end{center}
 
@@ -91,7 +92,10 @@ Der Graph ist konsistent und vollständig.
 
 
 \subex{Zustandsübergangstabelle \& -codierung}
-Vier Zustände erlauben eine Codierung mit $\log_2{4}=2$ Bits. Es scheint sinnvoll, zwischen zwei Zuständen die Hamming distance klein zu halten. Es ist möglich, Codierungen zu finden, bei der für jeden Zustandswechsel nur ein Bit geändert wird. Wir wählen deswegen:
+Vier Zustände erlauben eine Codierung mit $\log_2{4}=2$ Bits. Es scheint
+sinnvoll, zwischen zwei Zuständen die Hamming-Distanz klein zu halten. Es ist
+möglich, Codierungen zu finden, bei der für jeden Zustandswechsel nur ein Bit
+geändert wird. Wir wählen deswegen:
 
 \begin{ctabular}{c|m}
 Zustand & $Codierung $ = Q_1Q_0 \\\hline
@@ -101,7 +105,10 @@ C & 11 \\
 D & 01 \\
 \end{ctabular}
 
-Für die Realisierung mit JK-Flipflops wird das linke Bit durch das $JK_1$-FF, das recht durch das $JK_0$-FF kodiert. Dabei stehen in der Tabelle $JK_1^{n+1} = Q_1^{n+1}$ bzw. $JK_0^{n+1} = Q_0^{n+1}$ für die jeweiligen Ausgänge, d.h. $1 = Q$ und $0 = \comp Q$.
+Für die Realisierung mit JK-Flipflops wird das linke Bit durch das $JK_1$-FF,
+das rechte durch das $JK_0$-FF kodiert. Dabei stehen in der Tabelle $JK_1^{n+1}
+= Q_1^{n+1}$ bzw. $JK_0^{n+1} = Q_0^{n+1}$ für die jeweiligen Ausgänge, d.h. $1
+= Q$ und $0 = \comp Q$.
 
 \begin{ctabular}{cc|mmm|mm|c|mmm|mmm}
 $Z^n$ & $(Q_1Q_0)^n$ &  X_t & X_m & X_b & Y & E & $(Q_1Q_0)^{n+1}$
@@ -142,7 +149,10 @@ D & 10 & 1 & 1 & 1 & 1 & 0 & 10 & 1 & 0 & 1 & 0 & 1 & 0 \\ \hline
 
 
 \subex{Ansteuergleichungen}
-Die Wertetabelle wurde zuvor ergänzt. Die Gleichungen können stark vereinfacht werden, da die Zustände nur in wenigen Sonderfällen wechseln. Das Ausnutzen der Hamming distance erlaubt es also im Grunde, die Ansteuergleichungen indirekt durch die vier Zustandswechsel zu definieren.
+Die Wertetabelle wurde zuvor ergänzt. Die Gleichungen können stark vereinfacht
+werden, da die Zustände nur in wenigen Sonderfällen wechseln. Das Ausnutzen der
+Hamming-Distanz erlaubt es also im Grunde, die Ansteuergleichungen indirekt
+durch die vier Zustandswechsel zu definieren.
 
 \begin{align*} % if needed we can simplify this further
 Q_0^{n+1} = Q_0^{n} \comp{Q_1^n \comp{X_t} \comp{X_m} \comp{X_b}} + \comp{Q_1^n}\, \comp{Q_1^n} X_t X_m X_b \\
@@ -213,7 +223,7 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
 \subex{Blockschaltbild}
 % it's easy to see that I have no clue what they expect us to do here...
 \begin{center}
-  \begin{tikzpicture}
+   \begin{tikzpicture}[every node/.append style={font=\ttfamily}]
     \draw (1.5,8) rectangle node{READY} ++(3,1);
     \draw (5.5,8) rectangle node{VALID} ++(3,1);
     
@@ -227,7 +237,7 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
     
     % load
     \draw[-] (7,8) -- node[bus={1}{left}] {} ++(0,-1);
-    \draw[-o] (8.5,8.5) -- ++(.5,0) node[right] {\emph{valid}};
+    \draw[-{Latex}] (8.5,8.5) -- ++(.5,0) node[right] {valid};
     
     \draw[-{Latex}] (2.75,6) -- node[bus={4}{left}] {} ++(0,-2);
     \draw[-{Latex}] (5,6) -- node[bus={4}{left}] {} ++(0,-2);
@@ -239,27 +249,27 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
     \draw[-{Latex}] (7.25,3) -- node[bus={7}{left}] {} ++(0,-2);
     
     % do we need these six?
-    \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{\emph{ldNum0}};
-    \draw[o-] (5,4.5) --  ++(-.5,0) node[left]{\emph{ldNum1}};
-    \draw[o-] (7.25,4.5) --  ++(-.5,0) node[left]{\emph{ldNum2}};
+    \draw[o-] (2.75,4.5) --  ++(-.5,0) node[left]{ldNum0};
+    \draw[o-] (5,4.5) --  ++(-.5,0) node[left]{ldNum1};
+    \draw[o-] (7.25,4.5) --  ++(-.5,0) node[left]{ldNum2};
     
-    \draw[o-] (2.75,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut0}};
-    \draw[o-] (5,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut1}};
-    \draw[o-] (7.25,1.5) --  ++(-.5,0) node[left]{\emph{wrtOut2}};
+    \draw[o-] (2.75,1.5) --  ++(-.5,0) node[left]{wrtOut0};
+    \draw[o-] (5,1.5) --  ++(-.5,0) node[left]{wrtOut1};
+    \draw[o-] (7.25,1.5) --  ++(-.5,0) node[left]{wrtOut2};
 
     % setReady
-    \draw[o-] (1.5,8.5) -- ++(-.5,0) node[left] {\emph{setRdy}};
+    \draw[{Latex}-] (1.5,8.5) -- ++(-.5,0) node[left] {setRdy};
    
     % Steuerwerk
     \draw (13,0) rectangle node[rotate=-90] {Steuerwerk} ++(1,9);
-    \draw[o-] (13,8.5) -- ++(-.5,0) node[left] {\emph{valid}};
-    \draw[-o] (13,7.5) -- ++(-.5,0) node[left] {\emph{setRdy}};
-    \draw[-o] (13,6.5) -- ++(-.5,0) node[left] {\emph{ldNum0}};
-    \draw[-o] (13,5.5) -- ++(-.5,0) node[left] {\emph{ldNum1}};
-    \draw[-o] (13,4.5) -- ++(-.5,0) node[left] {\emph{ldNum2}};
-    \draw[-o] (13,3.5) -- ++(-.5,0) node[left] {\emph{wrtOut0}};
-    \draw[-o] (13,2.5) -- ++(-.5,0) node[left] {\emph{wrtOut1}};
-    \draw[-o] (13,1.5) -- ++(-.5,0) node[left] {\emph{wrtOut2}};
+    \draw[{Latex}-] (13,8.5) -- ++(-.5,0) node[left] {valid};
+    \draw[-o] (13,7.5) -- ++(-.5,0) node[left] {setRdy};
+    \draw[-o] (13,6.5) -- ++(-.5,0) node[left] {ldNum0};
+    \draw[-o] (13,5.5) -- ++(-.5,0) node[left] {ldNum1};
+    \draw[-o] (13,4.5) -- ++(-.5,0) node[left] {ldNum2};
+    \draw[-o] (13,3.5) -- ++(-.5,0) node[left] {wrtOut0};
+    \draw[-o] (13,2.5) -- ++(-.5,0) node[left] {wrtOut1};
+    \draw[-o] (13,1.5) -- ++(-.5,0) node[left] {wrtOut2};
   \end{tikzpicture}
 \end{center}
 
@@ -345,7 +355,7 @@ Die Zustände, Kontrollsignale und Kriterien sind im Code markiert.
       \node[block,below=of incrar] (lddr2) {DR \la Memory[AR]};
       \node[block,below=of lddr2] (lda) {A \la DR};
       \node[decision,below=of lda] (minbiga) {MinbigA=1};
-      \node[block,below=of minbiga] (ldminadr) {MinAdr \la AR};
+      \node[block,below=of minbiga] (ldminadr) {MinAdr \la AR \\ Min \la DR};
 
       \node[block,left=of areq31] (ldar) {AR \la MinAdr};
       \node[block,below=of ldar] (lddr3) {DR \la Mem[AR]};
