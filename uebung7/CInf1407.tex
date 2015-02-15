@@ -408,7 +408,7 @@ Für die Ausgänge gilt
 Es folgen die Übergangsgleichungen 
 \begin{IEEEeqnarray*}{rCl}
    Z_1^{n+1} & = & Z_1^n Z_0^n + X^n Z_0^n + X^n Z_1^n \\
-Z_0^{n+1} & = & Z_1^n \comp{Z_0^n} + X^n\comp{Z_0^n} + X\comp{Z_1^n}
+Z_0^{n+1} & = & Z_1^n \comp{Z_0^n} + X^n\comp{Z_0^n} + XZ_1^n
 \end{IEEEeqnarray*}
 
 \begin{center}
@@ -453,8 +453,8 @@ Stockwerke.
 \subex{}
 
 \begin{align*}
-D_0^{n+1} &= XZ_1^n+X\comp{Z_0^n}+Z_1^n\comp{Z_0^n}\\
-D_1^{n+1} &= XZ_0 + Z_1Z_0 + XZ_1
+D_1^{n+1} &= XZ_0^n + Z_1^nZ_0^n + XZ_1^n \\
+D_0^{n+1} &= XZ_1^n+X\comp{Z_0^n}+Z_1^nZ_0^n
 \end{align*}
 
 \newpage
